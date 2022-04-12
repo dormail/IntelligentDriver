@@ -7,7 +7,6 @@
 int main() {
     unsigned int car_count = 10;
     OneLaneRoad myRoad(car_count, 1000.);
-    std::cout << myRoad.car_number();
 
     // creating csv header
     std::cout << "t";
