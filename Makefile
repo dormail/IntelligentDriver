@@ -6,17 +6,18 @@ CXXFLAGS = --include-directory=include -Wall -g
 # clean stuff
 RM = rm -rf
 
-#
-TARGET = main
-
 # source files
 SOURCE = include/car.cpp include/road.cpp
 HEADER = include/road.h include/car.h
 
-all: build/$(TARGET)
 
-build/$(TARGET): $(TARGET).cpp $(SOURCE) $(HEADER) build
-	g++ $(CXXFLAGS) -o build/$(TARGET) $(TARGET).cpp $(SOURCE)
+all: build/main build/ConstantSpeedToCSV
+
+build/main: main.cpp $(SOURCE) $(HEADER) build
+	g++ $(CXXFLAGS) -o $@ main.cpp $(SOURCE)
+
+build/ConstantSpeedToCSV: ConstantSpeedToCSV.cpp $(SOURCE) $(HEADER) build
+	g++ $(CXXFLAGS) -o $@ ConstantSpeedToCSV.cpp $(SOURCE)
 
 valgrind: $(TARGET)
 	valgrind -v ./$(TARGET)
@@ -28,6 +29,4 @@ build:
 	mkdir -p build
 
 clean:
-	$(RM) $(TARGET) ConstantSpeedToCSV build
-
-.phony: $(TARGET) ConstantSpeedToCSV
+	$(RM) build
