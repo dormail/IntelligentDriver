@@ -13,13 +13,10 @@ TARGET = main
 SOURCE = include/car.cpp include/road.cpp
 HEADER = include/road.h include/car.h
 
-all: $(TARGET) ConstantSpeedToCSV
+all: build/$(TARGET)
 
-$(TARGET): $(TARGET).cpp $(SOURCE) $(HEADER)
-	g++ $(CXXFLAGS) -o $(TARGET) $(TARGET).cpp $(SOURCE)
-
-ConstantSpeedToCSV: ConstantSpeedToCSV.cpp $(SOURCE) $(HEADER)
-	g++ $(CXXFLAGS) -o ConstantSpeedToCSV $(SOURCE) ConstantSpeedToCSV.cpp
+build/$(TARGET): $(TARGET).cpp $(SOURCE) $(HEADER) build
+	g++ $(CXXFLAGS) -o build/$(TARGET) $(TARGET).cpp $(SOURCE)
 
 valgrind: $(TARGET)
 	valgrind -v ./$(TARGET)
@@ -27,7 +24,10 @@ valgrind: $(TARGET)
 valgrind-leak-check: $(TARGET)
 	valgrind -v --leak-check=full ./$(TARGET)
 
+build:
+	mkdir -p build
+
 clean:
-	$(RM) $(TARGET) ConstantSpeedToCSV
+	$(RM) $(TARGET) ConstantSpeedToCSV build
 
 .phony: $(TARGET) ConstantSpeedToCSV
