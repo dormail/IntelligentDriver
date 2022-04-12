@@ -4,15 +4,16 @@
 #define CAR_H
 
 struct Car {
-  float location;
-  float velocity;
+  float location{0.};
+  float velocity{10.};
 
-  float desired_velocity;
-  float safe_time_headaway;
-  float comfortable_deceleration;
-  float min_distance;
+  float desired_velocity{30.};
+  float safe_time_headaway{1.5};
+  float comfortable_deceleration{.67};
+  float max_acceleration{.5};
+  float min_distance{2.};
 
-  float length;
+  float length{5.};
 };
 
 void move_unaccelerated(Car *target, float dt);
