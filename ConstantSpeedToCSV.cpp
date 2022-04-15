@@ -11,24 +11,24 @@ int main() {
     // creating csv header
     std::cout << "t";
     for(unsigned int i = 0; i<car_count; ++i) {
-        std::cout << ",x" << i << ",v" << i;
+        std::cout << ",x" << i;// << ",v" << i;
     }
     std::cout << '\n';
 
     //
     float time = 0.;
     float dt = 1./30.;
-    float time_end = 10;
+    float time_end = 30;
     while(time <= time_end) {
         std::cout << time << ',';
         for (unsigned int i = 0; i < car_count; ++i)
         {
             std::cout << myRoad.location(i) << ",";
-            std::cout << myRoad.velocity(i) << ",";
+            //std::cout << myRoad.velocity(i) << ",";
         }
         std::cout << '\n';
 
-        myRoad.constant_speed(dt);
+        myRoad.euler(dt);
 
         time += dt;
     }

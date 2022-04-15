@@ -12,7 +12,7 @@ int main() {
     // creating csv header
     std::cout << "t";
     for(unsigned int i = 0; i<car_count; ++i) {
-        std::cout << ",x" << i << ",v" << i;
+        std::cout << ",x" << i;// << ",v" << i;
     }
     std::cout << '\n';
 
@@ -25,7 +25,7 @@ int main() {
         for (unsigned int i = 0; i < car_count; ++i)
         {
             std::cout << myRoad.location(i) << ",";
-            std::cout << myRoad.velocity(i) << ",";
+            //std::cout << myRoad.velocity(i) << ",";
         }
         std::cout << '\n';
 

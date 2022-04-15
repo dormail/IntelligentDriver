@@ -37,12 +37,19 @@ class OneLaneRoad {
 
     unsigned int car_number();
     
+    // get methods
     float location(unsigned int const car_index);
     float velocity(unsigned int const car_index);
+    float distance_front(unsigned int const car_index);
     
     // diff eq solvers
     void constant_speed(float const dt);
     void RK4(float const dt);
+    void euler(float const dt);
+
+    void location_enforce_boundries();
 };
+
+float acceleration(float v, float v_next, float distance, float v_max, float s_min, float T, float a_max, float b);
 
 #endif
