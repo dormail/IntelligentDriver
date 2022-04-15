@@ -14,6 +14,8 @@ struct Car {
   float min_distance{2.};
 
   float length{5.};
+
+  unsigned int lane = 0;
 };
 
 void move_unaccelerated(Car *target, float dt);

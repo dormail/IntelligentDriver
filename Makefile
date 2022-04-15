@@ -19,6 +19,9 @@ build/main: main.cpp $(SOURCE) $(HEADER) build
 build/EulerCongestionToCSV: EulerCongestionToCSV.cpp $(SOURCE) $(HEADER) build
 	g++ $(CXXFLAGS) EulerCongestionToCSV.cpp -o $@ $(SOURCE)
 
+build/MultiLaneTest: tests/MultiLaneTest.cpp $(SOURCE) $(HEADER) build
+	g++ $(CXXFLAGS) tests/MultiLaneTest.cpp -o $@ $(SOURCE)
+
 valgrind: $(TARGET)
 	valgrind -v ./$(TARGET)
 

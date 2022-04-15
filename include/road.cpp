@@ -6,6 +6,28 @@
 #include <assert.h>
 #include <cmath> // pow
 
+MultiLaneRoad::MultiLaneRoad(float length, unsigned int const lane_num, unsigned int const car_num) :
+    OneLaneRoad(car_num, length), lane_num(lane_num) {
+    congestion_at_start();
+}
+
+void MultiLaneRoad::congestion_at_start() {
+    unsigned int current_lane = 0;
+    float* location = new float[lane_num]();
+
+    for (unsigned int i = 0; i < car_number(); ++i) {
+        cars[i].location = location[current_lane];
+        cars[i].lane = current_lane;
+
+        location[current_lane] += cars[i].length;
+        location[current_lane] += cars[i].min_distance;
+
+        ++current_lane;
+        current_lane = (current_lane == lane_num) ? 0 : current_lane;
+    }
+    delete[] location;
+}
+
 OneLaneRoad::OneLaneRoad(unsigned int const car_num, float const len) : cars(car_num), length(len)  {
     assert(cars.size() == car_num);
 

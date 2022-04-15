@@ -35,4 +35,21 @@ class OneLaneRoad {
 
 float acceleration(float v, float v_next, float distance, float v_max, float s_min, float T, float a_max, float b);
 
+/* lanes are zero-indexed 
+*/
+class MultiLaneRoad : public OneLaneRoad {
+    protected:
+    unsigned int lane_num = 3;
+
+    public:
+    MultiLaneRoad(float length, unsigned int const lane_num, unsigned int const car_num);
+    ~MultiLaneRoad() {}
+
+    // set methods
+    void congestion_at_start(); // create a traffic at the start of the road
+
+    // get methods
+    unsigned int lane(unsigned int const car_index);
+};
+
 #endif
