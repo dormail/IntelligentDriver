@@ -25,8 +25,14 @@ valgrind: $(TARGET)
 valgrind-leak-check: $(TARGET)
 	valgrind -v --leak-check=full ./$(TARGET)
 
+build/data/position.csv: build/data build/ConstantSpeedToCSV
+	./build/ConstantSpeedToCSV > build/data/position.csv
+
 build:
 	mkdir -p build
+
+build/data: build
+	mkdir -p build/data
 
 clean:
 	$(RM) build
