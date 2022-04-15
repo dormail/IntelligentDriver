@@ -11,13 +11,13 @@ SOURCE = include/car.cpp include/road.cpp
 HEADER = include/road.h include/car.h
 
 
-all: build/main build/ConstantSpeedToCSV
+all: build/main build/EulerCongestionToCSV
 
 build/main: main.cpp $(SOURCE) $(HEADER) build
 	g++ $(CXXFLAGS) -o $@ main.cpp $(SOURCE)
 
-build/ConstantSpeedToCSV: ConstantSpeedToCSV.cpp $(SOURCE) $(HEADER) build
-	g++ $(CXXFLAGS) -o $@ ConstantSpeedToCSV.cpp $(SOURCE)
+build/EulerCongestionToCSV: EulerCongestionToCSV.cpp $(SOURCE) $(HEADER) build
+	g++ $(CXXFLAGS) EulerCongestionToCSV.cpp -o $@ $(SOURCE)
 
 valgrind: $(TARGET)
 	valgrind -v ./$(TARGET)
@@ -25,8 +25,8 @@ valgrind: $(TARGET)
 valgrind-leak-check: $(TARGET)
 	valgrind -v --leak-check=full ./$(TARGET)
 
-build/data/position.csv: build/data build/ConstantSpeedToCSV
-	./build/ConstantSpeedToCSV > build/data/position.csv
+build/data/position.csv: build/data build/EulerCongestionToCSV
+	./build/EulerCongestionToCSV > build/data/position.csv
 
 analysis/animation.mp4: analysis/SimpleAnimation.py build/data/position.csv
 	python analysis/SimpleAnimation.py
