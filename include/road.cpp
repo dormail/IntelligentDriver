@@ -83,6 +83,18 @@ OneLaneRoad::OneLaneRoad(unsigned int const car_num, float const len) : cars(car
     }
 }
 
+void OneLaneRoad::congestion_at_start() {
+    float location = 0;
+
+    for (auto &element : cars) {
+        element.location = location;
+        element.velocity = 0;
+
+        location += element.length;
+        location += element.min_distance;
+    }
+}
+
 unsigned int OneLaneRoad::car_number() {
     return cars.size();
 }
@@ -138,17 +150,14 @@ void OneLaneRoad::euler(float const dt) {
     float OneLaneRoad::distance_front(unsigned int const car_index)
     {
         assert(car_index < car_number());
-        float distance;
-        if (car_index == (cars.size() - 1))
-        {
-            distance = length - cars[car_index].location + cars[0].location;
-            distance -= cars[car_index].length / 2;
-            distance -= cars[0].length / 2;
-            return distance;
-        }
-        distance = length - cars[car_index].location + cars[car_index + 1].location;
+        unsigned int next_index = (car_index < car_number() - 1) ? car_index + 1 : 0;
+
+        float distance = cars[next_index].location - cars[car_index].location;
+        if(distance < 0) distance += length;
+
+        distance -= cars[next_index].length / 2;
         distance -= cars[car_index].length / 2;
-        distance -= cars[car_index + 1].length / 2;
+
         return distance;
     }
 

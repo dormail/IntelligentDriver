@@ -7,6 +7,7 @@
 int main() {
     unsigned int car_count = 10;
     OneLaneRoad myRoad(car_count, 1000.);
+    myRoad.congestion_at_start();
 
     // creating csv header
     std::cout << "t";
@@ -18,7 +19,7 @@ int main() {
     //
     float time = 0.;
     float dt = 1./30.;
-    float time_end = 30;
+    float time_end = 90;
     while(time <= time_end) {
         std::cout << time << ',';
         for (unsigned int i = 0; i < car_count; ++i)

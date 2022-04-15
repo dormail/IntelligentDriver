@@ -28,6 +28,9 @@ valgrind-leak-check: $(TARGET)
 build/data/position.csv: build/data build/ConstantSpeedToCSV
 	./build/ConstantSpeedToCSV > build/data/position.csv
 
+analysis/animation.mp4: analysis/SimpleAnimation.py build/data/position.csv
+	python analysis/SimpleAnimation.py
+
 build:
 	mkdir -p build
 
