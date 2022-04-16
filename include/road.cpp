@@ -19,12 +19,13 @@ void MultiLaneRoad::congestion_at_start() {
   float* location = new float[lane_num]();
 
   for (unsigned int i = 0; i < car_number(); ++i) {
-    cars[i].velocity = 0;
+    cars[i].velocity = 0.;
     cars[i].location = location[current_lane];
     cars[i].lane = current_lane;
 
     location[current_lane] += cars[i].length;
     location[current_lane] += cars[i].min_distance;
+    location[current_lane] += .5;
 
     ++current_lane;
     current_lane = (current_lane == lane_num) ? 0 : current_lane;
@@ -41,9 +42,11 @@ unsigned int MultiLaneRoad::car_in_front(unsigned int const car_index) {
   float best_distance = length;
   float tmp_dist;
   for (unsigned int i = 0; i < car_number(); ++i) {
+    if(i == car_index)
+      continue;
     if (cars[i].lane != cars[car_index].lane)
       continue;
-    tmp_dist = distance(cars[car_index], cars[i], length);
+    tmp_dist = distance(car_index, i);
     if (tmp_dist < best_distance) {
       best_distance = tmp_dist;
       closest = i;
@@ -51,6 +54,7 @@ unsigned int MultiLaneRoad::car_in_front(unsigned int const car_index) {
   }
   return closest;
 }
+
 
 void MultiLaneRoad::euler(float const dt) {
   unsigned int const car_num = car_number();
@@ -61,7 +65,7 @@ void MultiLaneRoad::euler(float const dt) {
 
     car_front = car_in_front(i);
 
-    accel = acceleration(velocity(i), velocity(car_front), distance(cars[i], cars[car_front], length),
+    accel = acceleration(velocity(i), velocity(car_front), distance(i, car_front),
         cars[i].desired_velocity, 
         cars[i].min_distance, 
         cars[i].safe_time_headaway, 
@@ -72,8 +76,23 @@ void MultiLaneRoad::euler(float const dt) {
   }
 }
 
-float MultiLaneRoa::distance(unsigned int const car_index1, unsigned int const car_index2) {
-  return 0.;
+float MultiLaneRoad::distance(unsigned int const car_index1, unsigned int const car_index2) {
+  float distance = cars[car_index2].location - cars[car_index1].location;
+  if(distance < 0) distance += length;
+
+  distance -= cars[car_index1].length / 2;
+  distance -= cars[car_index2].length / 2;
+
+  assert(distance < length);
+
+  if (distance < 0) {
+    std::cerr << "distance: " << distance << '\n';
+    std::cerr << "locs: " << cars[car_index1].location << " " << cars[car_index2].location << '\n';
+    std::cerr << "lanes: " << cars[car_index1].lane << " " << cars[car_index2].lane << '\n';
+  }
+
+  assert(distance >= 0);
+  return distance;
 }
 
 OneLaneRoad::OneLaneRoad(unsigned int const car_num, float const len) : cars(car_num), length(len)  {

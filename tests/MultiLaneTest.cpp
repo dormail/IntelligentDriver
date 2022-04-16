@@ -4,9 +4,9 @@
 #include <road.h>
 
 int main () {
-    unsigned int car_count = 20;
-    float road_length = 200.;
-    MultiLaneRoad myRoad(road_length, 2, car_count);
+    unsigned int car_count = 200;
+    float road_length = 600.;
+    MultiLaneRoad myRoad(road_length, 3, car_count);
     myRoad.congestion_at_start();
 
     // creating csv header
