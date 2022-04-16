@@ -7,6 +7,7 @@ int main () {
     unsigned int car_count = 20;
     float road_length = 200.;
     MultiLaneRoad myRoad(road_length, 2, car_count);
+    myRoad.congestion_at_start();
 
     // creating csv header
     std::cout << "t";
