@@ -72,6 +72,10 @@ void MultiLaneRoad::euler(float const dt) {
   }
 }
 
+float MultiLaneRoa::distance(unsigned int const car_index1, unsigned int const car_index2) {
+  return 0.;
+}
+
 OneLaneRoad::OneLaneRoad(unsigned int const car_num, float const len) : cars(car_num), length(len)  {
   assert(cars.size() == car_num);
 

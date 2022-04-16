@@ -50,6 +50,7 @@ class MultiLaneRoad : public OneLaneRoad {
     // get methods
     unsigned int lane(unsigned int const car_index);
     unsigned int car_in_front(unsigned int const car_index); // returns an index
+    float distance(unsigned int const car_index1, unsigned int const car_index2);
 
     // diff eq
     void euler(float const dt);
