@@ -1,4 +1,4 @@
-/* ConstantSpeedToCSV.cpp */
+/* EulerCongestionToCSV.cpp */
 
 #include <car.h>
 #include <road.h>
@@ -6,7 +6,7 @@
 
 int main() {
     unsigned int car_count = 10;
-    OneLaneRoad myRoad(car_count, 1000.);
+    OneLaneRoad myRoad(car_count, 200.);
     myRoad.congestion_at_start();
 
     // creating csv header
