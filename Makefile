@@ -11,7 +11,7 @@ SOURCE = include/car.cpp include/road.cpp
 HEADER = include/road.h include/car.h
 
 
-all: build/main build/EulerCongestionToCSV
+all: build/main build/EulerCongestionToCSV build/MultiLaneTest
 
 build/main: main.cpp $(SOURCE) $(HEADER) build
 	g++ $(CXXFLAGS) -o $@ main.cpp $(SOURCE)
