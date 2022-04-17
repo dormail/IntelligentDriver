@@ -19,9 +19,6 @@ build/main: main.cpp $(SOURCE) $(HEADER) build
 build/EulerCongestionToCSV: EulerCongestionToCSV.cpp $(SOURCE) $(HEADER) build
 	g++ $(CXXFLAGS) EulerCongestionToCSV.cpp -o $@ $(SOURCE)
 
-build/MultiLaneTest: tests/MultiLaneTest.cpp $(SOURCE) $(HEADER) build
-	g++ $(CXXFLAGS) tests/MultiLaneTest.cpp -o $@ $(SOURCE)
-
 valgrind: $(TARGET)
 	valgrind -v ./$(TARGET)
 
@@ -34,6 +31,17 @@ build/data/position.csv: build/data build/EulerCongestionToCSV
 analysis/animation.mp4: analysis/SimpleAnimation.py build/data/position.csv
 	python analysis/SimpleAnimation.py
 
+# multi lane simulation
+build/MultiLaneTest: tests/MultiLaneTest.cpp $(SOURCE) $(HEADER) build
+	g++ $(CXXFLAGS) tests/MultiLaneTest.cpp -o $@ $(SOURCE)
+
+build/data/multi_lane.csv: build/MultiLaneTest build/data
+	./build/MultiLaneTest > $@
+
+analysis/multi_lane.mp4: analysis/SimpleAnimation.py build/data/multi_lane.csv
+	python3 analysis/multi_lane.py
+
+# folders
 build:
 	mkdir -p build
 

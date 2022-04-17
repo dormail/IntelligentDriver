@@ -95,7 +95,7 @@ float MultiLaneRoad::distance(unsigned int const car_index1, unsigned int const 
   return distance;
 }
 
-OneLaneRoad::OneLaneRoad(unsigned int const car_num, float const len) : cars(car_num), length(len)  {
+OneLaneRoad::OneLaneRoad(unsigned int const car_num, float const len) : cars(car_num), length(len), generator() {
   assert(cars.size() == car_num);
 
   for(unsigned int i = 0; i<car_num; ++i) {
@@ -113,6 +113,14 @@ void OneLaneRoad::congestion_at_start() {
 
     location += element.length;
     location += element.min_distance;
+  }
+}
+
+void OneLaneRoad::desired_speed_gaussian(float const mean, float const stddev) {
+  std::normal_distribution<double> distribution(mean,stddev);
+
+  for (auto &car : cars) {
+    car.desired_velocity = distribution(generator);
   }
 }
 
