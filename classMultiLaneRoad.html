@@ -108,6 +108,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a65d3599113b076943cf8c2e9a2004a14"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMultiLaneRoad.html#a65d3599113b076943cf8c2e9a2004a14">change_lane</a> (<a class="el" href="structCar.html">Car</a> &amp;car, int const lane_change)</td></tr>
 <tr class="memdesc:a65d3599113b076943cf8c2e9a2004a14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes a car's lane, checking if parameters allow.  <a href="classMultiLaneRoad.html#a65d3599113b076943cf8c2e9a2004a14">More...</a><br /></td></tr>
 <tr class="separator:a65d3599113b076943cf8c2e9a2004a14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a289b3b11e75464a048f88d58462e858e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMultiLaneRoad.html#a289b3b11e75464a048f88d58462e858e">should_change</a> (<a class="el" href="structCar.html">Car</a> &amp;car, unsigned int const <a class="el" href="classMultiLaneRoad.html#a3b584fefb396c5fde72011b39d551b6e">lane</a>)</td></tr>
+<tr class="memdesc:a289b3b11e75464a048f88d58462e858e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method calculating if a car should change a lane.  <a href="classMultiLaneRoad.html#a289b3b11e75464a048f88d58462e858e">More...</a><br /></td></tr>
+<tr class="separator:a289b3b11e75464a048f88d58462e858e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ee286c38fa1875b44dd5aac788ea879"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMultiLaneRoad.html#a3ee286c38fa1875b44dd5aac788ea879">acceleration_car</a> (const <a class="el" href="structCar.html">Car</a> &amp;car, const <a class="el" href="structCar.html">Car</a> &amp;car_front)</td></tr>
+<tr class="memdesc:a3ee286c38fa1875b44dd5aac788ea879"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating the acceleration utilizing float acceleration(**params)  <a href="classMultiLaneRoad.html#a3ee286c38fa1875b44dd5aac788ea879">More...</a><br /></td></tr>
+<tr class="separator:a3ee286c38fa1875b44dd5aac788ea879"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classOneLaneRoad"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classOneLaneRoad')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classOneLaneRoad.html">OneLaneRoad</a></td></tr>
 <tr class="memitem:ad4434f53a242b284a9007711afaf7a7a inherit pub_methods_classOneLaneRoad"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#ad4434f53a242b284a9007711afaf7a7a">OneLaneRoad</a> (unsigned int const car_num, float const len)</td></tr>
 <tr class="separator:ad4434f53a242b284a9007711afaf7a7a inherit pub_methods_classOneLaneRoad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,6 +146,10 @@ Public Member Functions</h2></td></tr>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:acbf5e7f763875c6aca3f0fce4b5c901b"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMultiLaneRoad.html#acbf5e7f763875c6aca3f0fce4b5c901b">lane_num</a> = 3</td></tr>
 <tr class="separator:acbf5e7f763875c6aca3f0fce4b5c901b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62db0f11e68273d1149be4c2097b28b1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMultiLaneRoad.html#a62db0f11e68273d1149be4c2097b28b1">politeness_factor</a> = .5</td></tr>
+<tr class="separator:a62db0f11e68273d1149be4c2097b28b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11bd70d3d1ba4c8b634c7d5a2d453096"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMultiLaneRoad.html#a11bd70d3d1ba4c8b634c7d5a2d453096">switching_threshhold</a> = 0.</td></tr>
+<tr class="separator:a11bd70d3d1ba4c8b634c7d5a2d453096"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classOneLaneRoad"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classOneLaneRoad')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classOneLaneRoad.html">OneLaneRoad</a></td></tr>
 <tr class="memitem:af03d9f3837355f85742a41a4fd0d043c inherit pro_attribs_classOneLaneRoad"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structCar.html">Car</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#af03d9f3837355f85742a41a4fd0d043c">cars</a></td></tr>
 <tr class="separator:af03d9f3837355f85742a41a4fd0d043c inherit pro_attribs_classOneLaneRoad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -211,6 +221,45 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3ee286c38fa1875b44dd5aac788ea879" name="a3ee286c38fa1875b44dd5aac788ea879"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ee286c38fa1875b44dd5aac788ea879">&#9670;&nbsp;</a></span>acceleration_car()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float MultiLaneRoad::acceleration_car </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structCar.html">Car</a> &amp;&#160;</td>
+          <td class="paramname"><em>car</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structCar.html">Car</a> &amp;&#160;</td>
+          <td class="paramname"><em>car_front</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculating the acceleration utilizing float acceleration(**params) </p>
+<p >It does not check if they are on the same lane, which we use in the lane change evaluation</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">car</td><td><a class="el" href="structCar.html" title="Struct storing information about a car.">Car</a> to calculate the acceleration for </td></tr>
+    <tr><td class="paramname">car_front</td><td><a class="el" href="structCar.html" title="Struct storing information about a car.">Car</a> in front of the target of the calculation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>float acceleration of <a class="el" href="structCar.html" title="Struct storing information about a car.">Car</a>&amp; car </dd></dl>
+
+</div>
+</div>
 <a id="af7b9880d28791fa8e29ac4c08c081850" name="af7b9880d28791fa8e29ac4c08c081850"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af7b9880d28791fa8e29ac4c08c081850">&#9670;&nbsp;</a></span>car_in_front() <span class="overload">[1/2]</span></h2>
 
@@ -274,6 +323,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Changes a car's lane, checking if parameters allow. </p>
+<p >It does not check if it fits at this spot, only if the lane exists.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">car[in,out]</td><td>The car the lane change should be applied to </td></tr>
@@ -410,6 +460,47 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a289b3b11e75464a048f88d58462e858e" name="a289b3b11e75464a048f88d58462e858e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a289b3b11e75464a048f88d58462e858e">&#9670;&nbsp;</a></span>should_change()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MultiLaneRoad::should_change </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structCar.html">Car</a> &amp;&#160;</td>
+          <td class="paramname"><em>car</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int const&#160;</td>
+          <td class="paramname"><em>lane</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A method calculating if a car should change a lane. </p>
+<p >It uses the incentive criterion from some paper and also checks if the params are correct.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">car</td><td>car to change lane, using its location, speed, etc. </td></tr>
+    <tr><td class="paramname">lane</td><td>lane where the change shall be checked </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true car can safely change </dd>
+<dd>
+false car can not safely change or bad params </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="acbf5e7f763875c6aca3f0fce4b5c901b" name="acbf5e7f763875c6aca3f0fce4b5c901b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acbf5e7f763875c6aca3f0fce4b5c901b">&#9670;&nbsp;</a></span>lane_num</h2>
@@ -422,6 +513,50 @@ Protected Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">unsigned int MultiLaneRoad::lane_num = 3</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a62db0f11e68273d1149be4c2097b28b1" name="a62db0f11e68273d1149be4c2097b28b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62db0f11e68273d1149be4c2097b28b1">&#9670;&nbsp;</a></span>politeness_factor</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float MultiLaneRoad::politeness_factor = .5</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a11bd70d3d1ba4c8b634c7d5a2d453096" name="a11bd70d3d1ba4c8b634c7d5a2d453096"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11bd70d3d1ba4c8b634c7d5a2d453096">&#9670;&nbsp;</a></span>switching_threshhold</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float MultiLaneRoad::switching_threshhold = 0.</td>
         </tr>
       </table>
   </td>

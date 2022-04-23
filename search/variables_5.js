@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['safe_5ftime_5fheadaway_0',['safe_time_headaway',['../structCar.html#ab447f06a49986cd59471759ce262dbab',1,'Car']]]
+  ['politeness_5ffactor_0',['politeness_factor',['../classMultiLaneRoad.html#a62db0f11e68273d1149be4c2097b28b1',1,'MultiLaneRoad']]]
 ];

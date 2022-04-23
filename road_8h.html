@@ -93,6 +93,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:abadc4a8663a3befb28e91f7c21a99908"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="road_8h.html#abadc4a8663a3befb28e91f7c21a99908">acceleration</a> (float v, float v_next, float distance, float v_max, float s_min, float T, float a_max, float b)</td></tr>
+<tr class="memdesc:abadc4a8663a3befb28e91f7c21a99908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the acceleration of a car based on the intelligent driver model differential equation.  <a href="road_8h.html#abadc4a8663a3befb28e91f7c21a99908">More...</a><br /></td></tr>
 <tr class="separator:abadc4a8663a3befb28e91f7c21a99908"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -163,6 +164,22 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Calculate the acceleration of a car based on the intelligent driver model differential equation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">v</td><td>velocity of the car </td></tr>
+    <tr><td class="paramname">v_next</td><td>velocity of the car in front </td></tr>
+    <tr><td class="paramname">distance</td><td>net distance to the car in front </td></tr>
+    <tr><td class="paramname">v_max</td><td>Desired velocity </td></tr>
+    <tr><td class="paramname">s_min</td><td>Minimum net distance to the car in front </td></tr>
+    <tr><td class="paramname">T</td><td>Safe time head away </td></tr>
+    <tr><td class="paramname">a_max</td><td>Max acceleration </td></tr>
+    <tr><td class="paramname">b</td><td>Comformatable breaking </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>float acceleration of the vehicle described by params </dd></dl>
 
 </div>
 </div>
