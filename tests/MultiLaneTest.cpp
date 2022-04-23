@@ -4,10 +4,10 @@
 #include <road.h>
 
 int main () {
-    unsigned int car_count = 9;
-    float road_length = 200.;
+    unsigned int car_count = 20;
+    float road_length = 1000.;
     MultiLaneRoad myRoad(road_length, 3, car_count);
-    myRoad.congestion_at_start();
+    myRoad.fill_right_lanes();
     // x km/h = .278 * x m/s
     float mean_desired_speed = 140 * .278;
     float stddev_desired_speed = 50 * .278;

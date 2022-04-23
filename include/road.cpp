@@ -48,6 +48,31 @@ void MultiLaneRoad::congestion_at_start()
   delete[] location;
 }
 
+void MultiLaneRoad::fill_right_lanes()
+{
+  float location = 0;
+  unsigned int lane = 0;
+
+  for (auto& iter : cars)
+  {
+    assert(lane < lane_num);
+    assert(location < length);
+
+    iter.velocity = 0;
+    iter.location = location;
+    iter.lane = lane;
+
+    location += iter.length;
+    location += iter.min_distance;
+
+    if (location >= length)
+    {
+      location = 0;
+      ++lane;
+    }
+  }
+}
+
 /**
  * @brief returns cars[car_index].lane
  * 

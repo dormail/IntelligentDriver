@@ -63,7 +63,8 @@ public:
   ~MultiLaneRoad() {}
 
   // set methods
-  void congestion_at_start(); // create a traffic at the start of the road
+  void congestion_at_start();
+  void fill_right_lanes();
 
   // get methods
   unsigned int lane(unsigned int const car_index);
