@@ -95,6 +95,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a174917689c34d7f5b9953dd3cc4e7429"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#a174917689c34d7f5b9953dd3cc4e7429">desired_speed_gaussian</a> (float const mean, float const stddev)</td></tr>
 <tr class="separator:a174917689c34d7f5b9953dd3cc4e7429"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30a79215fa6c613fdd75c161d0925020"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#a30a79215fa6c613fdd75c161d0925020">car_number</a> ()</td></tr>
+<tr class="memdesc:a30a79215fa6c613fdd75c161d0925020"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets the amount of cars  <a href="classOneLaneRoad.html#a30a79215fa6c613fdd75c161d0925020">More...</a><br /></td></tr>
 <tr class="separator:a30a79215fa6c613fdd75c161d0925020"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbb8ec9a05761693a00f78c83397cb5b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#adbb8ec9a05761693a00f78c83397cb5b">location</a> (unsigned int const car_index)</td></tr>
 <tr class="separator:adbb8ec9a05761693a00f78c83397cb5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -104,6 +105,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7f5d532c919232b5f0a77d18620985eb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#a7f5d532c919232b5f0a77d18620985eb">distance_front</a> (unsigned int const car_index)</td></tr>
 <tr class="separator:a7f5d532c919232b5f0a77d18620985eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f1e9ffcac37b1b460ca6d75d31a2880"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#a8f1e9ffcac37b1b460ca6d75d31a2880">constant_speed</a> (float const dt)</td></tr>
+<tr class="memdesc:a8f1e9ffcac37b1b460ca6d75d31a2880"><td class="mdescLeft">&#160;</td><td class="mdescRight">makes a time integration where the speed doesnt change  <a href="classOneLaneRoad.html#a8f1e9ffcac37b1b460ca6d75d31a2880">More...</a><br /></td></tr>
 <tr class="separator:a8f1e9ffcac37b1b460ca6d75d31a2880"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b20e2800fedf867648cf62791d1e067"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#a9b20e2800fedf867648cf62791d1e067">RK4</a> (float const dt)</td></tr>
 <tr class="separator:a9b20e2800fedf867648cf62791d1e067"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -194,6 +196,9 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>gets the amount of cars </p>
+<dl class="section return"><dt>Returns</dt><dd>unsigned int amount of cars = cars.size() </dd></dl>
+
 </div>
 </div>
 <a id="ab08e981a17e38b9c3f8e1cb3f76b2189" name="ab08e981a17e38b9c3f8e1cb3f76b2189"></a>
@@ -228,6 +233,14 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>makes a time integration where the speed doesnt change </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>time step in seconds </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
