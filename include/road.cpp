@@ -8,11 +8,26 @@
 
 #include <iostream>
 
+/**
+ * @brief Construct a new Multi Lane Road:: Multi Lane Road object
+ * 
+ * Sets the cars to congestion_at_start()
+ * 
+ * @param length length of the road
+ * @param lane_num amount of lanes
+ * @param car_num amount of cars
+ */
 MultiLaneRoad::MultiLaneRoad(float length, unsigned int const lane_num, unsigned int const car_num) : OneLaneRoad(car_num, length), lane_num(lane_num)
 {
   congestion_at_start();
 }
 
+/**
+ * @brief Creates a traffice around location = 0
+ * 
+ * Sets the location of cars as low as possible (as low as min_distance allows)
+ * 
+ */
 void MultiLaneRoad::congestion_at_start()
 {
   unsigned int current_lane = 0;
@@ -33,12 +48,23 @@ void MultiLaneRoad::congestion_at_start()
   delete[] location;
 }
 
+/**
+ * @brief returns cars[car_index].lane
+ * 
+ * @param car_index index of car
+ * @return unsigned int lane of cars[car_index]
+ */
 unsigned int MultiLaneRoad::lane(unsigned int const car_index)
 {
   return cars[car_index].lane;
 }
 
-// returns an index
+/**
+ * @brief returns the index of the car in front of a specfic car
+ * 
+ * @param car_index index of the car 
+ * @return unsigned int index of the car in front
+ */
 unsigned int MultiLaneRoad::car_in_front(unsigned int const car_index)
 {
   unsigned int closest = 0;
@@ -60,6 +86,12 @@ unsigned int MultiLaneRoad::car_in_front(unsigned int const car_index)
   return closest;
 }
 
+/**
+ * @brief gets the car in front of Car& car
+ * 
+ * @param car Car the returned car should be infront of
+ * @return Car& reference to the car in front
+ */
 Car &MultiLaneRoad::car_in_front(Car &car)
 {
   Car *closest = &car;
@@ -84,6 +116,21 @@ Car &MultiLaneRoad::car_in_front(Car &car)
 /* car1 is the car that is supposed to be in the back so
  * ------car1---car2-------------- should return ---
  */
+
+/**
+ * @brief returns the distance between two cars
+ * 
+ * The method is sensitive to the order specifically
+ * distance(car1, car2) = length - distance(car2, car1)
+ * 
+ * Generally car1 is though to be the car in the back,
+ * ------car1---car2-------------- should return ---
+ * 
+ * 
+ * @param car1 car in the back
+ * @param car2 car in the front
+ * @return float the distance between the two
+ */
 float MultiLaneRoad::distance(const Car &car1, const Car &car2)
 {
   if (&car1 == &car2)
@@ -96,15 +143,15 @@ float MultiLaneRoad::distance(const Car &car1, const Car &car2)
   distance -= car1.length / 2;
   distance -= car2.length / 2;
 
-  //if (distance < 0)
+  // if (distance < 0)
   //{
-  //  std::cerr << "distance: " << distance << '\n';
-  //  std::cerr << "locs: " << car1.location << " " << car2.location << '\n';
-  //  std::cerr << "lanes: " << car1.lane << " " << car2.lane << '\n';
-  //}
+  //   std::cerr << "distance: " << distance << '\n';
+  //   std::cerr << "locs: " << car1.location << " " << car2.location << '\n';
+  //   std::cerr << "lanes: " << car1.lane << " " << car2.lane << '\n';
+  // }
 
-  //assert(distance >= 0);
-  //assert(distance < length);
+  // assert(distance >= 0);
+  // assert(distance < length);
   return distance;
 }
 
@@ -143,11 +190,21 @@ void OneLaneRoad::desired_speed_gaussian(float const mean, float const stddev)
   }
 }
 
+/**
+ * @brief gets the amount of cars
+ * 
+ * @return unsigned int amount of cars = cars.size()
+ */
 unsigned int OneLaneRoad::car_number()
 {
   return cars.size();
 }
 
+/**
+ * @brief makes a time integration where the speed doesnt change
+ * 
+ * @param dt time step in seconds
+ */
 void OneLaneRoad::constant_speed(float const dt)
 {
   for (auto &element : cars)
@@ -189,7 +246,7 @@ void OneLaneRoad::euler(float const dt)
 
 /**
  * @brief Returns the velocity indexed by car_index
- * 
+ *
  * @param car_index
  * @return cars[car_index].velocity
  */
@@ -224,7 +281,7 @@ float OneLaneRoad::distance_front(unsigned int const car_index)
 
 /**
  * @brief Enforces the boundries so resets cars to the start when they go beyond length
- * 
+ *
  */
 void OneLaneRoad::location_enforce_boundries()
 {
@@ -237,7 +294,7 @@ void OneLaneRoad::location_enforce_boundries()
 
 /**
  * @brief A method doing one integration step on the system with Euler's method
- * 
+ *
  * @param dt Time step in seconds
  */
 void MultiLaneRoad::euler(float const dt)
@@ -249,7 +306,7 @@ void MultiLaneRoad::euler(float const dt)
   {
     assert(iter.lane < lane_num);
 
-    // check for lane change possibility 
+    // check for lane change possibility
     if (should_change(iter, iter.lane + 1))
     {
       iter.lane++;
@@ -260,7 +317,7 @@ void MultiLaneRoad::euler(float const dt)
       if (should_change(iter, iter.lane - 1) && iter.lane > 0)
       {
         iter.lane--;
-      std::cerr << "Lane change\n";
+        std::cerr << "Lane change\n";
       }
     }
 
@@ -318,7 +375,7 @@ bool MultiLaneRoad::should_change(Car &car, unsigned int const lane)
 {
   if (lane >= lane_num)
   {
-    //std::cerr << "Specified to high lane number " << lane << '\n';
+    // std::cerr << "Specified to high lane number " << lane << '\n';
     return false;
   }
   if (lane != car.lane - 1 && lane != car.lane + 1)
