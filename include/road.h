@@ -1,4 +1,13 @@
-/* road.h */
+/**
+ * @file road.h
+ * @author your name (matthias.maile@udo.edu)
+ * @brief Classes which implement IDM
+ * @version 0.1
+ * @date 2022-04-23
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 
 #ifndef ROAD_H
 #define ROAD_H
@@ -7,6 +16,10 @@
 #include <vector>
 #include <random>
 
+/**
+ * @brief A class implementing the IDM on a single lane
+ * 
+ */
 class OneLaneRoad {
 protected:
   std::vector<Car> cars;
@@ -35,7 +48,9 @@ public:
   void location_enforce_boundries();
 };
 
-/* lanes are zero-indexed
+/**
+ * @brief A class generalizing the IDM to multiple lanes
+ * 
  */
 class MultiLaneRoad : public OneLaneRoad {
 protected:
@@ -63,6 +78,9 @@ public:
 
   // diff eq
   void euler(float const dt);
+
+  // car dynamics
+  int change_lane(Car& car, int const lane_change);
 };
 
 /* params:

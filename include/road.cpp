@@ -81,28 +81,6 @@ Car &MultiLaneRoad::car_in_front(Car &car)
   return *closest;
 }
 
-void MultiLaneRoad::euler(float const dt)
-{
-  Car *car_front_ptr;
-  float accel;
-
-  for (auto &iter : cars)
-  {
-    iter.location += iter.velocity * dt;
-
-    car_front_ptr = &(car_in_front(iter));
-
-    accel = acceleration(iter.velocity, car_front_ptr->velocity, distance(iter, *car_front_ptr),
-                         iter.desired_velocity,
-                         iter.min_distance,
-                         iter.safe_time_headaway,
-                         iter.max_acceleration,
-                         iter.comfortable_deceleration);
-    iter.velocity += accel * dt;
-    location_enforce_boundries();
-  }
-}
-
 /* car1 is the car that is supposed to be in the back so
  * ------car1---car2-------------- should return ---
  */
@@ -249,6 +227,51 @@ void OneLaneRoad::location_enforce_boundries()
   }
 }
 
+void MultiLaneRoad::euler(float const dt)
+{
+  Car *car_front_ptr;
+  float accel;
+
+  for (auto &iter : cars)
+  {
+    iter.location += iter.velocity * dt;
+
+    car_front_ptr = &(car_in_front(iter));
+
+    accel = acceleration(iter.velocity, car_front_ptr->velocity, distance(iter, *car_front_ptr),
+                         iter.desired_velocity,
+                         iter.min_distance,
+                         iter.safe_time_headaway,
+                         iter.max_acceleration,
+                         iter.comfortable_deceleration);
+    iter.velocity += accel * dt;
+    location_enforce_boundries();
+  }
+}
+
+/**
+ * @brief Changes a car's lane, checking if parameters allow
+ * 
+ * @param car[in, out] The car the lane change should be applied to
+ * @param lane_change[in] Lane change direction +1=left -1=left
+ * 
+ * @return 0 if it worked, -1 if it fails
+ */
+int MultiLaneRoad::change_lane(Car& car, int const lane_change)
+{
+  if (lane_change != 1 && lane_change != -1)
+    return -1; // bad param
+
+  if (lane_change == 1 && car.lane == lane_num)
+    return -1; // car already on the far left
+
+  if (lane_change == -1 && car.lane == 0)
+    return -1; // car already on the far right
+
+  car.lane += lane_change;
+  return 0;
+}
+
 /* params:
  *  v        velocity of vehicle
  *  v_next   velocity of vehicle in fron
@@ -268,24 +291,3 @@ float acceleration(float v, float v_next, float distance,
   return a_max * (1 - pow(v / v_max, 4) - pow(s / distance, 2));
 }
 
-/* car1 is the car that is supposed to be in the back so
- * ------car1---car2-------------- should return ---
- */
-// float distance(Car &car1, Car &car2, float const length) {
-//   float distance = car2.location - car1.location;
-//   if(distance < 0) distance += length;
-//
-//   distance -= car1.length / 2;
-//   distance -= car2.length / 2;
-//
-//   assert(distance < length);
-//
-//   if (distance < 0) {
-//     std::cerr << "distance < 0, locs:\n" << car2.location << " " << car1.location << '\n';
-//     std::cerr << "lanes: " << car2.lane << " " << car1.lane << '\n';
-//   }
-//
-//   assert(distance >= 0);
-//
-//   return distance;
-// }
