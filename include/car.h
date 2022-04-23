@@ -3,6 +3,10 @@
 #ifndef CAR_H
 #define CAR_H
 
+/**
+ * @brief Struct storing information about a car
+ * 
+ */
 struct Car {
   float location{0.};
   float velocity{10.};
