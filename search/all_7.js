@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['main_0',['main',['../MultiLaneTest_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;MultiLaneTest.cpp'],['../OneOnLaneTest_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;OneOnLaneTest.cpp']]],
-  ['max_5facceleration_1',['max_acceleration',['../structCar.html#ab2e56619aa08ea11e368d7e6cfbaff47',1,'Car']]],
-  ['min_5fdistance_2',['min_distance',['../structCar.html#a0e51ab340e094314f30dcf7c83ba198b',1,'Car']]],
-  ['move_5funaccelerated_3',['move_unaccelerated',['../car_8cpp.html#a6c635cb44554ee5d0ca5bb05fce3f962',1,'move_unaccelerated(Car *target, float dt):&#160;car.cpp'],['../car_8h.html#a6c635cb44554ee5d0ca5bb05fce3f962',1,'move_unaccelerated(Car *target, float dt):&#160;car.cpp']]],
-  ['multilaneroad_4',['MultiLaneRoad',['../classMultiLaneRoad.html',1,'MultiLaneRoad'],['../classMultiLaneRoad.html#a3150d34f86301355514be5a096b50ad6',1,'MultiLaneRoad::MultiLaneRoad()']]],
-  ['multilanetest_2ecpp_5',['MultiLaneTest.cpp',['../MultiLaneTest_8cpp.html',1,'']]]
+  ['lane_0',['lane',['../structCar.html#adf8a7868d38f7ad71fce96694588e7a5',1,'Car::lane()'],['../classMultiLaneRoad.html#a3b584fefb396c5fde72011b39d551b6e',1,'MultiLaneRoad::lane(unsigned int const car_index)']]],
+  ['lane_5fnum_1',['lane_num',['../classMultiLaneRoad.html#acbf5e7f763875c6aca3f0fce4b5c901b',1,'MultiLaneRoad']]],
+  ['length_2',['length',['../structCar.html#a7f47542c279f8c0daccee39ed209a46c',1,'Car::length()'],['../classOneLaneRoad.html#afffaef2cb4a5c2e628c89fc970357b61',1,'OneLaneRoad::length()']]],
+  ['location_3',['location',['../structCar.html#a00afe195693e23b1935653075a1a791e',1,'Car::location()'],['../classOneLaneRoad.html#adbb8ec9a05761693a00f78c83397cb5b',1,'OneLaneRoad::location(unsigned int const car_index)']]],
+  ['location_5fenforce_5fboundries_4',['location_enforce_boundries',['../classOneLaneRoad.html#a2032386eca57fa0df5bb547575581016',1,'OneLaneRoad']]]
 ];
