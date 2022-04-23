@@ -48,6 +48,12 @@ void MultiLaneRoad::congestion_at_start()
   delete[] location;
 }
 
+/**
+ * @brief Puts all cars as far left, lowest location as possible
+ * 
+ * Fills up lowest indexed lanes first
+ * 
+ */
 void MultiLaneRoad::fill_right_lanes()
 {
   float location = 0;
