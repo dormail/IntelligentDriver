@@ -189,6 +189,12 @@ void OneLaneRoad::euler(float const dt)
   }
 }
 
+/**
+ * @brief Returns the velocity indexed by car_index
+ * 
+ * @param car_index
+ * @return cars[car_index].velocity
+ */
 float OneLaneRoad::velocity(unsigned int const car_index)
 {
   assert(car_index < car_number() + 1);
