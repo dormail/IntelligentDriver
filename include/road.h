@@ -55,6 +55,8 @@ public:
 class MultiLaneRoad : public OneLaneRoad {
 protected:
   unsigned int lane_num = 3;
+  float politeness_factor = .5;
+  float switching_threshhold = 0.;
 
 public:
   MultiLaneRoad(float length, unsigned int const lane_num, unsigned int const car_num);
@@ -81,6 +83,9 @@ public:
 
   // car dynamics
   int change_lane(Car& car, int const lane_change);
+  bool should_change(Car& car, unsigned int const lane);
+
+  float acceleration_car(const Car& car, const Car& car_front);
 };
 
 /* params:

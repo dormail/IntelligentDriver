@@ -96,17 +96,15 @@ float MultiLaneRoad::distance(const Car &car1, const Car &car2)
   distance -= car1.length / 2;
   distance -= car2.length / 2;
 
-  if (distance < 0)
-  {
-    std::cerr << "distance: " << distance << '\n';
-    std::cerr << "locs: " << car1.location << " " << car2.location << '\n';
-    std::cerr << "lanes: " << car1.lane << " " << car2.lane << '\n';
-  }
+  //if (distance < 0)
+  //{
+  //  std::cerr << "distance: " << distance << '\n';
+  //  std::cerr << "locs: " << car1.location << " " << car2.location << '\n';
+  //  std::cerr << "lanes: " << car1.lane << " " << car2.lane << '\n';
+  //}
 
-  if(distance < 0) throw(-1);
-
-  assert(distance >= 0);
-  assert(distance < length);
+  //assert(distance >= 0);
+  //assert(distance < length);
   return distance;
 }
 
@@ -249,6 +247,23 @@ void MultiLaneRoad::euler(float const dt)
 
   for (auto &iter : cars)
   {
+    assert(iter.lane < lane_num);
+
+    // check for lane change possibility 
+    if (should_change(iter, iter.lane + 1))
+    {
+      iter.lane++;
+      std::cerr << "Lane change\n";
+    }
+    else
+    {
+      if (should_change(iter, iter.lane - 1) && iter.lane > 0)
+      {
+        iter.lane--;
+      std::cerr << "Lane change\n";
+      }
+    }
+
     iter.location += iter.velocity * dt;
 
     car_front_ptr = &(car_in_front(iter));
@@ -266,13 +281,15 @@ void MultiLaneRoad::euler(float const dt)
 
 /**
  * @brief Changes a car's lane, checking if parameters allow
- * 
+ *
+ * It does not check if it fits at this spot, only if the lane exists.
+ *
  * @param car[in, out] The car the lane change should be applied to
  * @param lane_change[in] Lane change direction +1=left -1=left
- * 
+ *
  * @return 0 if it worked, -1 if it fails
  */
-int MultiLaneRoad::change_lane(Car& car, int const lane_change)
+int MultiLaneRoad::change_lane(Car &car, int const lane_change)
 {
   if (lane_change != 1 && lane_change != -1)
     return -1; // bad param
@@ -287,17 +304,90 @@ int MultiLaneRoad::change_lane(Car& car, int const lane_change)
   return 0;
 }
 
-/* params:
- *  v        velocity of vehicle
- *  v_next   velocity of vehicle in fron
- *  distance net distance to vehicle in front
+/**
+ * @brief A method calculating if a car should change a lane
  *
- *  Car specific:
- *  v_max    desired velocity
- *  s_min    minimum spacing to vehicle in front
- *  T        safe time head away
- *  a_max    max velocity
- *  b        comfortable breaking
+ *  It uses the incentive criterion from some paper and also checks if the params are correct.
+ *
+ * @param car car to change lane, using its location, speed, etc.
+ * @param lane lane where the change shall be checked
+ * @return true  car can safely change
+ * @return false  car can not safely change or bad params
+ */
+bool MultiLaneRoad::should_change(Car &car, unsigned int const lane)
+{
+  if (lane >= lane_num)
+  {
+    //std::cerr << "Specified to high lane number " << lane << '\n';
+    return false;
+  }
+  if (lane != car.lane - 1 && lane != car.lane + 1)
+  {
+    std::cerr << "Proposed lane " << lane << " for car one lane " << car.lane << '\n';
+    return false;
+  }
+
+  // the two cars most in front and back to the spot of car on the future lane
+  Car *car_front_old_lane = &car;
+  Car *car_back_old_lane = &car;
+  Car *car_front_new_lane = &car;
+  Car *car_back_new_lane = &car;
+
+  for (auto &iter : cars)
+  {
+    // new lane search
+    if (iter.lane == lane)
+    {
+      if (distance(iter, car) < distance(*car_back_new_lane, car))
+        car_back_new_lane = &iter;
+      if (distance(car, iter) < distance(car, *car_front_new_lane))
+        car_front_new_lane = &iter;
+      continue;
+    }
+    // old lane
+    if (iter.lane == car.lane)
+    {
+      if (distance(iter, car) < distance(*car_back_old_lane, car))
+        car_back_old_lane = &iter;
+      if (distance(car, iter) < distance(car, *car_front_old_lane))
+        car_front_old_lane = &iter;
+      continue;
+    }
+  }
+  // see if it fits on new lane
+  if (distance(car, *car_front_new_lane) < car.length + car_front_new_lane->length + car.min_distance)
+    return false;
+  if (distance(*car_back_new_lane, car) < car.length + car_back_new_lane->length + car.min_distance)
+    return false;
+
+  // calculate the accelerations for car, old and new follow each before and after change
+  // first old/new => is the new or old acceleration meant
+  // second old/new => is the old or new follower meant
+  float accel_old = acceleration_car(car, *car_front_old_lane);
+  float accel_new = acceleration_car(car, *car_front_new_lane);
+  float accel_old_old_follower = acceleration_car(*car_back_old_lane, car);
+  float accel_new_old_follower = acceleration_car(*car_back_old_lane, *car_front_old_lane);
+  float accel_old_new_follower = acceleration_car(*car_back_new_lane, *car_front_new_lane);
+  float accel_new_new_follower = acceleration_car(*car_back_new_lane, car);
+
+  // calculation for the criteria
+  float lhs = accel_new - accel_old + politeness_factor * (accel_new_new_follower - accel_old_new_follower + accel_new_old_follower - accel_old_old_follower);
+
+  return (lhs > switching_threshhold);
+}
+
+/**
+ * @brief Calculate the acceleration of a car based on the intelligent driver model differential equation
+ *
+ * @param v         velocity of the car
+ * @param v_next    velocity of the car in front
+ * @param distance  net distance to the car in front
+ * @param v_max     Desired velocity
+ * @param s_min     Minimum net distance to the car in front
+ * @param T         Safe time head away
+ * @param a_max     Max acceleration
+ * @param b         Comformatable breaking
+ * @return float acceleration of the vehicle described by params
  */
 float acceleration(float v, float v_next, float distance,
                    float v_max, float s_min, float T, float a_max, float b)
@@ -306,3 +396,23 @@ float acceleration(float v, float v_next, float distance,
   return a_max * (1 - pow(v / v_max, 4) - pow(s / distance, 2));
 }
 
+/**
+ * @brief Calculating the acceleration utilizing float acceleration(**params)
+ *
+ * It does not check if they are on the same lane, which we use in the lane change evaluation
+ *
+ * @param car Car to calculate the acceleration for
+ * @param car_front Car in front of the target of the calculation
+ * @return float acceleration of Car& car
+ */
+float MultiLaneRoad::acceleration_car(const Car &car, const Car &car_front)
+{
+  return acceleration(car.velocity,
+                      car_front.velocity,
+                      distance(car, car_front),
+                      car.desired_velocity,
+                      car.min_distance,
+                      car.safe_time_headaway,
+                      car.max_acceleration,
+                      car.comfortable_deceleration);
+}
