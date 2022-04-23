@@ -11,7 +11,7 @@ SOURCE = include/car.cpp include/road.cpp
 HEADER = include/road.h include/car.h
 
 
-all: build/main build/EulerCongestionToCSV build/MultiLaneTest
+all: build/main build/EulerCongestionToCSV build/MultiLaneTest build/tests/OneOnLaneTest
 
 build/main: main.cpp $(SOURCE) $(HEADER) build
 	g++ $(CXXFLAGS) -o $@ main.cpp $(SOURCE)
@@ -38,8 +38,12 @@ build/MultiLaneTest: tests/MultiLaneTest.cpp $(SOURCE) $(HEADER) build
 build/data/multi_lane.csv: build/MultiLaneTest build/data
 	./build/MultiLaneTest > $@
 
-analysis/multi_lane.mp4: analysis/SimpleAnimation.py build/data/multi_lane.csv
+analysis/multi_lane.mp4: analysis/multi_lane.py build/data/multi_lane.csv
 	python3 analysis/multi_lane.py
+
+# tests
+build/tests/OneOnLaneTest: tests/OneOnLaneTest.cpp $(SOURCE) $(HEADER) build/tests
+	g++ $(CXXFLAGS) tests/OneOnLaneTest.cpp -o $@ $(SOURCE)
 
 # folders
 build:
@@ -48,5 +52,8 @@ build:
 build/data: build
 	mkdir -p build/data
 
+build/tests: build
+	mkdir -p build/tests
+
 clean:
-	$(RM) build
+	$(RM) build analysis/*.mp4
