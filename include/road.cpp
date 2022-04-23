@@ -218,6 +218,10 @@ float OneLaneRoad::distance_front(unsigned int const car_index)
   return distance;
 }
 
+/**
+ * @brief Enforces the boundries so resets cars to the start when they go beyond length
+ * 
+ */
 void OneLaneRoad::location_enforce_boundries()
 {
   for (auto &element : cars)
@@ -227,6 +231,11 @@ void OneLaneRoad::location_enforce_boundries()
   }
 }
 
+/**
+ * @brief A method doing one integration step on the system with Euler's method
+ * 
+ * @param dt Time step in seconds
+ */
 void MultiLaneRoad::euler(float const dt)
 {
   Car *car_front_ptr;
