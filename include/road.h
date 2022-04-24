@@ -33,6 +33,7 @@ public:
   // set methods
   void congestion_at_start(); // create a traffic at the start of the road
   void desired_speed_gaussian(float const mean, float const stddev);
+  void MOBIL_all_cars(float const mean, float const variation);
 
   // get methods
   unsigned int car_number();
@@ -55,8 +56,9 @@ public:
 class MultiLaneRoad : public OneLaneRoad {
 protected:
   unsigned int lane_num = 3;
-  float politeness_factor = .5;
-  float switching_threshhold = 0.;
+  float politeness_factor = .5; /*!< politeness of a driver in the lane changing model */
+  float switching_threshhold = 0.; /*!< switching threshhold in the lane changing model */
+  float safety_break = 4.; /*!< maximum the new follower should have to break after a lane change */
 
 public:
   MultiLaneRoad(float length, unsigned int const lane_num, unsigned int const car_num);

@@ -23,5 +23,6 @@ struct Car {
 };
 
 void move_unaccelerated(Car *target, float dt);
+void set_MOBIL(Car &target);
 
 #endif
