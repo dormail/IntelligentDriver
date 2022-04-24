@@ -9,9 +9,9 @@ int main () {
     MultiLaneRoad myRoad(road_length, 3, car_count);
     myRoad.fill_right_lanes();
     // x km/h = .278 * x m/s
-    float mean_desired_speed = 140 * .278;
-    float stddev_desired_speed = 50 * .278;
-    myRoad.desired_speed_gaussian(mean_desired_speed, stddev_desired_speed);
+    float mean_desired_speed = 130 * .278;
+    float stddev_desired_speed = 20 * .278;
+    myRoad.MOBIL_all_cars(mean_desired_speed, .2 * mean_desired_speed);
 
     // creating csv header
     std::cout << "t";
