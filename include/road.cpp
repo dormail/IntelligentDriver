@@ -157,6 +157,8 @@ Car &MultiLaneRoad::car_in_front(Car &car)
  * Generally car1 is though to be the car in the back,
  * ------car1---car2-------------- should return ---
  * 
+ * If the cars are not touching each other, this method should always return something positive
+ * 
  * 
  * @param car1 car in the back
  * @param car2 car in the front
@@ -181,7 +183,7 @@ float MultiLaneRoad::distance(const Car &car1, const Car &car2)
   //   std::cerr << "lanes: " << car1.lane << " " << car2.lane << '\n';
   // }
 
-  // assert(distance >= 0);
+  assert(distance >= -1 * (car1.length + car2.length));
   // assert(distance < length);
   return distance;
 }
@@ -218,6 +220,26 @@ void OneLaneRoad::desired_speed_gaussian(float const mean, float const stddev)
   for (auto &car : cars)
   {
     car.desired_velocity = distribution(generator);
+  }
+}
+
+/**
+ * @brief Sets the car's parameters to an all-car configuration from the MOBIL Paper
+ * 
+ * This function sets all cars as cars as defined in the MOBIL Paper (length, etc.) 
+ * The desired speed is a uniform distribution (in the paper they use mean+/-20%, here the are independent)
+ * 
+ * @param mean Mean of the generated desired velocity
+ * @param variation Maximum deviation from mean
+ */
+void OneLaneRoad::MOBIL_all_cars(float const mean, float const variation)
+{
+  std::uniform_real_distribution<float> distribution(mean-variation, mean+variation);
+
+  for (auto &car : cars)
+  {
+    car.desired_velocity = distribution(generator);
+    set_MOBIL(car);
   }
 }
 
@@ -395,7 +417,8 @@ int MultiLaneRoad::change_lane(Car &car, int const lane_change)
 /**
  * @brief A method calculating if a car should change a lane
  *
- *  It uses the incentive criterion from some paper and also checks if the params are correct.
+ *  It uses the incentive criterion from some paper and also checks if the params are correct. It is based on 
+ *  <a href="https://doi.org/10.3141%2F1999-10">this paper</a>.
  *
  * @param car car to change lane, using its location, speed, etc.
  * @param lane lane where the change shall be checked
@@ -442,11 +465,6 @@ bool MultiLaneRoad::should_change(Car &car, unsigned int const lane)
       continue;
     }
   }
-  // see if it fits on new lane
-  if (distance(car, *car_front_new_lane) < car.length + car_front_new_lane->length + car.min_distance)
-    return false;
-  if (distance(*car_back_new_lane, car) < car.length + car_back_new_lane->length + car.min_distance)
-    return false;
 
   // calculate the accelerations for car, old and new follow each before and after change
   // first old/new => is the new or old acceleration meant
@@ -458,7 +476,11 @@ bool MultiLaneRoad::should_change(Car &car, unsigned int const lane)
   float accel_old_new_follower = acceleration_car(*car_back_new_lane, *car_front_new_lane);
   float accel_new_new_follower = acceleration_car(*car_back_new_lane, car);
 
-  // calculation for the criteria
+  // safety criterion
+  if (accel_new_new_follower < -1 * safety_break)
+    return false;
+
+  // calculation for the incentive criterion
   float lhs = accel_new - accel_old + politeness_factor * (accel_new_new_follower - accel_old_new_follower + accel_new_old_follower - accel_old_old_follower);
 
   return (lhs > switching_threshhold);
