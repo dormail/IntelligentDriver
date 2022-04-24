@@ -1,7 +1,7 @@
 
 # -Wall		more compiler warnings 
 # -g 		debugging capabilities
-CXXFLAGS = --include-directory=include -Wall -g --std=c++20
+CXXFLAGS = --include-directory=include -Wall -g --std=c++2a
 
 # clean stuff
 RM = rm -rf
