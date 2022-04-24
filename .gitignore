@@ -2,3 +2,4 @@
 build/
 *-checkpoint.ipynb
 .ipynb_checkpoints
+.vscode
