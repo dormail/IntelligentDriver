@@ -16,7 +16,7 @@ car_num = location.shape[1]
 # First set up the figure, the axis, and the plot element we want to animate
 fig, ax = plt.subplots(figsize=(6,6), dpi=100)
 
-ax.set_xlim(( 0, 1000))
+ax.set_xlim(( 0, 200))
 ax.set_ylim((0, 2))
 scat = ax.scatter([], [])
 
