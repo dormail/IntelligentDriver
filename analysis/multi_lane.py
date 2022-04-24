@@ -67,7 +67,7 @@ fig, ax = plt.subplots(figsize=(6,6), dpi=100)
 
 ax.set_xlim(( 0, 1000))
 ax.set_ylim((-0.5, 2.2))
-scat = ax.scatter([], [], marker=path, s=500)
+scat = ax.scatter([], [], marker=path, s=200)
 
 # initialization function: plot the background of each frame
 def init():
