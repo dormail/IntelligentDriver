@@ -94,6 +94,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab08e981a17e38b9c3f8e1cb3f76b2189"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a174917689c34d7f5b9953dd3cc4e7429"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#a174917689c34d7f5b9953dd3cc4e7429">desired_speed_gaussian</a> (float const mean, float const stddev)</td></tr>
 <tr class="separator:a174917689c34d7f5b9953dd3cc4e7429"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d189e85dc8de891f7013ce1c56bde2a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#a3d189e85dc8de891f7013ce1c56bde2a">MOBIL_all_cars</a> (float const mean, float const variation)</td></tr>
+<tr class="memdesc:a3d189e85dc8de891f7013ce1c56bde2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the car's parameters to an all-car configuration from the MOBIL Paper.  <a href="classOneLaneRoad.html#a3d189e85dc8de891f7013ce1c56bde2a">More...</a><br /></td></tr>
+<tr class="separator:a3d189e85dc8de891f7013ce1c56bde2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30a79215fa6c613fdd75c161d0925020"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#a30a79215fa6c613fdd75c161d0925020">car_number</a> ()</td></tr>
 <tr class="memdesc:a30a79215fa6c613fdd75c161d0925020"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets the amount of cars  <a href="classOneLaneRoad.html#a30a79215fa6c613fdd75c161d0925020">More...</a><br /></td></tr>
 <tr class="separator:a30a79215fa6c613fdd75c161d0925020"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -342,6 +345,44 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Enforces the boundries so resets cars to the start when they go beyond length. </p>
+
+</div>
+</div>
+<a id="a3d189e85dc8de891f7013ce1c56bde2a" name="a3d189e85dc8de891f7013ce1c56bde2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d189e85dc8de891f7013ce1c56bde2a">&#9670;&nbsp;</a></span>MOBIL_all_cars()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OneLaneRoad::MOBIL_all_cars </td>
+          <td>(</td>
+          <td class="paramtype">float const&#160;</td>
+          <td class="paramname"><em>mean</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float const&#160;</td>
+          <td class="paramname"><em>variation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the car's parameters to an all-car configuration from the MOBIL Paper. </p>
+<p >This function sets all cars as cars as defined in the MOBIL Paper (length, etc.) The desired speed is a uniform distribution (in the paper they use mean+/-20%, here the are independent)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mean</td><td>Mean of the generated desired velocity </td></tr>
+    <tr><td class="paramname">variation</td><td>Maximum deviation from mean </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -132,6 +132,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab08e981a17e38b9c3f8e1cb3f76b2189 inherit pub_methods_classOneLaneRoad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a174917689c34d7f5b9953dd3cc4e7429 inherit pub_methods_classOneLaneRoad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#a174917689c34d7f5b9953dd3cc4e7429">desired_speed_gaussian</a> (float const mean, float const stddev)</td></tr>
 <tr class="separator:a174917689c34d7f5b9953dd3cc4e7429 inherit pub_methods_classOneLaneRoad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d189e85dc8de891f7013ce1c56bde2a inherit pub_methods_classOneLaneRoad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#a3d189e85dc8de891f7013ce1c56bde2a">MOBIL_all_cars</a> (float const mean, float const variation)</td></tr>
+<tr class="memdesc:a3d189e85dc8de891f7013ce1c56bde2a inherit pub_methods_classOneLaneRoad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the car's parameters to an all-car configuration from the MOBIL Paper.  <a href="classOneLaneRoad.html#a3d189e85dc8de891f7013ce1c56bde2a">More...</a><br /></td></tr>
+<tr class="separator:a3d189e85dc8de891f7013ce1c56bde2a inherit pub_methods_classOneLaneRoad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30a79215fa6c613fdd75c161d0925020 inherit pub_methods_classOneLaneRoad"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#a30a79215fa6c613fdd75c161d0925020">car_number</a> ()</td></tr>
 <tr class="memdesc:a30a79215fa6c613fdd75c161d0925020 inherit pub_methods_classOneLaneRoad"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets the amount of cars  <a href="classOneLaneRoad.html#a30a79215fa6c613fdd75c161d0925020">More...</a><br /></td></tr>
 <tr class="separator:a30a79215fa6c613fdd75c161d0925020 inherit pub_methods_classOneLaneRoad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,6 +164,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a62db0f11e68273d1149be4c2097b28b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11bd70d3d1ba4c8b634c7d5a2d453096"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMultiLaneRoad.html#a11bd70d3d1ba4c8b634c7d5a2d453096">switching_threshhold</a> = 0.</td></tr>
 <tr class="separator:a11bd70d3d1ba4c8b634c7d5a2d453096"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fee1a6189f4d77faede23d5e79fff5e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMultiLaneRoad.html#a2fee1a6189f4d77faede23d5e79fff5e">safety_break</a> = 4.</td></tr>
+<tr class="separator:a2fee1a6189f4d77faede23d5e79fff5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classOneLaneRoad"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classOneLaneRoad')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classOneLaneRoad.html">OneLaneRoad</a></td></tr>
 <tr class="memitem:af03d9f3837355f85742a41a4fd0d043c inherit pro_attribs_classOneLaneRoad"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structCar.html">Car</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOneLaneRoad.html#af03d9f3837355f85742a41a4fd0d043c">cars</a></td></tr>
 <tr class="separator:af03d9f3837355f85742a41a4fd0d043c inherit pro_attribs_classOneLaneRoad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -424,6 +429,7 @@ Protected Attributes</h2></td></tr>
 <p>returns the distance between two cars </p>
 <p >The method is sensitive to the order specifically distance(car1, car2) = length - distance(car2, car1)</p>
 <p >Generally car1 is though to be the car in the back, ---&mdash;car1&mdash;car2-----------&mdash; should return &mdash;</p>
+<p >If the cars are not touching each other, this method should always return something positive</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">car1</td><td>car in the back </td></tr>
@@ -571,7 +577,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>A method calculating if a car should change a lane. </p>
-<p >It uses the incentive criterion from some paper and also checks if the params are correct.</p>
+<p >It uses the incentive criterion from some paper and also checks if the params are correct. It is based on <a href="https://doi.org/10.3141%2F1999-10">this paper</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">car</td><td>car to change lane, using its location, speed, etc. </td></tr>
@@ -627,6 +633,30 @@ false car can not safely change or bad params </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
+<p >politeness of a driver in the lane changing model </p>
+
+</div>
+</div>
+<a id="a2fee1a6189f4d77faede23d5e79fff5e" name="a2fee1a6189f4d77faede23d5e79fff5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fee1a6189f4d77faede23d5e79fff5e">&#9670;&nbsp;</a></span>safety_break</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float MultiLaneRoad::safety_break = 4.</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >maximum the new follower should have to break after a lane change </p>
 
 </div>
 </div>
@@ -649,6 +679,7 @@ false car can not safely change or bad params </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
+<p >switching threshhold in the lane changing model </p>
 
 </div>
 </div>
