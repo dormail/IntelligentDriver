@@ -1,0 +1,23 @@
+name: LaTeX Build 
+
+on:
+  push:
+    branches: [ midterm-report ]
+  pull_request:
+    branches: [ midterm-report ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: 'midterm-report'
+    
+    - name: install latex packages
+      run: sudo apt install texlive-full make latexmk biber
+      
+    - name: make latex target
+      run: cd midterm_report && make
