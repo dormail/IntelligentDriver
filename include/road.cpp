@@ -49,7 +49,7 @@ void MultiLaneRoad::congestion_at_start()
 }
 
 /**
- * @brief Puts all cars as far left, lowest location as possible
+ * @brief Puts all cars as far right, lowest location as possible
  * 
  * Fills up lowest indexed lanes first
  * 
@@ -188,6 +188,14 @@ float MultiLaneRoad::distance(const Car &car1, const Car &car2)
   return distance;
 }
 
+/**
+ * @brief Construct a new One Lane Road:: One Lane Road object
+ * 
+ * It creates car_num cars on a new Road with velocity 10m/s and as close to the start as possible.
+ * 
+ * @param car_num Amount of cars to set on the road
+ * @param len Length of the road
+ */
 OneLaneRoad::OneLaneRoad(unsigned int const car_num, float const len) : cars(car_num), length(len), generator()
 {
   assert(cars.size() == car_num);
@@ -199,6 +207,10 @@ OneLaneRoad::OneLaneRoad(unsigned int const car_num, float const len) : cars(car
   }
 }
 
+/**
+ * @brief Creates a traffic at the start of the road with cars at full stop and min distance between each other.
+ * 
+ */
 void OneLaneRoad::congestion_at_start()
 {
   float location = 0;
@@ -213,6 +225,12 @@ void OneLaneRoad::congestion_at_start()
   }
 }
 
+/**
+ * @brief Sets the desired_velocity for Cars as a Gaussian distribution
+ * 
+ * @param mean 
+ * @param stddev 
+ */
 void OneLaneRoad::desired_speed_gaussian(float const mean, float const stddev)
 {
   std::normal_distribution<double> distribution(mean, stddev);
@@ -267,6 +285,11 @@ void OneLaneRoad::constant_speed(float const dt)
   location_enforce_boundries();
 }
 
+/**
+ * @brief Makes a time integration step using Euler's method
+ * 
+ * @param dt Time step length
+ */
 void OneLaneRoad::euler(float const dt)
 {
   unsigned int const car_num = car_number();
@@ -311,12 +334,27 @@ float OneLaneRoad::velocity(unsigned int const car_index)
   return cars[car_index].velocity;
 }
 
+/**
+ * @brief Gets the position of a car by index
+ * 
+ * @param car_index 
+ * @return float cars[car_index].location
+ */
 float OneLaneRoad::location(unsigned int const car_index)
 {
   assert(car_index < car_number());
   return cars[car_index].location;
 }
 
+/**
+ * @brief Calculates the net distance to the car in front
+ * 
+ * This method takes the length of the cars in to account, so it returns the actual 
+ * bumper to bumper distance.
+ * 
+ * @param car_index 
+ * @return float Net distance
+ */
 float OneLaneRoad::distance_front(unsigned int const car_index)
 {
   assert(car_index < car_number());
