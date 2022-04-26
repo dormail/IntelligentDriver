@@ -191,7 +191,7 @@ int main(int argc, char *const argv[])
   }
   try
   {
-    dt = params_uint.at("dt");
+    steps = params_uint.at("steps");
   }
   catch (std::out_of_range &err)
   {
