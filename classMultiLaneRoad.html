@@ -114,6 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a63ea65b1c1512278f4588f9f654d601b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMultiLaneRoad.html#a63ea65b1c1512278f4588f9f654d601b">euler</a> (float const dt)</td></tr>
 <tr class="memdesc:a63ea65b1c1512278f4588f9f654d601b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A method doing one integration step on the system with Euler's method.  <a href="classMultiLaneRoad.html#a63ea65b1c1512278f4588f9f654d601b">More...</a><br /></td></tr>
 <tr class="separator:a63ea65b1c1512278f4588f9f654d601b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88d72c211d4e67509dbd14df94b9a417"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMultiLaneRoad.html#a88d72c211d4e67509dbd14df94b9a417">euler_to_CSV</a> (float const dt, unsigned int const steps, std::string filename)</td></tr>
+<tr class="memdesc:a88d72c211d4e67509dbd14df94b9a417"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the time evolution of the road and outputs the whole data to a file in CSV format.  <a href="classMultiLaneRoad.html#a88d72c211d4e67509dbd14df94b9a417">More...</a><br /></td></tr>
+<tr class="separator:a88d72c211d4e67509dbd14df94b9a417"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65d3599113b076943cf8c2e9a2004a14"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMultiLaneRoad.html#a65d3599113b076943cf8c2e9a2004a14">change_lane</a> (<a class="el" href="structCar.html">Car</a> &amp;car, int const lane_change)</td></tr>
 <tr class="memdesc:a65d3599113b076943cf8c2e9a2004a14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes a car's lane, checking if parameters allow.  <a href="classMultiLaneRoad.html#a65d3599113b076943cf8c2e9a2004a14">More...</a><br /></td></tr>
 <tr class="separator:a65d3599113b076943cf8c2e9a2004a14"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -506,6 +509,55 @@ Protected Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a88d72c211d4e67509dbd14df94b9a417" name="a88d72c211d4e67509dbd14df94b9a417"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88d72c211d4e67509dbd14df94b9a417">&#9670;&nbsp;</a></span>euler_to_CSV()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MultiLaneRoad::euler_to_CSV </td>
+          <td>(</td>
+          <td class="paramtype">float const&#160;</td>
+          <td class="paramname"><em>dt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int const&#160;</td>
+          <td class="paramname"><em>steps</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>filename</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Computes the time evolution of the road and outputs the whole data to a file in CSV format. </p>
+<p >The CSV file contains a column for the time (starting at 0) and 3 columns for each <a class="el" href="structCar.html" title="Struct storing information about a car.">Car</a> with lane, velocity and location.</p>
+<p >It does not catch any exceptions from std::ofstream, though it does check if it could open the file.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>Step length </td></tr>
+    <tr><td class="paramname">steps</td><td>Amount of integration steps </td></tr>
+    <tr><td class="paramname">filename</td><td>Name of the output file </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 Everything good </dd>
+<dd>
+-1 Could not open the file </dd></dl>
 
 </div>
 </div>
