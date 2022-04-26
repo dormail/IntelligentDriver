@@ -15,6 +15,7 @@
 #include <car.h>
 #include <vector>
 #include <random>
+#include <string>
 
 /**
  * @brief A class implementing the IDM on a single lane
@@ -83,6 +84,8 @@ public:
 
   // diff eq
   void euler(float const dt);
+
+  int euler_to_CSV(float const dt, unsigned int const steps, std::string filename);
 
   // car dynamics
   int change_lane(Car& car, int const lane_change);
