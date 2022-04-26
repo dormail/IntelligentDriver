@@ -5,6 +5,8 @@
 #include <vector>
 #include <assert.h>
 #include <cmath> // pow
+#include <string>
+#include <fstream> // std::ofstream
 
 #include <iostream>
 
@@ -387,6 +389,60 @@ void MultiLaneRoad::euler(float const dt)
     iter.velocity += accel * dt;
     location_enforce_boundries();
   }
+}
+
+/**
+ * @brief Computes the time evolution of the road and outputs the whole data to a file in CSV format
+ * 
+ * The CSV file contains a column for the time (starting at 0) and 3 columns for each Car with 
+ * lane, velocity and location.
+ * 
+ * It does not catch any exceptions from std::ofstream, though it does check if it could open the file.
+ * 
+ * @param dt Step length
+ * @param steps Amount of integration steps
+ * @param filename Name of the output file
+ * @return 0 Everything good
+ * @return -1 Could not open the file
+ */
+int MultiLaneRoad::euler_to_CSV(float const dt, unsigned int const steps, std::string filename)
+{
+  std::ofstream output;
+  output.open(filename);
+
+  if (!(output.is_open()))
+  {
+    std::cerr << "Error opening file " << filename << '\n';
+    return -1;
+  }
+
+  // create csv header
+  output << 't';
+  for (unsigned int i = 0; i < car_number(); ++i)
+  {
+    output << ",x" << i << ",v" << i << ",l" << i;
+  }
+  output << '\n';
+
+  float time = 0.;
+  // time integration and data output
+  for (unsigned int i = 0; i < steps; ++i)
+  {
+    output << time << ',';
+    for (auto &iter : cars)
+    {
+        output << iter.location << ",";
+        output << iter.velocity << ",";
+        output << iter.lane << ",";
+    }
+    output << '\n';
+
+    euler(dt);
+    time += dt;
+  }
+
+  output.close();
+  return 0;
 }
 
 /**
