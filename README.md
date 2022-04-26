@@ -4,4 +4,4 @@ The repository with the source code of my implementation of the intelligent driv
 Information about the implementation in C++ is in `include/README.md`
 
 ## Documentation
-There is an auto generated doxygen config on [github pages](https://dormail.github.io/IntelligentDriver/).
+There is an auto generated doxygen documentation on [github pages](https://dormail.github.io/IntelligentDriver/).

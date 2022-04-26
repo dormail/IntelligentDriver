@@ -25,7 +25,7 @@ class OneLaneRoad {
 protected:
   std::vector<Car> cars;
   float length = 1000.;
-  std::default_random_engine generator;
+  std::default_random_engine generator; /*!< P-RNG to set desired velocity */
 
 public:
   OneLaneRoad(unsigned int const car_num, float const len);
