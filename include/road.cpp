@@ -286,7 +286,7 @@ void OneLaneRoad::constant_speed(float const dt)
 }
 
 /**
- * @brief Makes and Euler time integration step with step with dt
+ * @brief Makes a time integration step using Euler's method
  * 
  * @param dt Time step length
  */
@@ -334,12 +334,27 @@ float OneLaneRoad::velocity(unsigned int const car_index)
   return cars[car_index].velocity;
 }
 
+/**
+ * @brief Gets the position of a car by index
+ * 
+ * @param car_index 
+ * @return float cars[car_index].location
+ */
 float OneLaneRoad::location(unsigned int const car_index)
 {
   assert(car_index < car_number());
   return cars[car_index].location;
 }
 
+/**
+ * @brief Calculates the net distance to the car in front
+ * 
+ * This method takes the length of the cars in to account, so it returns the actual 
+ * bumper to bumper distance.
+ * 
+ * @param car_index 
+ * @return float Net distance
+ */
 float OneLaneRoad::distance_front(unsigned int const car_index)
 {
   assert(car_index < car_number());
