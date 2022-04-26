@@ -175,7 +175,7 @@ int main(int argc, char *const argv[])
   }
   try
   {
-    road_length = params_uint.at("road_length");
+    road_length = params_float.at("road_length");
   }
   catch (std::out_of_range &err)
   {
@@ -191,7 +191,7 @@ int main(int argc, char *const argv[])
   }
   try
   {
-    dt = params_uint.at("steps");
+    dt = params_uint.at("dt");
   }
   catch (std::out_of_range &err)
   {
@@ -208,6 +208,8 @@ int main(int argc, char *const argv[])
   }
 
   MultiLaneRoad road(road_length, lanes, cars);
+  road.MOBIL_all_cars(120 * .278, .2 * 120 * .278);
+  road.fill_right_lanes();
   road.euler_to_CSV(dt, steps, dest_fn);
 
   return 0;
