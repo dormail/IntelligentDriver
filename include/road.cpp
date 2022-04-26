@@ -403,14 +403,14 @@ void MultiLaneRoad::euler(float const dt)
     if (should_change(iter, iter.lane + 1))
     {
       iter.lane++;
-      std::cerr << "Lane change\n";
+      //std::cerr << "Lane change\n";
     }
     else
     {
       if (should_change(iter, iter.lane - 1) && iter.lane > 0)
       {
         iter.lane--;
-        std::cerr << "Lane change\n";
+        //std::cerr << "Lane change\n";
       }
     }
 
