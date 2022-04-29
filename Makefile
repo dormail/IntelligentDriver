@@ -11,19 +11,10 @@ SOURCE = include/car.cpp include/road.cpp
 HEADER = include/road.h include/car.h
 
 
-all: build/main build/EulerCongestionToCSV build/MultiLaneTest build/tests/OneOnLaneTest
+all: build/main build/MultiLaneTest build/tests/OneOnLaneTest
 
 build/main: main.cpp $(SOURCE) $(HEADER) build
 	g++ $(CXXFLAGS) -o $@ main.cpp $(SOURCE)
-
-build/EulerCongestionToCSV: EulerCongestionToCSV.cpp $(SOURCE) $(HEADER) build
-	g++ $(CXXFLAGS) EulerCongestionToCSV.cpp -o $@ $(SOURCE)
-
-valgrind: $(TARGET)
-	valgrind -v ./$(TARGET)
-
-valgrind-leak-check: $(TARGET)
-	valgrind -v --leak-check=full ./$(TARGET)
 
 build/data/position.csv: build/data build/EulerCongestionToCSV
 	./build/EulerCongestionToCSV > build/data/position.csv
@@ -40,6 +31,9 @@ build/data/multi_lane.csv: build/MultiLaneTest build/data
 
 analysis/multi_lane.mp4: analysis/multi_lane.py build/data/multi_lane.csv
 	python3 analysis/multi_lane.py
+
+build/macroscopic: cpp/src/macroscopic.cpp $(SOURCE) $(HEADER) build
+	g++ $(CXXFLAGS) -o $@ cpp/src/macroscopic.cpp $(SOURCE)
 
 # tests
 build/tests/OneOnLaneTest: tests/OneOnLaneTest.cpp $(SOURCE) $(HEADER) build/tests

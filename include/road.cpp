@@ -372,6 +372,22 @@ float OneLaneRoad::distance_front(unsigned int const car_index)
   return distance;
 }
 
+
+/**
+ * @brief Calculates the average speed of the cars
+ * 
+ * @return float 
+ */
+float OneLaneRoad::average_speed()
+{
+  float average = 0.;
+  for (auto &car : cars)
+  {
+    average += car.velocity;
+  }
+  return average / float(car_number());
+}
+
 /**
  * @brief Enforces the boundries so resets cars to the start when they go beyond length
  *
