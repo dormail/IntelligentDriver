@@ -1,7 +1,7 @@
 /**
- * @file main.cpp
+ * @file microscopic.cpp
  * @author Matthias Maile (matthias.maile@udo.edu)
- * @brief Main function accepting arguments to start a multi lane idm simulation
+ * @brief Main function accepting arguments to start a multi lane idm simulation and generates microscopic data
  * @date 2022-04-26
  *
  */
