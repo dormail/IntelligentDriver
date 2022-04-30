@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION "3.7.1")
 
-project("macroscopic")
+SET(CMAKE_CXX_FLAGS "-Wall -g -std=c++2a")
+#SET(CMAKE_CXX_FLAGS "-std=c++2a -O0")
+
+project("macroscopicIDM")
 
 include_directories("include")
 add_subdirectory(include)
@@ -10,12 +13,14 @@ add_executable("${PROJECT_NAME}" "cpp/src/macroscopic.cpp")
 target_link_libraries("${PROJECT_NAME}" PRIVATE road)
 target_link_libraries("${PROJECT_NAME}" PRIVATE car)
 
-project("IDMInterface")
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 
 
+# microscopic data
+project("microscopicIDM")
 add_executable("${PROJECT_NAME}" "main.cpp")
 
 target_link_libraries("${PROJECT_NAME}" PRIVATE road)
 target_link_libraries("${PROJECT_NAME}" PRIVATE car)
 
-install(TARGETS IDMInterface DESTINATION bin)
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
