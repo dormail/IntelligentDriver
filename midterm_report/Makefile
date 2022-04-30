@@ -1,5 +1,10 @@
 all: build/main.pdf
 
+build/example_plot.pdf: example_plot.py
+	python3 example_plot.py
+
+build/main.pdf: build/example_plot.pdf
+
 build/main.pdf: FORCE | build
 	  TEXINPUTS=build: \
 	  BIBINPUTS=build: \
