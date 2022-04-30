@@ -203,7 +203,7 @@ int main(int argc, char *const argv[])
   }
   catch (std::out_of_range &err)
   {
-    dest_fn = "build/output.csv";
+    dest_fn = "/tmp/IDM-output.csv";
     std::cerr << "No location for output csv specified, defaulting to " << dest_fn << std::endl;
   }
 
