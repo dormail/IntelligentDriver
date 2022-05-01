@@ -1,0 +1,75 @@
+\section{Previous work and literature}
+\label{sec:previos_work}
+
+\subsection{Previous work on car following models}
+\label{sec:previous_work:car_following}
+
+In this work, we will use the intelligent driver model (IDM) \cite{PhysRevE.62.1805}. With this model the acceleration
+of a car depends on the driving behaviour of the vehicle in front and on the model parameters
+\begin{itemize}
+  \item Desired velocity $v_0$,
+  \item Safe time headaway $T$,
+  \item Maximum acceleration $a$,
+  \item Desired deceleration $b$,
+  \item Acceleration exponent $\delta$,
+  \item Jam distance $s_0$,
+  \item Jam distance $s_1$,
+  \item Vehicle length $l$.
+\end{itemize}
+When using $s_1 = \SI{0}{m}$ like the original authors, the first jam
+distance $s_0$ can be interpreted as the minimum distance a driver wants to the vehicle in front. With those parameters
+the acceleration is a continuous function
+\begin{equation}
+  \dot v_\alpha = a \left[1 - \left(\frac{v_\alpha}{v_0^{(\alpha)}}\right)^\delta -
+    \left(\frac{s^*(v_\alpha, \Delta v)}{s_\alpha}\right)^2
+  \right].
+\end{equation}
+It consists of a acceleration term $a [1 - (v_\alpha / v_0^{(\alpha)})^\delta]$ and a term modelling the breaking
+behaviour $-a (s^* / s_\alpha)^2$ which gets larger the closer a car drives to the car ahead. The breaking behaviour
+can be understood as the ratio between the ``desired minimum gap``
+\begin{multline}
+  s^*(v, \Delta v) = s_0^{(\alpha)} + s_1^{(\alpha)} \sqrt{\frac{v_\alpha}{v_0^{(\alpha)}}} + T^{(\alpha)}v_\alpha
+  \\
+  + \frac{v\Delta v}{2 \sqrt{a^{(\alpha)} b^{(\alpha)}}}
+\end{multline}
+and the actual gap $s_\alpha$ squared. 
+
+This model has been used extensively to model car behaviour under varying conditions \cite{FIDM,CAPRANI2016207} and to optimize
+driver assistance systems \cite{thesis_acc}.
+
+\subsection{Generalization to multiple lanes}
+\label{sec:previous_work:multiple_lanes}
+The model introduced in \autoref{sec:previous_work:car_following} by itself is only a single lane model, since it does
+not take into account anything besides the car in front of each other car, i.e. it multiple lanes do not interact. A
+solution was proposed bei Kesting et al \cite{MOBIL} with the \textit{Minimizing Overall Breaking Induced by Lane
+Changes} (MOBIL) which introduced incentives and sefaty criterions to make decisions about when a car should change a
+lane.
+
+The safety criterion ensures that a car following the lane changer would only have to decelerate by a maximum
+deceleration $\dot v_{\alpha + 1}^\prime \geq -b$, the parameter $b$ does not have to be the desired deceleration from
+the IDM however.
+
+While the safety criterion only forbids lane changes, the incentive criterion makes them possible. The incentive
+computes the impact the lane change has to the car`s surrounding and if itself or other people would benefit from it.
+For that purpose a \textit{politeness factor} $p$ and a threshold acceleration $\Delta a_\text{th}$ get introduced. 
+The condition is a basic inequality
+\begin{equation}
+  \underbrace{\tilde{a}_c - a_c}_\text{driver}
+  + p (
+  \underbrace{\tilde{a}_n - a_n}_\text{new follower}
+  +
+  \underbrace{\tilde{a}_0 - a_0}_\text{old follower}
+  )
+  > \Delta a_\text{th}
+\end{equation}
+and the model accepts the proposed lane change when it holds. While the impact of $\Delta a_\text{th}$ is to forbid lane
+changes with minor benefits, $p$ has more implications on the driver`s behaviour: As it regulates how much a driver
+considers his impact on other people on the road, $p=0$ would make him ignore other people and act only for his own
+benefit. $p>0$ implies that a driver accepts getting slowed down after a lane change so that other drivers could
+benefit (e.g. changing lane so another driver can pass you). Interestingly, $p<0$ is also possible. That would result in
+malicous drivers, drivers who slow themself down with a maneuver for the sake of slowing down other people even
+more. 
+
+In the original MOBIL paper the authors also differentiated between the two traffic law types, which will be used in
+this project as well.
+

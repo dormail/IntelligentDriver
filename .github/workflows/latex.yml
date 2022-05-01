@@ -19,8 +19,11 @@ jobs:
     - name: update
       run: sudo apt update
     
-    - name: install latex packages
-      run: sudo apt install texlive-full make latexmk biber
+    - name: install packages
+      run: sudo apt install texlive-full make latexmk biber make python3 python3-pip
+
+    - name: install python packages
+      run: pip3 install numpy matplotlib
       
     - name: make latex target
       run: cd midterm_report && make
