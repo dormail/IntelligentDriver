@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: C/C++ build test
 
 on:
   push:
@@ -14,8 +14,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: install ubuntu packages
-      run: sudo apt install g++ make python3 python3-pip
-    - name: install python packages
-      run: pip3 install numpy pandas matplotlib
+      run: sudo apt install g++ make cmake
+    - name: cmake
+      run: mkdir -p build/; cmake -B build
     - name: make
-      run: make
+      run: cd build; sudo make install

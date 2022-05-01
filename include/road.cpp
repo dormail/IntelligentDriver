@@ -7,6 +7,7 @@
 #include <cmath> // pow
 #include <string>
 #include <fstream> // std::ofstream
+#include <errno.h>
 
 #include <iostream>
 
@@ -185,7 +186,7 @@ float MultiLaneRoad::distance(const Car &car1, const Car &car2)
   //   std::cerr << "lanes: " << car1.lane << " " << car2.lane << '\n';
   // }
 
-  assert(distance >= -1 * (car1.length + car2.length));
+  //assert(distance >= -1.5 * (car1.length + car2.length));
   // assert(distance < length);
   return distance;
 }
@@ -372,6 +373,22 @@ float OneLaneRoad::distance_front(unsigned int const car_index)
   return distance;
 }
 
+
+/**
+ * @brief Calculates the average speed of the cars
+ * 
+ * @return float 
+ */
+float OneLaneRoad::average_speed()
+{
+  float average = 0.;
+  for (auto &car : cars)
+  {
+    average += car.velocity;
+  }
+  return average / float(car_number());
+}
+
 /**
  * @brief Enforces the boundries so resets cars to the start when they go beyond length
  *
@@ -399,31 +416,47 @@ void MultiLaneRoad::euler(float const dt)
   {
     assert(iter.lane < lane_num);
 
+    bool lane_change = false;
+
     // check for lane change possibility
     if (should_change(iter, iter.lane + 1))
     {
       iter.lane++;
-      //std::cerr << "Lane change\n";
+      lane_change = true;
+      // std::cerr << "Lane change\n";
     }
     else
     {
       if (should_change(iter, iter.lane - 1) && iter.lane > 0)
       {
         iter.lane--;
-        //std::cerr << "Lane change\n";
+        lane_change = true;
+        // std::cerr << "Lane change\n";
       }
     }
 
-    iter.location += iter.velocity * dt;
-
     car_front_ptr = &(car_in_front(iter));
 
-    accel = acceleration(iter.velocity, car_front_ptr->velocity, distance(iter, *car_front_ptr),
+    double distance_front = distance(iter, *car_front_ptr);
+    if (distance_front < 0)
+    {
+      std::cerr << "distance_front < 0\n"
+                << "car_loc\t\t" << iter.location << '\n'
+                << "car_front->loc\t" << car_front_ptr->location << '\n'
+                << "car_lane\t" << iter.lane << '\n'
+                << "car_front->lane\t" << car_front_ptr->lane << '\n';
+      if (lane_change)
+        std::cerr << "Lane change happened as well\n";
+    }
+    assert(distance_front >= 0);
+
+    accel = acceleration(iter.velocity, car_front_ptr->velocity, distance_front,
                          iter.desired_velocity,
                          iter.min_distance,
                          iter.safe_time_headaway,
                          iter.max_acceleration,
                          iter.comfortable_deceleration);
+    iter.location += iter.velocity * dt;
     iter.velocity += accel * dt;
     location_enforce_boundries();
   }
@@ -431,12 +464,12 @@ void MultiLaneRoad::euler(float const dt)
 
 /**
  * @brief Computes the time evolution of the road and outputs the whole data to a file in CSV format
- * 
- * The CSV file contains a column for the time (starting at 0) and 3 columns for each Car with 
+ *
+ * The CSV file contains a column for the time (starting at 0) and 3 columns for each Car with
  * lane, velocity and location.
- * 
+ *
  * It does not catch any exceptions from std::ofstream, though it does check if it could open the file.
- * 
+ *
  * @param dt Step length
  * @param steps Amount of integration steps
  * @param filename Name of the output file
@@ -469,9 +502,9 @@ int MultiLaneRoad::euler_to_CSV(float const dt, unsigned int const steps, std::s
     output << time << ',';
     for (auto &iter : cars)
     {
-        output << iter.location << ",";
-        output << iter.velocity << ",";
-        output << iter.lane << ",";
+      output << iter.location << ",";
+      output << iter.velocity << ",";
+      output << iter.lane << ",";
     }
     output << '\n';
 
@@ -511,7 +544,7 @@ int MultiLaneRoad::change_lane(Car &car, int const lane_change)
 /**
  * @brief A method calculating if a car should change a lane
  *
- *  It uses the incentive criterion from some paper and also checks if the params are correct. It is based on 
+ *  It uses the incentive criterion from some paper and also checks if the params are correct. It is based on
  *  <a href="https://doi.org/10.3141%2F1999-10">this paper</a>.
  *
  * @param car car to change lane, using its location, speed, etc.
@@ -559,6 +592,11 @@ bool MultiLaneRoad::should_change(Car &car, unsigned int const lane)
       continue;
     }
   }
+  // see if it fits
+  if (distance(*car_back_new_lane, car) < 0)
+    return false;
+  if (distance(car, *car_front_new_lane) < 0)
+    return false;
 
   // calculate the accelerations for car, old and new follow each before and after change
   // first old/new => is the new or old acceleration meant
@@ -572,6 +610,8 @@ bool MultiLaneRoad::should_change(Car &car, unsigned int const lane)
 
   // safety criterion
   if (accel_new_new_follower < -1 * safety_break)
+    return false;
+  if (accel_new < -1 * safety_break)
     return false;
 
   // calculation for the incentive criterion
@@ -596,8 +636,14 @@ bool MultiLaneRoad::should_change(Car &car, unsigned int const lane)
 float acceleration(float v, float v_next, float distance,
                    float v_max, float s_min, float T, float a_max, float b)
 {
-  float s = s_min + v * T + v * (v - v_next) / (2 * sqrt(a_max * b));
-  return a_max * (1 - pow(v / v_max, 4) - pow(s / distance, 2));
+  double s = s_min + v * T + v * (v - v_next) / (2. * sqrt(a_max * b));
+
+  double ret = a_max * (1. - pow(double(v / v_max), 4) - pow(double(s / distance), 2));
+  if (errno == ERANGE || ret > a_max)
+  {
+    std::cerr << "Acceleration overflowed" << '\n';
+  }
+  return ret;
 }
 
 /**
