@@ -2,29 +2,32 @@ var indexSectionsWithContent =
 {
   0: "acdefgilmoprsv~",
   1: "cmo",
-  2: "cmor",
-  3: "acdeflmorsv~",
-  4: "cdglmpsv",
-  5: "i"
+  2: "i",
+  3: "ceimor",
+  4: "acdefilmorsv~",
+  5: "cdfglmpsv",
+  6: "i"
 };
 
 var indexSectionNames =
 {
   0: "all",
   1: "classes",
-  2: "files",
-  3: "functions",
-  4: "variables",
-  5: "pages"
+  2: "namespaces",
+  3: "files",
+  4: "functions",
+  5: "variables",
+  6: "pages"
 };
 
 var indexSectionLabels =
 {
   0: "All",
   1: "Classes",
-  2: "Files",
-  3: "Functions",
-  4: "Variables",
-  5: "Pages"
+  2: "Namespaces",
+  3: "Files",
+  4: "Functions",
+  5: "Variables",
+  6: "Pages"
 };
 
