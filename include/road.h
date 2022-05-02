@@ -85,11 +85,11 @@ public:
 
   // diff eq
   void euler(float const dt);
+  void euler_single_car(Car &car, float const dt);
 
   int euler_to_CSV(float const dt, unsigned int const steps, std::string filename);
 
   // car dynamics
-  int change_lane(Car& car, int const lane_change);
   bool should_change(Car& car, unsigned int const lane);
 
   float acceleration_car(const Car& car, const Car& car_front);

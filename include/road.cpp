@@ -415,51 +415,40 @@ void MultiLaneRoad::euler(float const dt)
   for (auto &iter : cars)
   {
     assert(iter.lane < lane_num);
-
-    bool lane_change = false;
-
-    // check for lane change possibility
-    if (should_change(iter, iter.lane + 1))
-    {
-      iter.lane++;
-      lane_change = true;
-      // std::cerr << "Lane change\n";
-    }
-    else
-    {
-      if (should_change(iter, iter.lane - 1) && iter.lane > 0)
-      {
-        iter.lane--;
-        lane_change = true;
-        // std::cerr << "Lane change\n";
-      }
-    }
-
-    car_front_ptr = &(car_in_front(iter));
-
-    double distance_front = distance(iter, *car_front_ptr);
-    if (distance_front < 0)
-    {
-      std::cerr << "distance_front < 0\n"
-                << "car_loc\t\t" << iter.location << '\n'
-                << "car_front->loc\t" << car_front_ptr->location << '\n'
-                << "car_lane\t" << iter.lane << '\n'
-                << "car_front->lane\t" << car_front_ptr->lane << '\n';
-      if (lane_change)
-        std::cerr << "Lane change happened as well\n";
-    }
-    assert(distance_front >= 0);
-
-    accel = acceleration(iter.velocity, car_front_ptr->velocity, distance_front,
-                         iter.desired_velocity,
-                         iter.min_distance,
-                         iter.safe_time_headaway,
-                         iter.max_acceleration,
-                         iter.comfortable_deceleration);
-    iter.location += iter.velocity * dt;
-    iter.velocity += accel * dt;
-    location_enforce_boundries();
+    euler_single_car(iter, dt);
   }
+}
+
+/**
+ * @brief Euler integration step for a car assuming US rules
+ * 
+ * @param car car to do the integration
+ * @param dt time step length
+ */
+void MultiLaneRoad::euler_single_car(Car &car, float const dt)
+{
+  // check for lane change possibility
+  if (should_change(car, car.lane + 1))
+  {
+    car.lane++;
+  }
+  else
+  {
+    if (should_change(car, car.lane - 1) && car.lane > 0)
+    {
+      car.lane--;
+    }
+  }
+
+  Car* car_front_ptr = &(car_in_front(car));
+
+  float distance_front = distance(car, *car_front_ptr);
+  assert(distance_front >= 0);
+
+  float accel = acceleration_car(car, *car_front_ptr);
+  car.location += car.velocity * dt;
+  car.velocity += accel * dt;
+  location_enforce_boundries();
 }
 
 /**
@@ -517,31 +506,6 @@ int MultiLaneRoad::euler_to_CSV(float const dt, unsigned int const steps, std::s
 }
 
 /**
- * @brief Changes a car's lane, checking if parameters allow
- *
- * It does not check if it fits at this spot, only if the lane exists.
- *
- * @param car[in, out] The car the lane change should be applied to
- * @param lane_change[in] Lane change direction +1=left -1=left
- *
- * @return 0 if it worked, -1 if it fails
- */
-int MultiLaneRoad::change_lane(Car &car, int const lane_change)
-{
-  if (lane_change != 1 && lane_change != -1)
-    return -1; // bad param
-
-  if (lane_change == 1 && car.lane == lane_num)
-    return -1; // car already on the far left
-
-  if (lane_change == -1 && car.lane == 0)
-    return -1; // car already on the far right
-
-  car.lane += lane_change;
-  return 0;
-}
-
-/**
  * @brief A method calculating if a car should change a lane
  *
  *  It uses the incentive criterion from some paper and also checks if the params are correct. It is based on
@@ -576,6 +540,8 @@ bool MultiLaneRoad::should_change(Car &car, unsigned int const lane)
     // new lane search
     if (iter.lane == lane)
     {
+      if (distance(iter, car) < 0)
+        return false;
       if (distance(iter, car) < distance(*car_back_new_lane, car))
         car_back_new_lane = &iter;
       if (distance(car, iter) < distance(car, *car_front_new_lane))
