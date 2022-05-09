@@ -20,6 +20,9 @@ struct Car {
   float length{5.};
 
   unsigned int lane = 0;
+
+  Car* front;
+  float accel;
 };
 
 void move_unaccelerated(Car *target, float dt);

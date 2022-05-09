@@ -31,6 +31,7 @@ void print_usage(std::string programm_name)
             << "\t--step-width <value>\t\tSpecify the integration step width\n"
             << "\t--integration-steps <value>\tSpecify the amount of integration steps\n"
             << "\t--output-csv <filename>\t\tSpecify the output file name for the csv\n"
+            << "\t--EU \t\t\tSet driving law to european, US Law if nothing is set\n"
             << std::endl;
 }
 
@@ -53,6 +54,7 @@ int parse_arg(int argc, char *const argv[],
               std::map<std::string, unsigned int> &params_uint,
               std::map<std::string, std::string> &params_str)
 {
+  bool region_set = false;
   for (int i = 1; i < argc; ++i)
   {
     std::string arg = argv[i];
@@ -134,7 +136,14 @@ int parse_arg(int argc, char *const argv[],
       std::pair<std::string, std::string> input("dest_fn", dest_fn);
       params_str.insert(input);
     }
-  }
+    if (arg == "--EU")
+    {
+      //region_set = true;
+      params_str.at("law") = "EU";
+    }
+  } // for
+  //if (!region_set)
+  //  params_str.insert(std::pair<std::string, std::string>("law", "US"));
   return 0;
 }
 
@@ -143,6 +152,8 @@ int main(int argc, char *const argv[])
   std::map<std::string, float> params_float;
   std::map<std::string, unsigned int> params_uint;
   std::map<std::string, std::string> params_str;
+
+  params_str.insert(std::pair<std::string, std::string> ("law", "US"));
 
   int res = parse_arg(argc, argv, params_float, params_uint, params_str);
 
@@ -207,10 +218,30 @@ int main(int argc, char *const argv[])
     std::cerr << "No location for output csv specified, defaulting to " << dest_fn << std::endl;
   }
 
-  MultiLaneRoad road(road_length, lanes, cars);
-  road.MOBIL_all_cars(120 * .278, .2 * 120 * .278);
-  road.fill_right_lanes();
-  road.euler_to_CSV(dt, steps, dest_fn);
+  // MultiLaneRoad road(road_length, lanes, cars);
+  // road.MOBIL_all_cars(120 * .278, .2 * 120 * .278);
+  // road.fill_right_lanes();
+  // road.euler_to_CSV(dt, steps, dest_fn);
+  if (params_str.at("law") == "EU")
+  {
+    MultiLaneRoad road(road_length, lanes, cars);
+    road.MOBIL_all_cars(120 * .278, .2 * 120 * .278);
+    road.fill_right_lanes();
+    road.set_car_front();
+    for (unsigned int i = 0; i < steps; ++i)
+    {
+      road.time_step_european_driving_law(dt);
+    }
+  }
+  else
+  {
+    MultiLaneRoad road(road_length, lanes, cars);
+    road.MOBIL_all_cars(120 * .278, .2 * 120 * .278);
+    road.fill_right_lanes();
+    road.set_car_front();
+    road.euler_to_CSV(dt, steps, dest_fn);
+    //road.print_locations();
+  }
 
   return 0;
 }
