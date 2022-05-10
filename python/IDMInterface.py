@@ -12,7 +12,7 @@ import pandas as pd
 ## A function acting as a interface between python code and the multi lane idm implementation
 # Special care needs to be addressed for the directory structure, so BUILD_DIR and IDMBinaryName
 # @return [filename, df] filename is the name of the CSV file generated, df is the dataframe with the data
-def IDMSimulation(road_length=200, cars=5, lanes=3, step_width=1/30, steps=1800, IDMBinaryName = "microscopicIDM"):
+def IDMSimulation(road_length=200, cars=5, lanes=3, step_width=1/30, steps=1800, IDMBinaryName = "microscopicIDM", EU=False):
     data_dir = '/tmp/IDM'
     filename = data_dir + "/" + str(road_length) + "_" + str(cars) + "_" + str(lanes) + "_" + str(step_width) + "_" + str(steps) + ".csv"
 
@@ -22,6 +22,9 @@ def IDMSimulation(road_length=200, cars=5, lanes=3, step_width=1/30, steps=1800,
     options = options + " --step-width " + str(step_width)
     options = options + " --integration-steps " + str(steps)
     options = options + " --output-csv " + str(filename)
+    
+    if EU:
+        options = options + " --EU "
 
     print(IDMBinaryName + options)
     os.system('mkdir -p ' + data_dir)
