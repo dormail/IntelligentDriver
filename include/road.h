@@ -82,7 +82,6 @@ public:
   // get methods
   unsigned int lane(unsigned int const car_index);
   unsigned int car_in_front(unsigned int const car_index); // returns an index
-
   Car& car_in_front(Car& car); // returns a reference
   Car& follower(Car& car);
 
@@ -99,6 +98,7 @@ public:
   void euler_single_car(Car &car, float const dt);
 
   int euler_to_CSV(float const dt, unsigned int const steps, std::string filename);
+  int euler_to_CSV_EU(float const dt, unsigned int const steps, std::string filename);
 
   // car dynamics
   bool should_change(Car& car, unsigned int const lane);
@@ -106,9 +106,12 @@ public:
   float acceleration_car(const Car& car, const Car& car_front);
 
   // european driving law specific stuff
-  void time_step_european_driving_law(float dt);
+  void euler_eu(float dt);
   void offer_lane_change(Car &car);
   float acceleration_on_the_left(Car &car);
+
+  // correct functions
+  void correct_front();
 };
 
 /* params:

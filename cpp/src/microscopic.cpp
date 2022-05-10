@@ -228,10 +228,8 @@ int main(int argc, char *const argv[])
     road.MOBIL_all_cars(120 * .278, .2 * 120 * .278);
     road.fill_right_lanes();
     road.set_car_front();
-    for (unsigned int i = 0; i < steps; ++i)
-    {
-      road.time_step_european_driving_law(dt);
-    }
+  
+    road.euler_to_CSV_EU(dt, steps, dest_fn);
   }
   else
   {
