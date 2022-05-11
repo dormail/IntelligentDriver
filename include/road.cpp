@@ -604,7 +604,7 @@ int MultiLaneRoad::euler_to_CSV_EU(float const dt, unsigned int const steps, std
       output << iter.velocity << ",";
       output << iter.lane << ",";
     }
-    // output << std::endl;
+    //output << std::endl;
     output << '\n';
 
     euler_eu(dt);
@@ -753,8 +753,12 @@ float MultiLaneRoad::acceleration_car(const Car &car, const Car &car_front)
  */
 void MultiLaneRoad::euler_eu(float dt)
 {
+  LOG("beginning of euler_eu");
+  correct_front();
+
   for (Car &car : cars)
   {
+    assert(car.lane == car.front->lane);
     car.accel = acceleration_car(car, *(car.front));
   }
   for (Car &car : cars)
@@ -763,15 +767,14 @@ void MultiLaneRoad::euler_eu(float dt)
     car.location += dt * car.velocity;
   }
 
+  LOG("time integration done, now lane changes");
   // now changing lanes
   for (Car &car : cars)
   {
     offer_lane_change(car);
     correct_front();
   }
-
-  for (auto &car : cars)
-    float a = acceleration_on_the_left(car);
+  LOG("end of euler_eu");
 }
 
 /**
@@ -783,7 +786,9 @@ void MultiLaneRoad::euler_eu(float dt)
  */
 void MultiLaneRoad::offer_lane_change(Car &car)
 {
+  LOG("beginning of offer lane changes");
   float a_c_eur = acceleration_on_the_left(car);
+    LOG("accel_on_the_left done");
   int change_right = 0;
   int change_left = 0;
 
@@ -791,7 +796,10 @@ void MultiLaneRoad::offer_lane_change(Car &car)
   Car* left_follower;
   
   if (car.lane > 0)
+  {
     change_right = (a_c_eur - car.accel + politeness_factor * (acceleration_car(old_follower, *(car.front)) - acceleration_car(old_follower, car)) > switching_threshhold - a_bias);
+  }
+  LOG("change_right calculated");
   if (car.lane < lane_num - 1)
   {
     Car tmp;
@@ -814,6 +822,7 @@ void MultiLaneRoad::offer_lane_change(Car &car)
       if (change_left)
       {
         ++(car.lane);
+        LOG("gonne return becaus lane is empy");
         return;
       }
     }
@@ -822,13 +831,21 @@ void MultiLaneRoad::offer_lane_change(Car &car)
       change_left = (acceleration_car(car, *(left_follower->front)) - a_c_eur + politeness_factor * (acceleration_car(*left_follower, *(car.front)) - acceleration_car(*left_follower, car)) > switching_threshhold + a_bias);
     }
   }
+  LOG("change_left calculated");
 
-  if (change_left && distance(*left_follower, car) > 0 && distance(car, *(left_follower->front)) > 0)
+  if (change_left)
   {
-    ++(car.lane);
-    return;
+    if (left_follower == nullptr)
+    {
+      ++(car.lane);
+      return;
+    }
+    if (distance(*left_follower, car) > 0 && distance(car, *(left_follower->front)) > 0)
+    {
+      ++(car.lane);
+      return;
+    }
   }
-  // find right follower
 
   if (change_right)
   {
@@ -851,13 +868,15 @@ void MultiLaneRoad::offer_lane_change(Car &car)
     }
     if (change_right)
     {
-      assert( (distance(*right_follower, car) > 0));
-      assert( (distance(car, *(right_follower->front)) > 0));
+      if (right_follower != nullptr)
+      {
+        assert((distance(*right_follower, car) > 0));
+        if (right_follower->front != nullptr)
+          assert((distance(car, *(right_follower->front)) > 0));
+      }
 
       --(car.lane);
     }
-
-    return;
   }
 }
 
@@ -871,38 +890,68 @@ void MultiLaneRoad::offer_lane_change(Car &car)
  */
 float MultiLaneRoad::acceleration_on_the_left(Car &car)
 {
+  LOG("beg accel on the left");
   // if car is on the left lane it is car.accel
   if (car.lane == lane_num - 1)
     return car.accel;
 
+  // if left lane is empty it is car.accel as well
+  bool left_lane_empty = true;
+  for (auto &iter : cars)
+    if (iter.lane == car.lane+1)
+    {
+      left_lane_empty = false;
+    }
+  if (left_lane_empty)
+    return car.accel;
+
+  LOG("easy cases done");
   // looking for car in front on the left lane
-  Car tmp; // dummy car to initilize the pointers
-  tmp.location = 3 * length;
-  tmp.accel = car.accel; // if there is no car on the left -> use car's acceleration
-  Car *front_left = &tmp;
+  Car *front_left = nullptr;
+  float min_dist = length;
   for (auto &iter : cars)
   {
     if (iter.lane != car.lane + 1)
       continue;
-    if (distance(car, iter) < distance(car, *front_left))
+    if (distance(car, iter) < min_dist)
+    {
       front_left = &iter;
+      min_dist = distance(car, iter);
+    }
+  }
+  LOG("found front_left");
+  if (front_left == nullptr)
+  {
+    if (left_lane_empty)
+    {
+      std::cerr << "something is wrong here\n";
+      return car.accel;
+    }
+    std::cerr << "found no front left but left lane not empty\n";
+    return car.accel;
   }
 
   // case of no congestion
   if (car.velocity > front_left->velocity && front_left->velocity > v_crit)
   {
+  LOG("inside case of no congstion");
     // looking for car most close on the left lane
-    Car *closest = &tmp;
-    float min_distance;
+    Car *closest = nullptr;
+    float min_distance = length;
     for (auto &iter : cars)
     {
       if (iter.lane != car.lane + 1)
         continue;
-      if (distance(car, iter) < min_distance || distance(iter, car) < min_distance)
+      float dist_iter = std::min(distance(car, iter), distance(iter, car));
+      if (dist_iter < min_distance)
+      {
         closest = &iter;
+        min_distance = dist_iter;
+      }
     }
     return std::min(car.accel, closest->accel);
   }
+  LOG("end of accel on the left");
   return car.accel;
 }
 
