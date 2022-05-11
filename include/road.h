@@ -112,6 +112,9 @@ public:
 
   // correct functions
   void correct_front();
+  bool check_fitness();
+  bool check_locations();
+  bool check_accelerations();
 };
 
 /* params:
