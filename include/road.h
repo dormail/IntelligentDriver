@@ -61,8 +61,8 @@ public:
 class MultiLaneRoad : public OneLaneRoad {
 protected:
   unsigned int lane_num = 3;
-  float politeness_factor = .5; /*!< politeness of a driver in the lane changing model */
-  float switching_threshhold = 0.; /*!< switching threshhold in the lane changing model */
+  float politeness_factor = 1; /*!< politeness of a driver in the lane changing model */
+  float switching_threshhold = .1; /*!< switching threshhold in the lane changing model */
   float safety_break = 4.; /*!< maximum the new follower should have to break after a lane change */
   float v_crit = 60 * .278; /*!< critical speed at which EU law evolves into US law */
   float a_bias = .3; /*!< bias acceleration to make right lane more attractive */
@@ -108,7 +108,9 @@ public:
   // european driving law specific stuff
   void euler_eu(float dt);
   void offer_lane_change(Car &car);
-  float acceleration_on_the_left(Car &car);
+  bool offer_right_eu(Car &car);
+  bool offer_left_eu(Car const &car);
+  float a_c_eur(Car const &car);
 
   // correct functions
   void correct_front();
