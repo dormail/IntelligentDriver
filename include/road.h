@@ -30,6 +30,8 @@ protected:
 public:
   OneLaneRoad(unsigned int const car_num, float const len);
   ~OneLaneRoad() {}
+  // print methods
+  void print_locations();
 
   // set methods
   void congestion_at_start(); // create a traffic at the start of the road
@@ -49,6 +51,7 @@ public:
   void euler(float const dt);
 
   void location_enforce_boundries();
+
 };
 
 /**
@@ -58,22 +61,29 @@ public:
 class MultiLaneRoad : public OneLaneRoad {
 protected:
   unsigned int lane_num = 3;
-  float politeness_factor = .5; /*!< politeness of a driver in the lane changing model */
-  float switching_threshhold = 0.; /*!< switching threshhold in the lane changing model */
+  float politeness_factor = 1; /*!< politeness of a driver in the lane changing model */
+  float switching_threshhold = .1; /*!< switching threshhold in the lane changing model */
   float safety_break = 4.; /*!< maximum the new follower should have to break after a lane change */
+  float v_crit = 60 * .278; /*!< critical speed at which EU law evolves into US law */
+  float a_bias = .3; /*!< bias acceleration to make right lane more attractive */
 
 public:
   MultiLaneRoad(float length, unsigned int const lane_num, unsigned int const car_num);
   ~MultiLaneRoad() {}
 
+  // print methods
+  void print_locations();
+
   // set methods
   void congestion_at_start();
   void fill_right_lanes();
+  void set_car_front();
 
   // get methods
   unsigned int lane(unsigned int const car_index);
   unsigned int car_in_front(unsigned int const car_index); // returns an index
   Car& car_in_front(Car& car); // returns a reference
+  Car& follower(Car& car);
 
 /* car1 is the car that is supposed to be in the back so
  * ------car1---car2-------------- should return ---
@@ -85,14 +95,28 @@ public:
 
   // diff eq
   void euler(float const dt);
+  void euler_single_car(Car &car, float const dt);
 
   int euler_to_CSV(float const dt, unsigned int const steps, std::string filename);
+  int euler_to_CSV_EU(float const dt, unsigned int const steps, std::string filename);
 
   // car dynamics
-  int change_lane(Car& car, int const lane_change);
   bool should_change(Car& car, unsigned int const lane);
 
   float acceleration_car(const Car& car, const Car& car_front);
+
+  // european driving law specific stuff
+  void euler_eu(float dt);
+  void offer_lane_change(Car &car);
+  bool offer_right_eu(Car &car);
+  bool offer_left_eu(Car const &car);
+  float a_c_eur(Car const &car);
+
+  // correct functions
+  void correct_front();
+  bool check_fitness();
+  bool check_locations();
+  bool check_accelerations();
 };
 
 /* params:

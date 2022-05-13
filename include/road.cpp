@@ -1,15 +1,19 @@
 /* road.cpp */
 
+
 #include <road.h>
 #include <car.h>
 #include <vector>
 #include <assert.h>
 #include <cmath> // pow
+#include <algorithm> // std::min
 #include <string>
 #include <fstream> // std::ofstream
 #include <errno.h>
 
 #include <iostream>
+
+#define LOG(message) std::cerr << message << std::endl;
 
 /**
  * @brief Construct a new Multi Lane Road:: Multi Lane Road object
@@ -26,10 +30,31 @@ MultiLaneRoad::MultiLaneRoad(float length, unsigned int const lane_num, unsigned
 }
 
 /**
+ * @brief A method printing all car's locations and lanes sorted by lane
+ * 
+ */
+void MultiLaneRoad::print_locations()
+{
+  std::cerr << "MultiLaneRoad::print_locations\n"
+            << "\tLocation\tvelocity\tlane\n";
+
+  for (unsigned int i = 0; i < lane_num; ++i)
+  {
+    for (auto &car : cars)
+    {
+      if (car.lane != i)
+        continue;
+      std::cerr << '\t' << car.location << "\t\t" << car.velocity << "\t\t" << car.lane << '\n';
+    }
+  }
+  std::cerr << std::endl;
+}
+
+/**
  * @brief Creates a traffice around location = 0
- * 
+ *
  * Sets the location of cars as low as possible (as low as min_distance allows)
- * 
+ *
  */
 void MultiLaneRoad::congestion_at_start()
 {
@@ -53,16 +78,16 @@ void MultiLaneRoad::congestion_at_start()
 
 /**
  * @brief Puts all cars as far right, lowest location as possible
- * 
+ *
  * Fills up lowest indexed lanes first
- * 
+ *
  */
 void MultiLaneRoad::fill_right_lanes()
 {
   float location = 0;
   unsigned int lane = 0;
 
-  for (auto& iter : cars)
+  for (auto &iter : cars)
   {
     assert(lane < lane_num);
     assert(location < length);
@@ -83,8 +108,20 @@ void MultiLaneRoad::fill_right_lanes()
 }
 
 /**
+ * @brief Sets all the car.front pointers
+ *
+ */
+void MultiLaneRoad::set_car_front()
+{
+  for (auto &iter : cars)
+  {
+    iter.front = &(car_in_front(iter));
+  }
+}
+
+/**
  * @brief returns cars[car_index].lane
- * 
+ *
  * @param car_index index of car
  * @return unsigned int lane of cars[car_index]
  */
@@ -95,8 +132,8 @@ unsigned int MultiLaneRoad::lane(unsigned int const car_index)
 
 /**
  * @brief returns the index of the car in front of a specfic car
- * 
- * @param car_index index of the car 
+ *
+ * @param car_index index of the car
  * @return unsigned int index of the car in front
  */
 unsigned int MultiLaneRoad::car_in_front(unsigned int const car_index)
@@ -122,7 +159,10 @@ unsigned int MultiLaneRoad::car_in_front(unsigned int const car_index)
 
 /**
  * @brief gets the car in front of Car& car
- * 
+ *
+ * If the car is alone on the lane it returns the car it self. This method makes no assumtions about features beaing set at struct Car.
+ * It always returns the correct car but it linear in time complexity
+ *
  * @param car Car the returned car should be infront of
  * @return Car& reference to the car in front
  */
@@ -147,22 +187,42 @@ Car &MultiLaneRoad::car_in_front(Car &car)
   return *closest;
 }
 
+/**
+ * @brief Returns the car in the back of the car it assumes car.front to be set correctly
+ * 
+ * @param car 
+ * @return Car& follower, if car is alone on the lane it returns the car itself
+ */
+Car& MultiLaneRoad::follower(Car& car)
+{
+  for (auto &iter : cars)
+  {
+    if (iter.front == &car)
+    {
+      assert(iter.lane == car.lane);
+      return iter;
+    }
+
+  }
+  return car;
+}
+
 /* car1 is the car that is supposed to be in the back so
  * ------car1---car2-------------- should return ---
  */
 
 /**
  * @brief returns the distance between two cars
- * 
+ *
  * The method is sensitive to the order specifically
  * distance(car1, car2) = length - distance(car2, car1)
- * 
+ *
  * Generally car1 is though to be the car in the back,
  * ------car1---car2-------------- should return ---
- * 
+ *
  * If the cars are not touching each other, this method should always return something positive
- * 
- * 
+ *
+ *
  * @param car1 car in the back
  * @param car2 car in the front
  * @return float the distance between the two
@@ -186,16 +246,16 @@ float MultiLaneRoad::distance(const Car &car1, const Car &car2)
   //   std::cerr << "lanes: " << car1.lane << " " << car2.lane << '\n';
   // }
 
-  //assert(distance >= -1.5 * (car1.length + car2.length));
-  // assert(distance < length);
+  // assert(distance >= -1.5 * (car1.length + car2.length));
+  //  assert(distance < length);
   return distance;
 }
 
 /**
  * @brief Construct a new One Lane Road:: One Lane Road object
- * 
+ *
  * It creates car_num cars on a new Road with velocity 10m/s and as close to the start as possible.
- * 
+ *
  * @param car_num Amount of cars to set on the road
  * @param len Length of the road
  */
@@ -210,9 +270,19 @@ OneLaneRoad::OneLaneRoad(unsigned int const car_num, float const len) : cars(car
   }
 }
 
+void OneLaneRoad::print_locations()
+{
+  std::cerr << "cars.location\n";
+  for (auto &car : cars)
+  {
+    std::cerr << "\t" << car.location << '\n';
+  }
+  std::cerr << std::endl;
+}
+
 /**
  * @brief Creates a traffic at the start of the road with cars at full stop and min distance between each other.
- * 
+ *
  */
 void OneLaneRoad::congestion_at_start()
 {
@@ -230,9 +300,9 @@ void OneLaneRoad::congestion_at_start()
 
 /**
  * @brief Sets the desired_velocity for Cars as a Gaussian distribution
- * 
- * @param mean 
- * @param stddev 
+ *
+ * @param mean
+ * @param stddev
  */
 void OneLaneRoad::desired_speed_gaussian(float const mean, float const stddev)
 {
@@ -246,16 +316,16 @@ void OneLaneRoad::desired_speed_gaussian(float const mean, float const stddev)
 
 /**
  * @brief Sets the car's parameters to an all-car configuration from the MOBIL Paper
- * 
- * This function sets all cars as cars as defined in the MOBIL Paper (length, etc.) 
+ *
+ * This function sets all cars as cars as defined in the MOBIL Paper (length, etc.)
  * The desired speed is a uniform distribution (in the paper they use mean+/-20%, here the are independent)
- * 
+ *
  * @param mean Mean of the generated desired velocity
  * @param variation Maximum deviation from mean
  */
 void OneLaneRoad::MOBIL_all_cars(float const mean, float const variation)
 {
-  std::uniform_real_distribution<float> distribution(mean-variation, mean+variation);
+  std::uniform_real_distribution<float> distribution(mean - variation, mean + variation);
 
   for (auto &car : cars)
   {
@@ -266,7 +336,7 @@ void OneLaneRoad::MOBIL_all_cars(float const mean, float const variation)
 
 /**
  * @brief gets the amount of cars
- * 
+ *
  * @return unsigned int amount of cars = cars.size()
  */
 unsigned int OneLaneRoad::car_number()
@@ -276,7 +346,7 @@ unsigned int OneLaneRoad::car_number()
 
 /**
  * @brief makes a time integration where the speed doesnt change
- * 
+ *
  * @param dt time step in seconds
  */
 void OneLaneRoad::constant_speed(float const dt)
@@ -290,7 +360,7 @@ void OneLaneRoad::constant_speed(float const dt)
 
 /**
  * @brief Makes a time integration step using Euler's method
- * 
+ *
  * @param dt Time step length
  */
 void OneLaneRoad::euler(float const dt)
@@ -339,8 +409,8 @@ float OneLaneRoad::velocity(unsigned int const car_index)
 
 /**
  * @brief Gets the position of a car by index
- * 
- * @param car_index 
+ *
+ * @param car_index
  * @return float cars[car_index].location
  */
 float OneLaneRoad::location(unsigned int const car_index)
@@ -351,11 +421,11 @@ float OneLaneRoad::location(unsigned int const car_index)
 
 /**
  * @brief Calculates the net distance to the car in front
- * 
- * This method takes the length of the cars in to account, so it returns the actual 
+ *
+ * This method takes the length of the cars in to account, so it returns the actual
  * bumper to bumper distance.
- * 
- * @param car_index 
+ *
+ * @param car_index
  * @return float Net distance
  */
 float OneLaneRoad::distance_front(unsigned int const car_index)
@@ -373,11 +443,10 @@ float OneLaneRoad::distance_front(unsigned int const car_index)
   return distance;
 }
 
-
 /**
  * @brief Calculates the average speed of the cars
- * 
- * @return float 
+ *
+ * @return float
  */
 float OneLaneRoad::average_speed()
 {
@@ -409,57 +478,47 @@ void OneLaneRoad::location_enforce_boundries()
  */
 void MultiLaneRoad::euler(float const dt)
 {
-  Car *car_front_ptr;
-  float accel;
 
   for (auto &iter : cars)
   {
     assert(iter.lane < lane_num);
-
-    bool lane_change = false;
-
-    // check for lane change possibility
-    if (should_change(iter, iter.lane + 1))
-    {
-      iter.lane++;
-      lane_change = true;
-      // std::cerr << "Lane change\n";
-    }
-    else
-    {
-      if (should_change(iter, iter.lane - 1) && iter.lane > 0)
-      {
-        iter.lane--;
-        lane_change = true;
-        // std::cerr << "Lane change\n";
-      }
-    }
-
-    car_front_ptr = &(car_in_front(iter));
-
-    double distance_front = distance(iter, *car_front_ptr);
-    if (distance_front < 0)
-    {
-      std::cerr << "distance_front < 0\n"
-                << "car_loc\t\t" << iter.location << '\n'
-                << "car_front->loc\t" << car_front_ptr->location << '\n'
-                << "car_lane\t" << iter.lane << '\n'
-                << "car_front->lane\t" << car_front_ptr->lane << '\n';
-      if (lane_change)
-        std::cerr << "Lane change happened as well\n";
-    }
-    assert(distance_front >= 0);
-
-    accel = acceleration(iter.velocity, car_front_ptr->velocity, distance_front,
-                         iter.desired_velocity,
-                         iter.min_distance,
-                         iter.safe_time_headaway,
-                         iter.max_acceleration,
-                         iter.comfortable_deceleration);
-    iter.location += iter.velocity * dt;
-    iter.velocity += accel * dt;
-    location_enforce_boundries();
+    euler_single_car(iter, dt);
   }
+
+  for (auto &iter : cars)
+  {
+    iter.location += dt * iter.velocity;
+    iter.velocity += dt * iter.accel;
+  }
+  location_enforce_boundries();
+  set_car_front();
+}
+
+/**
+ * @brief Euler integration step for a car assuming US rules
+ *
+ * @param car car to do the integration
+ * @param dt time step length
+ */
+void MultiLaneRoad::euler_single_car(Car &car, float const dt)
+{
+  // check for lane change possibility
+  if (should_change(car, car.lane + 1))
+  {
+    car.lane++;
+  }
+  else
+  {
+    if (should_change(car, car.lane - 1) && car.lane > 0)
+    {
+      car.lane--;
+    }
+  }
+
+  float distance_front = distance(car, *(car.front));
+  assert(distance_front >= 0);
+
+  car.accel = acceleration_car(car, *(car.front));
 }
 
 /**
@@ -486,14 +545,13 @@ int MultiLaneRoad::euler_to_CSV(float const dt, unsigned int const steps, std::s
     std::cerr << "Error opening file " << filename << '\n';
     return -1;
   }
-
   // create csv header
   output << 't';
   for (unsigned int i = 0; i < car_number(); ++i)
   {
     output << ",x" << i << ",v" << i << ",l" << i;
   }
-  output << '\n';
+  output << std::endl;
 
   float time = 0.;
   // time integration and data output
@@ -506,6 +564,7 @@ int MultiLaneRoad::euler_to_CSV(float const dt, unsigned int const steps, std::s
       output << iter.velocity << ",";
       output << iter.lane << ",";
     }
+    // output << std::endl;
     output << '\n';
 
     euler(dt);
@@ -516,28 +575,43 @@ int MultiLaneRoad::euler_to_CSV(float const dt, unsigned int const steps, std::s
   return 0;
 }
 
-/**
- * @brief Changes a car's lane, checking if parameters allow
- *
- * It does not check if it fits at this spot, only if the lane exists.
- *
- * @param car[in, out] The car the lane change should be applied to
- * @param lane_change[in] Lane change direction +1=left -1=left
- *
- * @return 0 if it worked, -1 if it fails
- */
-int MultiLaneRoad::change_lane(Car &car, int const lane_change)
+int MultiLaneRoad::euler_to_CSV_EU(float const dt, unsigned int const steps, std::string filename)
 {
-  if (lane_change != 1 && lane_change != -1)
-    return -1; // bad param
+  std::ofstream output;
+  output.open(filename);
 
-  if (lane_change == 1 && car.lane == lane_num)
-    return -1; // car already on the far left
+  if (!(output.is_open()))
+  {
+    std::cerr << "Error opening file " << filename << '\n';
+    return -1;
+  }
+  // create csv header
+  output << 't';
+  for (unsigned int i = 0; i < car_number(); ++i)
+  {
+    output << ",x" << i << ",v" << i << ",l" << i;
+  }
+  output << std::endl;
 
-  if (lane_change == -1 && car.lane == 0)
-    return -1; // car already on the far right
+  float time = 0.;
+  // time integration and data output
+  for (unsigned int i = 0; i < steps; ++i)
+  {
+    output << time << ',';
+    for (auto &iter : cars)
+    {
+      output << iter.location << ",";
+      output << iter.velocity << ",";
+      output << iter.lane << ",";
+    }
+    output << std::endl;
+    //output << '\n';
 
-  car.lane += lane_change;
+    euler_eu(dt);
+    time += dt;
+  }
+
+  output.close();
   return 0;
 }
 
@@ -576,6 +650,8 @@ bool MultiLaneRoad::should_change(Car &car, unsigned int const lane)
     // new lane search
     if (iter.lane == lane)
     {
+      if (distance(iter, car) < 0)
+        return false;
       if (distance(iter, car) < distance(*car_back_new_lane, car))
         car_back_new_lane = &iter;
       if (distance(car, iter) < distance(car, *car_front_new_lane))
@@ -665,4 +741,374 @@ float MultiLaneRoad::acceleration_car(const Car &car, const Car &car_front)
                       car.safe_time_headaway,
                       car.max_acceleration,
                       car.comfortable_deceleration);
+}
+
+/**
+ * @brief Time step with the right lane obligation
+ *
+ * This method assumes that the Cars[i].front are set correctly. It implements the Passing rule and lane usage rule
+ * according to MOBIL page 7f.
+ *
+ * @param dt step length
+ */
+void MultiLaneRoad::euler_eu(float dt)
+{
+  correct_front();
+
+  for (Car &car : cars)
+  {
+    car.accel = a_c_eur(car);
+    if (car.velocity < 0.)
+    {
+      std::cerr << "car.velocity < 0\n"
+                << "\tcar.location = " << car.location << '\n'
+                << "\tcar.accel = " << car.accel << '\n'
+                << "\tcar.front->location = " << car.front->location << '\n'
+                << "\tcar_in_front.location = " << car_in_front(car).location
+                << std::endl;
+
+      car.velocity = 0;
+    }
+    assert(car.velocity >= 0.);
+    car.velocity += dt * car.accel;
+    car.location += dt * car.velocity;
+    offer_lane_change(car);
+    correct_front();
+  }
+
+  check_fitness();
+  // check_accelerations();
+
+  location_enforce_boundries();
+
+  correct_front();
+}
+
+/**
+ * @brief Offers a EU lane change and performs it
+ *
+ * If there is no car on the lane to the left it ignores the change for that lane (like politeness_factor=0).
+ *
+ * @param car
+ */
+void MultiLaneRoad::offer_lane_change(Car &car)
+{
+  if (offer_right_eu(car))
+  {
+    unsigned int new_lane = car.lane - 1;
+    Car *new_follower = nullptr, *new_front;
+    float dist_front = length, dist_back = length;
+    for (auto &iter : cars)
+    {
+      if (iter.lane != new_lane)
+        continue;
+      float tmp_dist = distance(iter, car);
+      if (tmp_dist < dist_back)
+      {
+        new_follower = &iter;
+        dist_back = tmp_dist;
+      }
+      tmp_dist = distance(car, iter);
+      if (tmp_dist < dist_front)
+      {
+        new_front = &iter;
+        dist_front = tmp_dist;
+      }
+    }
+    if (new_follower == nullptr) // new lane empty
+    {
+      follower(car).front = car.front;
+      car.front = &car;
+      --(car.lane);
+      return;
+    }
+    follower(car).front = car.front;
+    car.front = new_front;
+    new_follower->front = &car;
+    --(car.lane);
+
+    return;
+  }
+  if (offer_left_eu(car))
+  {
+    unsigned int new_lane = car.lane + 1;
+    Car *new_follower, *new_front;
+    float dist_front = length, dist_back = length;
+    for (auto &iter : cars)
+    {
+      if (iter.lane != new_lane)
+        continue;
+      float tmp_dist = distance(iter, car);
+      if (tmp_dist < dist_back)
+      {
+        new_follower = &iter;
+        dist_back = tmp_dist;
+      }
+      tmp_dist = distance(car, iter);
+      if (tmp_dist < dist_front)
+      {
+        new_front = &iter;
+        dist_front = tmp_dist;
+      }
+    }
+    if (new_follower == nullptr) // new lane empty
+    {
+      follower(car).front = car.front;
+      car.front = &car;
+      ++(car.lane);
+      return;
+    }
+    follower(car).front = car.front;
+    car.front = new_front;
+    // new_follower->front = &car;
+    ++(car.lane);
+  }
+}
+
+/**
+ * @brief Checks if car can change to lane to the right
+ *
+ * This function does only the check, it does not perform the lane change
+ *
+ * @param car
+ * @return true It can safely change to the right
+ * @return false It can not safely change to the right
+ */
+bool MultiLaneRoad::offer_right_eu(Car &car)
+{
+  if (car.lane == 0)
+    return false; // already on right lane
+
+  // find car in front and back on the new lane
+  Car *new_follower = nullptr, *new_front = nullptr;
+  float distance_front = length, distance_back = length;
+
+  for (auto &iter : cars)
+  {
+    if (iter.lane != (car.lane - 1))
+      continue;
+
+    if (distance(iter, car) < distance_back)
+    {
+      distance_back = distance(iter, car);
+      new_follower = &iter;
+    }
+    if (distance(car, iter) < distance_front)
+    {
+      distance_front = distance(car, iter);
+      new_front = &iter;
+    }
+  }
+  if (new_follower == nullptr || new_front == nullptr)
+  {
+    // decision logic if there is no car on the right lane
+    // tilde represents varaibles after a lane change
+    // safe current state, calculate tilde(a_c_eur) and set back to original
+    --(car.lane);
+    Car *old_front = car.front;
+    car.front = &car;
+    float tilde_a_c_eur = a_c_eur(car);
+    car.front = old_front;
+    ++(car.lane);
+    float a_c = acceleration_car(car, *(car.front));
+
+    Car *old_follower = &(follower(car));
+    float a_o = acceleration_car(*old_follower, car);
+    float tilde_a_o = acceleration_car(*old_follower, *(car.front));
+
+    return (tilde_a_c_eur - a_c + politeness_factor * (tilde_a_o - a_o) > switching_threshhold - a_bias);
+  }
+  assert(new_follower->front == new_front);
+
+  // check if there is enough space
+  if (distance(*new_follower, car) < new_follower->min_distance || distance(car, *new_front) < car.min_distance)
+    return false;
+
+  // tilde represents varaibles after a lane change
+  // safe current state, calculate tilde(a_c_eur) and set back to original
+  --(car.lane);
+  Car *old_front = car.front;
+  car.front = new_front;
+  float tilde_a_c_eur = a_c_eur(car);
+  car.front = old_front;
+  ++(car.lane);
+  float a_c = acceleration_car(car, *(car.front));
+
+  Car *old_follower = &(follower(car));
+  float a_o = acceleration_car(*old_follower, car);
+  float tilde_a_o = acceleration_car(*old_follower, *(car.front));
+
+  return (tilde_a_c_eur - a_c + politeness_factor * (tilde_a_o - a_o) > switching_threshhold - a_bias);
+}
+
+bool MultiLaneRoad::offer_left_eu(Car const &car)
+{
+  if (car.lane == lane_num - 1)
+    return false; // already on left lane
+
+  // find car in front and back on the new lane
+  Car *new_follower = nullptr, *new_front = nullptr;
+  float distance_front = length, distance_back = length;
+
+  for (auto &iter : cars)
+  {
+    if (iter.lane != (car.lane + 1))
+      continue;
+
+    if (distance(iter, car) < distance_back)
+    {
+      distance_back = distance(iter, car);
+      new_follower = &iter;
+    }
+    if (distance(car, iter) < distance_front)
+    {
+      distance_front = distance(car, iter);
+      new_front = &iter;
+    }
+  }
+  if (new_follower == nullptr || new_front == nullptr)
+  {
+    // decision logic if left lane is empty -> a_c can be calculated as if car is free
+    float tilde_a_c = car.max_acceleration * (1. - std::pow(car.velocity / car.desired_velocity, 4));
+
+    return tilde_a_c - a_c_eur(car) > switching_threshhold + a_bias;
+  }
+
+  assert(new_follower->front == new_front);
+
+  // check if there is enough space
+  if (distance(*new_follower, car) < new_follower->min_distance || distance(car, *new_front) < car.min_distance)
+    return false;
+
+  float tilde_a_c = acceleration_car(car, *new_follower);
+
+  float tilde_a_n = acceleration_car(*new_follower, car);
+  float a_n = acceleration_car(*new_follower, *(new_follower->front));
+
+  return tilde_a_c - a_c_eur(car) + politeness_factor * (tilde_a_n - a_n) > switching_threshhold + a_bias;
+}
+
+/**
+ * @brief It calculates the a_c^eur acceleration as defined in the MOBIL paper
+ *
+ * Usefull for EU traffic law simulation
+ *
+ * It asumes that car.front are correctly set
+ *
+ * @param car
+ * @return float a_c^eur as defined in MOBIL paper
+ */
+float MultiLaneRoad::a_c_eur(Car const &car)
+{
+  float a_c = acceleration_car(car, *(car.front)); // accel on its own lane
+  // if car is on the left lane it is car.accel
+  if (car.lane == lane_num - 1)
+    return a_c;
+
+  // find leading car on the left lane
+  Car *new_front = nullptr;
+  float min_dist_front = length;
+  for (auto &iter : cars)
+  {
+    if (iter.lane != car.lane + 1)
+      continue;
+    float tmp_dist = distance(car, iter);
+    if (tmp_dist < min_dist_front)
+    {
+      min_dist_front = tmp_dist;
+      new_front = &iter;
+    }
+  }
+  if (new_front == nullptr)
+    return a_c; // left lane empty
+
+  if (car.velocity > new_front->velocity && new_front->velocity > v_crit)
+    return std::min(a_c, acceleration_car(car, *new_front));
+  return a_c;
+}
+
+/**
+ * @brief Corrects the car.front entry
+ *
+ * Since car_in_front uses linear time this function alone is O(car_number^2)
+ *
+ */
+void MultiLaneRoad::correct_front()
+{
+  for (auto &iter : cars)
+  {
+    iter.front = &(car_in_front(iter));
+  }
+}
+
+/**
+ * @brief Error checking function to test if all cars are on a valid position and dont intersect
+ *
+ * @return true Everything good
+ * @return false Cars intersect
+ */
+bool MultiLaneRoad::check_fitness()
+{
+  bool ret = true;
+  for (auto &car1 : cars)
+  {
+    for (auto &car2 : cars)
+    {
+      if (car1.lane != car2.lane)
+        continue;
+      if (distance(car1, car2) < 0)
+      {
+        std::cerr << "Cars on " << car1.lane << "intersect" << std::endl;
+        ret = false;
+      }
+      if (distance(car1, car2) < 0)
+      {
+        std::cerr << "Cars on lane " << car1.lane
+                  << " intersect" << std::endl
+                  << "car1.location = " << car1.location << '\t'
+                  << "car2.location = " << car2.location << std::endl;
+        ret = false;
+      }
+    }
+  }
+  return ret;
+}
+
+bool MultiLaneRoad::check_locations()
+{
+  bool ret = true;
+  for (auto &car : cars)
+  {
+    if (car.location > 2. * length || car.location < 0)
+    {
+      ret = false;
+      std::cerr << "Car out of bounds" << std::endl;
+    }
+  }
+  return ret;
+}
+
+bool MultiLaneRoad::check_accelerations()
+{
+  bool ret = true;
+  for (auto &car : cars)
+  {
+    if (car.accel > car.max_acceleration)
+    {
+      ret = false;
+      std::cerr << "car.accel > car.max_acceleration" << std::endl;
+      std::cerr << "\tDistance front " << distance(car, car_in_front(car)) << std::endl
+                << "\tlocation = " << car.location << std::endl
+                << "\tacceleration = " << car.accel << std::endl;
+    }
+    if (car.accel < -1 * car.comfortable_deceleration)
+    {
+      ret = false;
+      std::cerr << "car.accel > car.max_acceleration" << std::endl;
+      std::cerr << "\tDistance front " << distance(car, car_in_front(car)) << std::endl
+                << "\tlocation = " << car.location << std::endl
+                << "\tacceleration = " << car.accel << std::endl;
+    }
+  }
+  return ret;
 }
