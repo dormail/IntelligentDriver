@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['max_5facceleration_0',['max_acceleration',['../structCar.html#ab2e56619aa08ea11e368d7e6cfbaff47',1,'Car']]],
-  ['min_5fdistance_1',['min_distance',['../structCar.html#a0e51ab340e094314f30dcf7c83ba198b',1,'Car']]]
+  ['lane_0',['lane',['../structCar.html#adf8a7868d38f7ad71fce96694588e7a5',1,'Car']]],
+  ['lane_5fnum_1',['lane_num',['../classMultiLaneRoad.html#acbf5e7f763875c6aca3f0fce4b5c901b',1,'MultiLaneRoad']]],
+  ['length_2',['length',['../structCar.html#a7f47542c279f8c0daccee39ed209a46c',1,'Car::length()'],['../classOneLaneRoad.html#afffaef2cb4a5c2e628c89fc970357b61',1,'OneLaneRoad::length()']]],
+  ['location_3',['location',['../structCar.html#a00afe195693e23b1935653075a1a791e',1,'Car']]]
 ];

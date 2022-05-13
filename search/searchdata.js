@@ -4,9 +4,10 @@ var indexSectionsWithContent =
   1: "cmo",
   2: "i",
   3: "ceimor",
-  4: "acdefilmorsv~",
-  5: "cdfglmpsv",
-  6: "i"
+  4: "acdefilmoprsv~",
+  5: "acdfglmpsv",
+  6: "l",
+  7: "i"
 };
 
 var indexSectionNames =
@@ -17,7 +18,8 @@ var indexSectionNames =
   3: "files",
   4: "functions",
   5: "variables",
-  6: "pages"
+  6: "defines",
+  7: "pages"
 };
 
 var indexSectionLabels =
@@ -28,6 +30,7 @@ var indexSectionLabels =
   3: "Files",
   4: "Functions",
   5: "Variables",
-  6: "Pages"
+  6: "Macros",
+  7: "Pages"
 };
 

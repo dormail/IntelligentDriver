@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['cars_0',['cars',['../classOneLaneRoad.html#af03d9f3837355f85742a41a4fd0d043c',1,'OneLaneRoad']]],
-  ['comfortable_5fdeceleration_1',['comfortable_deceleration',['../structCar.html#a0caa5403e9e836ce52a7be269e3c8ff3',1,'Car']]]
+  ['a_5fbias_0',['a_bias',['../classMultiLaneRoad.html#af0f901f5bec37fc67bd620f4c69dd2c8',1,'MultiLaneRoad']]],
+  ['accel_1',['accel',['../structCar.html#a9ad6366e32f251577396c0d565e69436',1,'Car']]]
 ];
