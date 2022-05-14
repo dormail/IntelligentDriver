@@ -104,7 +104,8 @@ public:
   bool should_change(Car& car, unsigned int const lane);
 
   float acceleration_car(const Car& car, const Car& car_front);
-  float acceleration_car(const Car& car, const Car *car_front);
+  float acceleration_car(const Car &car, const Car *car_front);
+  float acceleration_car(const Car *car, const Car *car_front);
 
   // european driving law specific stuff
   void euler_eu(float dt);
