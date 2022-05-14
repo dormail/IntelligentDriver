@@ -239,15 +239,6 @@ float MultiLaneRoad::distance(const Car &car1, const Car &car2)
   distance -= car1.length / 2;
   distance -= car2.length / 2;
 
-  // if (distance < 0)
-  //{
-  //   std::cerr << "distance: " << distance << '\n';
-  //   std::cerr << "locs: " << car1.location << " " << car2.location << '\n';
-  //   std::cerr << "lanes: " << car1.lane << " " << car2.lane << '\n';
-  // }
-
-  // assert(distance >= -1.5 * (car1.length + car2.length));
-  //  assert(distance < length);
   return distance;
 }
 
@@ -467,7 +458,10 @@ void OneLaneRoad::location_enforce_boundries()
   for (auto &element : cars)
   {
     while (element.location > length)
+    {
       element.location -= length;
+    }
+    assert(element.location >= 0 && element.location <= length);
   }
 }
 
@@ -697,32 +691,6 @@ bool MultiLaneRoad::should_change(Car &car, unsigned int const lane)
 }
 
 /**
- * @brief Calculate the acceleration of a car based on the intelligent driver model differential equation
- *
- * @param v         velocity of the car
- * @param v_next    velocity of the car in front
- * @param distance  net distance to the car in front
- * @param v_max     Desired velocity
- * @param s_min     Minimum net distance to the car in front
- * @param T         Safe time head away
- * @param a_max     Max acceleration
- * @param b         Comformatable breaking
- * @return float acceleration of the vehicle described by params
- */
-float acceleration(float v, float v_next, float distance,
-                   float v_max, float s_min, float T, float a_max, float b)
-{
-  double s = s_min + v * T + v * (v - v_next) / (2. * sqrt(a_max * b));
-
-  double ret = a_max * (1. - pow(double(v / v_max), 4) - pow(double(s / distance), 2));
-  if (errno == ERANGE || ret > a_max)
-  {
-    std::cerr << "Acceleration overflowed" << '\n';
-  }
-  return ret;
-}
-
-/**
  * @brief Calculating the acceleration utilizing float acceleration(**params)
  *
  * It does not check if they are on the same lane, which we use in the lane change evaluation
@@ -733,6 +701,9 @@ float acceleration(float v, float v_next, float distance,
  */
 float MultiLaneRoad::acceleration_car(const Car &car, const Car &car_front)
 {
+  if (&car == &car_front)
+    return free_acceleration(car);
+
   return acceleration(car.velocity,
                       car_front.velocity,
                       distance(car, car_front),
@@ -741,6 +712,13 @@ float MultiLaneRoad::acceleration_car(const Car &car, const Car &car_front)
                       car.safe_time_headaway,
                       car.max_acceleration,
                       car.comfortable_deceleration);
+}
+
+float MultiLaneRoad::acceleration_car(const Car& car, const Car *car_front)
+{
+  if (car_front == nullptr || car_front == &car)
+    return free_acceleration(car);
+  return acceleration_car(car, *car_front);
 }
 
 /**
@@ -758,19 +736,22 @@ void MultiLaneRoad::euler_eu(float dt)
   for (Car &car : cars)
   {
     car.accel = a_c_eur(car);
+    car.velocity += dt * car.accel;
+
+    //assert(car.velocity >= 0);
     if (car.velocity < 0.)
     {
-      std::cerr << "car.velocity < 0\n"
+      std::cerr << "car.velocity = " << car.velocity << " < 0\n"
                 << "\tcar.location = " << car.location << '\n'
                 << "\tcar.accel = " << car.accel << '\n'
                 << "\tcar.front->location = " << car.front->location << '\n'
                 << "\tcar_in_front.location = " << car_in_front(car).location
                 << std::endl;
 
-      car.velocity = 0;
+      car.velocity = 0.;
     }
-    assert(car.velocity >= 0.);
-    car.velocity += dt * car.accel;
+    assert(car.velocity >= 0);
+
     car.location += dt * car.velocity;
     offer_lane_change(car);
     correct_front();
@@ -782,6 +763,11 @@ void MultiLaneRoad::euler_eu(float dt)
   location_enforce_boundries();
 
   correct_front();
+
+  for (Car &car : cars)
+  {
+    assert(distance(car, *(car.front)) >= 0);
+  }
 }
 
 /**
@@ -899,6 +885,9 @@ bool MultiLaneRoad::offer_right_eu(Car &car)
       new_front = &iter;
     }
   }
+  if (distance_front < car.min_distance || distance_back < car.min_distance) // check if there is space
+    return false;
+
   if (new_follower == nullptr || new_front == nullptr)
   {
     // decision logic if there is no car on the right lane
@@ -910,19 +899,15 @@ bool MultiLaneRoad::offer_right_eu(Car &car)
     float tilde_a_c_eur = a_c_eur(car);
     car.front = old_front;
     ++(car.lane);
-    float a_c = acceleration_car(car, *(car.front));
+    float a_c = acceleration_car(car, car.front);
 
     Car *old_follower = &(follower(car));
     float a_o = acceleration_car(*old_follower, car);
-    float tilde_a_o = acceleration_car(*old_follower, *(car.front));
+    float tilde_a_o = acceleration_car(*old_follower, car.front);
 
     return (tilde_a_c_eur - a_c + politeness_factor * (tilde_a_o - a_o) > switching_threshhold - a_bias);
   }
   assert(new_follower->front == new_front);
-
-  // check if there is enough space
-  if (distance(*new_follower, car) < new_follower->min_distance || distance(car, *new_front) < car.min_distance)
-    return false;
 
   // tilde represents varaibles after a lane change
   // safe current state, calculate tilde(a_c_eur) and set back to original
@@ -966,21 +951,19 @@ bool MultiLaneRoad::offer_left_eu(Car const &car)
       new_front = &iter;
     }
   }
+  if (distance_front < car.min_distance || distance_back < car.min_distance) // check if there is space
+    return false;
+
+  // decision logic if left lane is empty -> a_c can be calculated as if car is free
   if (new_follower == nullptr || new_front == nullptr)
   {
-    // decision logic if left lane is empty -> a_c can be calculated as if car is free
     float tilde_a_c = car.max_acceleration * (1. - std::pow(car.velocity / car.desired_velocity, 4));
-
     return tilde_a_c - a_c_eur(car) > switching_threshhold + a_bias;
   }
 
-  assert(new_follower->front == new_front);
+  //assert(new_follower->front == new_front);
 
-  // check if there is enough space
-  if (distance(*new_follower, car) < new_follower->min_distance || distance(car, *new_front) < car.min_distance)
-    return false;
-
-  float tilde_a_c = acceleration_car(car, *new_follower);
+  float tilde_a_c = acceleration_car(car, new_front);
 
   float tilde_a_n = acceleration_car(*new_follower, car);
   float a_n = acceleration_car(*new_follower, *(new_follower->front));
@@ -1000,13 +983,15 @@ bool MultiLaneRoad::offer_left_eu(Car const &car)
  */
 float MultiLaneRoad::a_c_eur(Car const &car)
 {
-  float a_c = acceleration_car(car, *(car.front)); // accel on its own lane
+  float a_c = acceleration_car(car, car.front); // accel on its own lane
   // if car is on the left lane it is car.accel
   if (car.lane == lane_num - 1)
     return a_c;
 
   // find leading car on the left lane
   Car *new_front = nullptr;
+  Car *closest = nullptr;
+  float min_dist_closest = length;
   float min_dist_front = length;
   for (auto &iter : cars)
   {
@@ -1018,12 +1003,23 @@ float MultiLaneRoad::a_c_eur(Car const &car)
       min_dist_front = tmp_dist;
       new_front = &iter;
     }
+    tmp_dist = std::min(distance(car,iter), distance(iter, car));
+    if (tmp_dist < min_dist_closest)
+    {
+      min_dist_closest = tmp_dist;
+      closest = &iter;
+    }
   }
+  assert(min_dist_closest <= min_dist_front);
   if (new_front == nullptr)
     return a_c; // left lane empty
 
-  if (car.velocity > new_front->velocity && new_front->velocity > v_crit)
-    return std::min(a_c, acceleration_car(car, *new_front));
+  if (car.velocity > closest->velocity && closest->velocity > v_crit)
+  {
+    float accel_tmp = (distance(car, *new_front) >= 0) ? acceleration_car(car, new_front) : -1. * car.comfortable_deceleration;
+
+    return std::min(a_c, accel_tmp);
+  }
   return a_c;
 }
 
@@ -1111,4 +1107,44 @@ bool MultiLaneRoad::check_accelerations()
     }
   }
   return ret;
+}
+
+/**
+ * @brief Calculate the acceleration of a car based on the intelligent driver model differential equation
+ *
+ * @param v         velocity of the car
+ * @param v_next    velocity of the car in front
+ * @param distance  net distance to the car in front
+ * @param v_max     Desired velocity
+ * @param s_min     Minimum net distance to the car in front
+ * @param T         Safe time head away
+ * @param a_max     Max acceleration
+ * @param b         Comformatable breaking
+ * @return float acceleration of the vehicle described by params
+ */
+float acceleration(float v, float v_next, float distance,
+                   float v_max, float s_min, float T, float a_max, float b)
+{
+  // if (dista)
+  assert(distance >= 0);
+  double s = s_min + v * T + v * (v - v_next) / (2. * sqrt(a_max * b));
+
+  double ret = a_max * (1. - pow(double(v / v_max), 4) - pow(double(s / distance), 2));
+  if (errno == ERANGE || ret > a_max)
+  {
+    std::cerr << "Acceleration overflowed" << '\n';
+  }
+  return ret;
+}
+
+/**
+ * @brief Calculates the acceleration a car would have without a car in front.
+ * It is designed independent of float acceleration(...) so if the velocity exponent
+ * (4) gets changed it has to be changed her as well.
+ * @param car
+ * @return float free acceleration
+ */
+float free_acceleration(const Car &car)
+{
+  return car.max_acceleration * (1. - pow(car.velocity / car.desired_velocity, 4));
 }

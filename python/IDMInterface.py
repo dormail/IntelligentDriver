@@ -14,7 +14,10 @@ import pandas as pd
 # @return [filename, df] filename is the name of the CSV file generated, df is the dataframe with the data
 def IDMSimulation(road_length=200, cars=5, lanes=3, step_width=1/30, steps=1800, IDMBinaryName = "microscopicIDM", EU=False):
     data_dir = '/tmp/IDM'
-    filename = data_dir + "/" + str(road_length) + "_" + str(cars) + "_" + str(lanes) + "_" + str(step_width) + "_" + str(steps) + ".csv"
+    filename = data_dir + "/" + str(road_length) + "_" + str(cars) + "_" + str(lanes) + "_" + str(step_width) + "_" + str(steps) 
+    if EU:
+        filename = filename + "_EU"
+    filename = filename + ".csv"
 
     options = " --road-length " + str(road_length)
     options = options + " --cars " + str(cars)
