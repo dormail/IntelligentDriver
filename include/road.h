@@ -104,6 +104,7 @@ public:
   bool should_change(Car& car, unsigned int const lane);
 
   float acceleration_car(const Car& car, const Car& car_front);
+  float acceleration_car(const Car& car, const Car *car_front);
 
   // european driving law specific stuff
   void euler_eu(float dt);
@@ -131,6 +132,14 @@ public:
  *  a_max    max velocity
  *  b        comfortable breaking
  */
-float acceleration(float v, float v_next, float distance, float v_max, float s_min, float T, float a_max, float b);
+float acceleration(float const v,
+                   float const v_next,
+                   float const distance,
+                   float const v_max,
+                   float const s_min,
+                   float const T,
+                   float const a_max,
+                   float const b);
+float free_acceleration(const Car &car);
 
 #endif
