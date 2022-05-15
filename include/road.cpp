@@ -233,10 +233,7 @@ float MultiLaneRoad::distance(const Car &car1, const Car &car2)
   if (&car1 == &car2)
     return length - car1.length;
 
-  float loc1 = car1.location;
-  float loc2 = car2.location;
-  //float distance = car2.location - car1.location;
-  float distance = loc2 - loc1;
+  float distance = car2.location - car1.location;
   if (distance < 0)
     distance += length;
 
