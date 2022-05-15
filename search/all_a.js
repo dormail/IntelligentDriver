@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['politeness_5ffactor_0',['politeness_factor',['../classMultiLaneRoad.html#a62db0f11e68273d1149be4c2097b28b1',1,'MultiLaneRoad']]],
-  ['print_5flocations_1',['print_locations',['../classOneLaneRoad.html#a56d457f598c5a8d1861833b81465e669',1,'OneLaneRoad::print_locations()'],['../classMultiLaneRoad.html#a4491853007e2f9042ce751f56bcf45af',1,'MultiLaneRoad::print_locations()']]]
+  ['offer_5flane_5fchange_0',['offer_lane_change',['../classMultiLaneRoad.html#ae251c0f894a6fe74e57e0de4e8f4102a',1,'MultiLaneRoad']]],
+  ['offer_5fleft_5feu_1',['offer_left_eu',['../classMultiLaneRoad.html#ae92d7f253124d054709c66bd2cbb9bb6',1,'MultiLaneRoad']]],
+  ['offer_5fright_5feu_2',['offer_right_eu',['../classMultiLaneRoad.html#a61ab1f2ae23f97a49284d74f45b20f28',1,'MultiLaneRoad']]],
+  ['onelaneroad_3',['OneLaneRoad',['../classOneLaneRoad.html',1,'OneLaneRoad'],['../classOneLaneRoad.html#ad4434f53a242b284a9007711afaf7a7a',1,'OneLaneRoad::OneLaneRoad()']]],
+  ['oneonlanetest_2ecpp_4',['OneOnLaneTest.cpp',['../OneOnLaneTest_8cpp.html',1,'']]]
 ];

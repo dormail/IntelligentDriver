@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['safe_5ftime_5fheadaway_0',['safe_time_headaway',['../structCar.html#ab447f06a49986cd59471759ce262dbab',1,'Car']]],
-  ['safety_5fbreak_1',['safety_break',['../classMultiLaneRoad.html#a2fee1a6189f4d77faede23d5e79fff5e',1,'MultiLaneRoad']]],
-  ['switching_5fthreshhold_2',['switching_threshhold',['../classMultiLaneRoad.html#a11bd70d3d1ba4c8b634c7d5a2d453096',1,'MultiLaneRoad']]]
+  ['n_5feu_0',['N_eu',['../namespaceRuntimeAnalysis.html#ae0ac9e76987270e42b19b507cf93fccd',1,'RuntimeAnalysis']]],
+  ['n_5feu_5ferr_1',['N_eu_err',['../namespaceRuntimeAnalysis.html#abd380f28b6d885a756d13dc9528b1ab9',1,'RuntimeAnalysis']]],
+  ['n_5fus_2',['N_us',['../namespaceRuntimeAnalysis.html#acb82adae3498bc53fdc74ac67ba3c333',1,'RuntimeAnalysis']]],
+  ['n_5fus_5ferr_3',['N_us_err',['../namespaceRuntimeAnalysis.html#ae20481633f9fb3c89a3cc1d855b32a17',1,'RuntimeAnalysis']]]
 ];
