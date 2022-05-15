@@ -27,6 +27,7 @@
 MultiLaneRoad::MultiLaneRoad(float length, unsigned int const lane_num, unsigned int const car_num) : OneLaneRoad(car_num, length), lane_num(lane_num)
 {
   congestion_at_start();
+  set_car_front();
 }
 
 /**
@@ -721,6 +722,14 @@ float MultiLaneRoad::acceleration_car(const Car& car, const Car *car_front)
   return acceleration_car(car, *car_front);
 }
 
+float MultiLaneRoad::acceleration_car(const Car *car, const Car *car_front)
+{
+  assert(car != nullptr);
+  if (car_front == nullptr || car_front == car)
+    return free_acceleration(*car);
+  return acceleration_car(*car, *car_front);
+}
+
 /**
  * @brief Time step with the right lane obligation
  *
@@ -738,36 +747,18 @@ void MultiLaneRoad::euler_eu(float dt)
     car.accel = a_c_eur(car);
     car.velocity += dt * car.accel;
 
-    //assert(car.velocity >= 0);
-    if (car.velocity < 0.)
+    if (car.velocity < 0.) // cars tend to get negative velocity because the right lane is ignored in MOBIL
     {
-      std::cerr << "car.velocity = " << car.velocity << " < 0\n"
-                << "\tcar.location = " << car.location << '\n'
-                << "\tcar.accel = " << car.accel << '\n'
-                << "\tcar.front->location = " << car.front->location << '\n'
-                << "\tcar_in_front.location = " << car_in_front(car).location
-                << std::endl;
-
       car.velocity = 0.;
     }
-    assert(car.velocity >= 0);
 
     car.location += dt * car.velocity;
     offer_lane_change(car);
-    correct_front();
+    //correct_front(); // how to get O(N^3) with one line of code
   }
 
   check_fitness();
-  // check_accelerations();
-
   location_enforce_boundries();
-
-  correct_front();
-
-  for (Car &car : cars)
-  {
-    assert(distance(car, *(car.front)) >= 0);
-  }
 }
 
 /**
@@ -801,7 +792,7 @@ void MultiLaneRoad::offer_lane_change(Car &car)
         dist_front = tmp_dist;
       }
     }
-    if (new_follower == nullptr) // new lane empty
+    if (new_follower == nullptr || dist_back == length || dist_front == length) // new lane empty
     {
       follower(car).front = car.front;
       car.front = &car;
@@ -846,7 +837,7 @@ void MultiLaneRoad::offer_lane_change(Car &car)
     }
     follower(car).front = car.front;
     car.front = new_front;
-    // new_follower->front = &car;
+    new_follower->front = &car;
     ++(car.lane);
   }
 }
@@ -888,7 +879,7 @@ bool MultiLaneRoad::offer_right_eu(Car &car)
   if (distance_front < car.min_distance || distance_back < car.min_distance) // check if there is space
     return false;
 
-  if (new_follower == nullptr || new_front == nullptr)
+  if (new_follower == nullptr || new_front == nullptr || distance_back == length || distance_front == length)
   {
     // decision logic if there is no car on the right lane
     // tilde represents varaibles after a lane change
@@ -955,18 +946,16 @@ bool MultiLaneRoad::offer_left_eu(Car const &car)
     return false;
 
   // decision logic if left lane is empty -> a_c can be calculated as if car is free
-  if (new_follower == nullptr || new_front == nullptr)
+  if (new_follower == nullptr || new_front == nullptr || distance_back == length || distance_front == length)
   {
     float tilde_a_c = car.max_acceleration * (1. - std::pow(car.velocity / car.desired_velocity, 4));
     return tilde_a_c - a_c_eur(car) > switching_threshhold + a_bias;
   }
 
-  //assert(new_follower->front == new_front);
-
   float tilde_a_c = acceleration_car(car, new_front);
 
   float tilde_a_n = acceleration_car(*new_follower, car);
-  float a_n = acceleration_car(*new_follower, *(new_follower->front));
+  float a_n = acceleration_car(new_follower, new_front);
 
   return tilde_a_c - a_c_eur(car) + politeness_factor * (tilde_a_n - a_n) > switching_threshhold + a_bias;
 }
