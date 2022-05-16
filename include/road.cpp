@@ -914,6 +914,13 @@ bool MultiLaneRoad::offer_right_eu(Car &car)
   float a_o = acceleration_car(*old_follower, car);
   float tilde_a_o = acceleration_car(*old_follower, *(car.front));
 
+  // computing acceleration new follower will experience so that he does not have 
+  // to break so much 
+  float tilde_a_n = acceleration_car(*new_follower, car);
+  if (tilde_a_n < -1 * new_follower->comfortable_deceleration)
+    return false;
+
+  
   return (tilde_a_c_eur - a_c + politeness_factor * (tilde_a_o - a_o) > switching_threshhold - a_bias);
 }
 
