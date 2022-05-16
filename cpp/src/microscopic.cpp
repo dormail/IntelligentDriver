@@ -226,6 +226,7 @@ int main(int argc, char *const argv[])
   {
     MultiLaneRoad road(road_length, lanes, cars);
     road.MOBIL_all_cars(120 * .278, .2 * 120 * .278);
+    road.make_trucks(.2);
     road.congestion_at_start();
     road.set_car_front();
   
@@ -235,6 +236,7 @@ int main(int argc, char *const argv[])
   {
     MultiLaneRoad road(road_length, lanes, cars);
     road.MOBIL_all_cars(120 * .278, .2 * 120 * .278);
+    road.make_trucks(.2);
     road.congestion_at_start();
     road.set_car_front();
     road.euler_to_CSV(dt, steps, dest_fn);

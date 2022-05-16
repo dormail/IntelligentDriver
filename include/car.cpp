@@ -20,3 +20,17 @@ void set_MOBIL(Car &target) {
   target.min_distance = 2.;
   target.length = 4.;
 }
+
+/**
+ * @brief Transforms the parameters of the car to make it a truck
+ * 
+ * It uses the parameters as used in MOBIL, so the probabibility distribution for desired_speed
+ * gets assumed here.
+ * 
+ * @param car 
+ */
+void make_truck(Car &car)
+{
+  car.desired_velocity *= 2./3.;
+  car.length = 12;
+}

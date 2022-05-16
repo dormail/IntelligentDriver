@@ -37,6 +37,7 @@ public:
   void congestion_at_start(); // create a traffic at the start of the road
   void desired_speed_gaussian(float const mean, float const stddev);
   void MOBIL_all_cars(float const mean, float const variation);
+  void make_trucks(float probability);
 
   // get methods
   unsigned int car_number();

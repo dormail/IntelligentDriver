@@ -62,14 +62,17 @@ void MultiLaneRoad::congestion_at_start()
   unsigned int current_lane = 0;
   float *location = new float[lane_num]();
 
-  for (unsigned int i = 0; i < car_number(); ++i)
+  for (auto &car : cars)
   {
-    cars[i].velocity = 0.;
-    cars[i].location = location[current_lane];
-    cars[i].lane = current_lane;
+    location[current_lane] += car.min_distance;
+    assert(location[current_lane] < length);
+    assert(location[current_lane] >= 0);
+    car.velocity = 0.;
+    car.location = location[current_lane];
+    car.lane = current_lane;
 
-    location[current_lane] += cars[i].length;
-    location[current_lane] += cars[i].min_distance;
+    location[current_lane] += car.length;
+    location[current_lane] += car.min_distance;
 
     ++current_lane;
     current_lane = (current_lane == lane_num) ? 0 : current_lane;
@@ -324,6 +327,17 @@ void OneLaneRoad::MOBIL_all_cars(float const mean, float const variation)
     car.desired_velocity = distribution(generator);
     set_MOBIL(car);
   }
+}
+
+/**
+ * @brief Sets some amount of cars to be trucks
+ * 
+ * @param probability Probabilty of each car to become a truck
+ */
+void OneLaneRoad::make_trucks(float probability)
+{
+  for (unsigned int i = 0; i < uint(probability * car_number()); ++i)
+    make_truck(cars[i]);
 }
 
 /**
@@ -664,9 +678,9 @@ bool MultiLaneRoad::should_change(Car &car, unsigned int const lane)
     }
   }
   // see if it fits
-  if (distance(*car_back_new_lane, car) < 0)
+  if (distance(*car_back_new_lane, car) < car.min_distance)
     return false;
-  if (distance(car, *car_front_new_lane) < 0)
+  if (distance(car, *car_front_new_lane) < car.min_distance)
     return false;
 
   // calculate the accelerations for car, old and new follow each before and after change
@@ -898,7 +912,7 @@ bool MultiLaneRoad::offer_right_eu(Car &car)
 
     return (tilde_a_c_eur - a_c + politeness_factor * (tilde_a_o - a_o) > switching_threshhold - a_bias);
   }
-  assert(new_follower->front == new_front);
+  //assert(new_follower->front == new_front);
 
   // tilde represents varaibles after a lane change
   // safe current state, calculate tilde(a_c_eur) and set back to original
