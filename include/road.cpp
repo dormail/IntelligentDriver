@@ -464,6 +464,14 @@ float OneLaneRoad::average_speed()
   return average / float(car_number());
 }
 
+float OneLaneRoad::average_satisfaction()
+{
+  float sum = 0;
+  for (auto &car : cars)
+    sum += satisfaction(car);
+  return sum / car_number();
+}
+
 /**
  * @brief Enforces the boundries so resets cars to the start when they go beyond length
  *
@@ -560,6 +568,7 @@ int MultiLaneRoad::euler_to_CSV(float const dt, unsigned int const steps, std::s
   {
     output << ",x" << i << ",v" << i << ",l" << i;
   }
+  output << ",average_satisfaction"; // for satisfaction output
   output << std::endl;
 
   float time = 0.;
@@ -573,6 +582,7 @@ int MultiLaneRoad::euler_to_CSV(float const dt, unsigned int const steps, std::s
       output << iter.velocity << ",";
       output << iter.lane << ",";
     }
+    output << average_satisfaction();
     // output << std::endl;
     output << '\n';
 
@@ -600,6 +610,7 @@ int MultiLaneRoad::euler_to_CSV_EU(float const dt, unsigned int const steps, std
   {
     output << ",x" << i << ",v" << i << ",l" << i;
   }
+  output << ",average_satisfaction"; // for satisfaction output
   output << std::endl;
 
   float time = 0.;
@@ -613,8 +624,9 @@ int MultiLaneRoad::euler_to_CSV_EU(float const dt, unsigned int const steps, std
       output << iter.velocity << ",";
       output << iter.lane << ",";
     }
-    output << std::endl;
-    //output << '\n';
+    output << average_satisfaction();
+    //output << std::endl;
+    output << '\n';
 
     euler_eu(dt);
     time += dt;

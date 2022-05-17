@@ -45,6 +45,7 @@ public:
   float velocity(unsigned int const car_index);
   float distance_front(unsigned int const car_index);
   float average_speed();
+  float average_satisfaction();
 
   // diff eq solvers
   void constant_speed(float const dt);

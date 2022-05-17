@@ -34,3 +34,14 @@ void make_truck(Car &car)
   car.desired_velocity *= 2./3.;
   car.length = 12;
 }
+
+/**
+ * @brief Computes how happy a driver is based on its speed.
+ * 
+ * @param car 
+ * @return float car.velocity / car.desired_velocity
+ */
+float satisfaction(Car const &car)
+{
+  return car.velocity / car.desired_velocity;
+}
