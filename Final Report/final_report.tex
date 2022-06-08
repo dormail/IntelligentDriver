@@ -62,54 +62,61 @@
 \title{Manuscript Title:\\with Forced Linebreak}% Force line breaks with \\
 \thanks{A footnote to the article title}%
 
-\author{Ann Author}
- \altaffiliation[Also at ]{Physics Department, XYZ University.}%Lines break automatically or can be forced with \\
-\author{Second Author}%
- \email{Second.Author@institution.edu}
-\affiliation{%
- Authors' institution and/or address\\
- This line break forced with \textbackslash\textbackslash
-}%
-
-\collaboration{MUSO Collaboration}%\noaffiliation
-
-\author{Charlie Author}
- \homepage{http://www.Second.institution.edu/~Charlie.Author}
+\author{Matthias Maile}
+ \email{matthias.maile@kaist.ac.kr}
 \affiliation{
- Second institution and/or address\\
- This line break forced% with \\
-}%
-\affiliation{
- Third institution, the second for Charlie Author
-}%
-\author{Delta Author}
-\affiliation{%
- Authors' institution and/or address\\
- This line break forced with \textbackslash\textbackslash
-}%
-
-\collaboration{CLEO Collaboration}%\noaffiliation
+  Korea Advanced Institute of Science and Technology
+}
 
 \date{\today}% It is always \today, today,
              %  but any date may be explicitly specified
 
 \begin{abstract}
-An article usually includes an abstract, a concise summary of the work
-covered at length in the main body of the article. 
-\begin{description}
-\item[Usage]
-Secondary publications and information retrieval purposes.
-\item[Structure]
-You may use the \texttt{description} environment to structure your abstract;
-use the optional argument of the \verb+\item+ command to give the category of each item. 
-\end{description}
+  This is the abstract
+  An article usually includes an abstract, a concise summary of the work
+  covered at length in the main body of the article. 
+  \begin{description}
+    \item[Usage]
+      Secondary publications and information retrieval purposes.
+    \item[Structure]
+      You may use the \texttt{description} environment to structure your abstract;
+      use the optional argument of the \verb+\item+ command to give the category of each item. 
+  \end{description}
 \end{abstract}
 
 %\keywords{Suggested keywords}%Use showkeys class option if keyword
-                              %display desired
+%display desired
 \maketitle
 
-%\tableofcontents
+\tableofcontents
+
+\section{Introduction}
+\label{sec:introduction}
+
+\section{Previous work}
+\label{sec:previous_work}
+In this report I will cover the previous work only briefly since it has been covered in my midterm report already.
+Firstly I will explain the Intelligent Driver Model by Treiber et al. In his work a car following model has been derived
+which mimics a driver who is well aware of his surrounding. Afterwards I will give an overview over the lane changing
+decision algorithm devoleoped by Kersting et al.
+
+\subsection{The Intelligent Driver Model (IDM)}
+\label{sec:idm}
+
+\subsection{Minimizing overall braking induced by lane changes (MOBIL)}
+\label{sec:mobil}
+
+
+\section{Methods used for the project}
+\label{sec:methods}
+
+\section{Results}
+\label{sec:results}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+%% most stuff below can be removed
 
 \section{\label{sec:level1}First-level heading:\protect\\ The line
 break was forced \lowercase{via} \textbackslash\textbackslash}
@@ -170,17 +177,17 @@ New with natbib 8.3 is an extension to the syntax that allows for
 a star (*) form and two optional arguments on the citation key itself.
 The syntax of the \verb+\cite+ command is thus (informally stated)
 \begin{quotation}\flushleft\leftskip1em
-\verb+\cite+ \verb+{+ \emph{key} \verb+}+, or\\
-\verb+\cite+ \verb+{+ \emph{optarg+key} \verb+}+, or\\
-\verb+\cite+ \verb+{+ \emph{optarg+key} \verb+,+ \emph{optarg+key}\ldots \verb+}+,
+  \verb+\cite+ \verb+{+ \emph{key} \verb+}+, or\\
+  \verb+\cite+ \verb+{+ \emph{optarg+key} \verb+}+, or\\
+  \verb+\cite+ \verb+{+ \emph{optarg+key} \verb+,+ \emph{optarg+key}\ldots \verb+}+,
 \end{quotation}\noindent
 where \emph{optarg+key} signifies 
 \begin{quotation}\flushleft\leftskip1em
-\emph{key}, or\\
-\texttt{*}\emph{key}, or\\
-\texttt{[}\emph{pre}\texttt{]}\emph{key}, or\\
-\texttt{[}\emph{pre}\texttt{]}\texttt{[}\emph{post}\texttt{]}\emph{key}, or even\\
-\texttt{*}\texttt{[}\emph{pre}\texttt{]}\texttt{[}\emph{post}\texttt{]}\emph{key}.
+  \emph{key}, or\\
+  \texttt{*}\emph{key}, or\\
+  \texttt{[}\emph{pre}\texttt{]}\emph{key}, or\\
+  \texttt{[}\emph{pre}\texttt{]}\texttt{[}\emph{post}\texttt{]}\emph{key}, or even\\
+  \texttt{*}\texttt{[}\emph{pre}\texttt{]}\texttt{[}\emph{post}\texttt{]}\emph{key}.
 \end{quotation}\noindent
 where \emph{pre} and \emph{post} is whatever text you wish to place 
 at the beginning and end, respectively, of the bibliographic reference
@@ -292,18 +299,18 @@ default. Use the class option \verb+fleqn+ to flush equations left.
 Below we have numbered single-line equations; this is the most common
 type of equation in \textit{Physical Review}:
 \begin{eqnarray}
-\chi_+(p)\alt{\bf [}2|{\bf p}|(|{\bf p}|+p_z){\bf ]}^{-1/2}
-\left(
-\begin{array}{c}
-|{\bf p}|+p_z\\
-px+ip_y
-\end{array}\right)\;,
-\\
-\left\{%
- \openone234567890abc123\alpha\beta\gamma\delta1234556\alpha\beta
- \frac{1\sum^{a}_{b}}{A^2}%
-\right\}%
-\label{eq:one}.
+  \chi_+(p)\alt{\bf [}2|{\bf p}|(|{\bf p}|+p_z){\bf ]}^{-1/2}
+  \left(
+    \begin{array}{c}
+      |{\bf p}|+p_z\\
+      px+ip_y
+  \end{array}\right)\;,
+  \\
+  \left\{%
+    \openone234567890abc123\alpha\beta\gamma\delta1234556\alpha\beta
+    \frac{1\sum^{a}_{b}}{A^2}%
+  \right\}%
+  \label{eq:one}.
 \end{eqnarray}
 Note the open one in Eq.~(\ref{eq:one}).
 
@@ -311,10 +318,10 @@ Not all numbered equations will fit within a narrow column this
 way. The equation number will move down automatically if it cannot fit
 on the same line with a one-line equation:
 \begin{equation}
-\left\{
- ab12345678abc123456abcdef\alpha\beta\gamma\delta1234556\alpha\beta
- \frac{1\sum^{a}_{b}}{A^2}%
-\right\}.
+  \left\{
+    ab12345678abc123456abcdef\alpha\beta\gamma\delta1234556\alpha\beta
+    \frac{1\sum^{a}_{b}}{A^2}%
+  \right\}.
 \end{equation}
 
 When the \verb+\label{#1}+ command is used [cf. input for
@@ -335,20 +342,20 @@ Multiline equations are obtained by using the \verb+eqnarray+
 environment.  Use the \verb+\nonumber+ command at the end of each line
 to avoid assigning a number:
 \begin{eqnarray}
-{\cal M}=&&ig_Z^2(4E_1E_2)^{1/2}(l_i^2)^{-1}
-\delta_{\sigma_1,-\sigma_2}
-(g_{\sigma_2}^e)^2\chi_{-\sigma_2}(p_2)\nonumber\\
-&&\times
-[\epsilon_jl_i\epsilon_i]_{\sigma_1}\chi_{\sigma_1}(p_1),
+  {\cal M}=&&ig_Z^2(4E_1E_2)^{1/2}(l_i^2)^{-1}
+  \delta_{\sigma_1,-\sigma_2}
+  (g_{\sigma_2}^e)^2\chi_{-\sigma_2}(p_2)\nonumber\\
+           &&\times
+           [\epsilon_jl_i\epsilon_i]_{\sigma_1}\chi_{\sigma_1}(p_1),
 \end{eqnarray}
 \begin{eqnarray}
-\sum \vert M^{\text{viol}}_g \vert ^2&=&g^{2n-4}_S(Q^2)~N^{n-2}
-        (N^2-1)\nonumber \\
- & &\times \left( \sum_{i<j}\right)
-  \sum_{\text{perm}}
- \frac{1}{S_{12}}
- \frac{1}{S_{12}}
- \sum_\tau c^f_\tau~.
+  \sum \vert M^{\text{viol}}_g \vert ^2&=&g^{2n-4}_S(Q^2)~N^{n-2}
+  (N^2-1)\nonumber \\
+                                       & &\times \left( \sum_{i<j}\right)
+                                       \sum_{\text{perm}}
+                                       \frac{1}{S_{12}}
+                                       \frac{1}{S_{12}}
+                                       \sum_\tau c^f_\tau~.
 \end{eqnarray}
 \textbf{Note:} Do not use \verb+\label{#1}+ on a line of a multiline
 equation if \verb+\nonumber+ is also used on that line. Incorrect
@@ -359,13 +366,13 @@ To set a multiline equation without \emph{any} equation
 numbers, use the \verb+\begin{eqnarray*}+,
 \verb+\end{eqnarray*}+ format:
 \begin{eqnarray*}
-\sum \vert M^{\text{viol}}_g \vert ^2&=&g^{2n-4}_S(Q^2)~N^{n-2}
-        (N^2-1)\\
- & &\times \left( \sum_{i<j}\right)
- \left(
-  \sum_{\text{perm}}\frac{1}{S_{12}S_{23}S_{n1}}
- \right)
- \frac{1}{S_{12}}~.
+  \sum \vert M^{\text{viol}}_g \vert ^2&=&g^{2n-4}_S(Q^2)~N^{n-2}
+  (N^2-1)\\
+                                       & &\times \left( \sum_{i<j}\right)
+                                       \left(
+                                         \sum_{\text{perm}}\frac{1}{S_{12}S_{23}S_{n1}}
+                                       \right)
+                                       \frac{1}{S_{12}}~.
 \end{eqnarray*}
 
 To obtain numbers not normally produced by the automatic numbering,
@@ -373,8 +380,8 @@ use the \verb+\tag{#1}+ command, where \verb+#1+ is the desired
 equation number. For example, to get an equation number of
 (\ref{eq:mynum}),
 \begin{equation}
-g^+g^+ \rightarrow g^+g^+g^+g^+ \dots ~,~~q^+q^+\rightarrow
-q^+g^+g^+ \dots ~. \tag{2.6$'$}\label{eq:mynum}
+  g^+g^+ \rightarrow g^+g^+g^+g^+ \dots ~,~~q^+q^+\rightarrow
+  q^+g^+g^+ \dots ~. \tag{2.6$'$}\label{eq:mynum}
 \end{equation}
 
 \paragraph{A few notes on \texttt{tag}s} 
@@ -398,274 +405,274 @@ You may include any number of single-line and multiline equations,
 although it is probably not a good idea to follow one display math
 directly after another.
 \begin{subequations}
-\label{eq:whole}
-\begin{eqnarray}
-{\cal M}=&&ig_Z^2(4E_1E_2)^{1/2}(l_i^2)^{-1}
-(g_{\sigma_2}^e)^2\chi_{-\sigma_2}(p_2)\nonumber\\
-&&\times
-[\epsilon_i]_{\sigma_1}\chi_{\sigma_1}(p_1).\label{subeq:2}
-\end{eqnarray}
-\begin{equation}
-\left\{
- abc123456abcdef\alpha\beta\gamma\delta1234556\alpha\beta
- \frac{1\sum^{a}_{b}}{A^2}
-\right\},\label{subeq:1}
-\end{equation}
+  \label{eq:whole}
+  \begin{eqnarray}
+    {\cal M}=&&ig_Z^2(4E_1E_2)^{1/2}(l_i^2)^{-1}
+    (g_{\sigma_2}^e)^2\chi_{-\sigma_2}(p_2)\nonumber\\
+             &&\times
+             [\epsilon_i]_{\sigma_1}\chi_{\sigma_1}(p_1).\label{subeq:2}
+  \end{eqnarray}
+  \begin{equation}
+    \left\{
+      abc123456abcdef\alpha\beta\gamma\delta1234556\alpha\beta
+      \frac{1\sum^{a}_{b}}{A^2}
+    \right\},\label{subeq:1}
+  \end{equation}
 \end{subequations}
 Giving a \verb+\label{#1}+ command directly after the \verb+\begin{subequations}+, 
-allows you to reference all the equations in the \texttt{subequations} environment. 
-For example, the equations in the preceding subequations environment were
-Eqs.~(\ref{eq:whole}).
+  allows you to reference all the equations in the \texttt{subequations} environment. 
+  For example, the equations in the preceding subequations environment were
+  Eqs.~(\ref{eq:whole}).
 
-\subsubsection{Wide equations}
-The equation that follows is set in a wide format, i.e., it spans the full page. 
-The wide format is reserved for long equations
-that cannot easily be set in a single column:
-\begin{widetext}
-\begin{equation}
-{\cal R}^{(\text{d})}=
- g_{\sigma_2}^e
- \left(
-   \frac{[\Gamma^Z(3,21)]_{\sigma_1}}{Q_{12}^2-M_W^2}
-  +\frac{[\Gamma^Z(13,2)]_{\sigma_1}}{Q_{13}^2-M_W^2}
- \right)
- + x_WQ_e
- \left(
-   \frac{[\Gamma^\gamma(3,21)]_{\sigma_1}}{Q_{12}^2-M_W^2}
-  +\frac{[\Gamma^\gamma(13,2)]_{\sigma_1}}{Q_{13}^2-M_W^2}
- \right)\;. 
- \label{eq:wideeq}
-\end{equation}
-\end{widetext}
-This is typed to show how the output appears in wide format.
-(Incidentally, since there is no blank line between the \texttt{equation} environment above 
-and the start of this paragraph, this paragraph is not indented.)
+  \subsubsection{Wide equations}
+  The equation that follows is set in a wide format, i.e., it spans the full page. 
+  The wide format is reserved for long equations
+  that cannot easily be set in a single column:
+  \begin{widetext}
+    \begin{equation}
+      {\cal R}^{(\text{d})}=
+      g_{\sigma_2}^e
+      \left(
+        \frac{[\Gamma^Z(3,21)]_{\sigma_1}}{Q_{12}^2-M_W^2}
+        +\frac{[\Gamma^Z(13,2)]_{\sigma_1}}{Q_{13}^2-M_W^2}
+      \right)
+      + x_WQ_e
+      \left(
+        \frac{[\Gamma^\gamma(3,21)]_{\sigma_1}}{Q_{12}^2-M_W^2}
+        +\frac{[\Gamma^\gamma(13,2)]_{\sigma_1}}{Q_{13}^2-M_W^2}
+      \right)\;. 
+      \label{eq:wideeq}
+    \end{equation}
+  \end{widetext}
+  This is typed to show how the output appears in wide format.
+  (Incidentally, since there is no blank line between the \texttt{equation} environment above 
+  and the start of this paragraph, this paragraph is not indented.)
 
-\section{Cross-referencing}
-REV\TeX{} will automatically number such things as
-sections, footnotes, equations, figure captions, and table captions. 
-In order to reference them in text, use the
-\verb+\label{#1}+ and \verb+\ref{#1}+ commands. 
-To reference a particular page, use the \verb+\pageref{#1}+ command.
+  \section{Cross-referencing}
+  REV\TeX{} will automatically number such things as
+  sections, footnotes, equations, figure captions, and table captions. 
+  In order to reference them in text, use the
+  \verb+\label{#1}+ and \verb+\ref{#1}+ commands. 
+  To reference a particular page, use the \verb+\pageref{#1}+ command.
 
-The \verb+\label{#1}+ should appear 
-within the section heading, 
-within the footnote text, 
-within the equation, or 
-within the table or figure caption. 
-The \verb+\ref{#1}+ command
-is used in text at the point where the reference is to be displayed.  
-Some examples: Section~\ref{sec:level1} on page~\pageref{sec:level1},
-Table~\ref{tab:table1},%
-\begin{table}[b]%The best place to locate the table environment is directly after its first reference in text
-\caption{\label{tab:table1}%
-A table that fits into a single column of a two-column layout. 
-Note that REV\TeX~4 adjusts the intercolumn spacing so that the table fills the
-entire width of the column. Table captions are numbered
-automatically. 
-This table illustrates left-, center-, decimal- and right-aligned columns,
-along with the use of the \texttt{ruledtabular} environment which sets the 
-Scotch (double) rules above and below the alignment, per APS style.
-}
-\begin{ruledtabular}
-\begin{tabular}{lcdr}
-\textrm{Left\footnote{Note a.}}&
-\textrm{Centered\footnote{Note b.}}&
-\multicolumn{1}{c}{\textrm{Decimal}}&
-\textrm{Right}\\
-\colrule
-1 & 2 & 3.001 & 4\\
-10 & 20 & 30 & 40\\
-100 & 200 & 300.0 & 400\\
-\end{tabular}
-\end{ruledtabular}
-\end{table}
-and Fig.~\ref{fig:epsart}.%
-\begin{figure}[b]
-\includegraphics{fig_1}% Here is how to import EPS art
-\caption{\label{fig:epsart} A figure caption. The figure captions are
-automatically numbered.}
-\end{figure}
+  The \verb+\label{#1}+ should appear 
+  within the section heading, 
+  within the footnote text, 
+  within the equation, or 
+  within the table or figure caption. 
+  The \verb+\ref{#1}+ command
+  is used in text at the point where the reference is to be displayed.  
+  Some examples: Section~\ref{sec:level1} on page~\pageref{sec:level1},
+  Table~\ref{tab:table1},%
+  \begin{table}[b]%The best place to locate the table environment is directly after its first reference in text
+    \caption{\label{tab:table1}%
+      A table that fits into a single column of a two-column layout. 
+      Note that REV\TeX~4 adjusts the intercolumn spacing so that the table fills the
+      entire width of the column. Table captions are numbered
+      automatically. 
+      This table illustrates left-, center-, decimal- and right-aligned columns,
+      along with the use of the \texttt{ruledtabular} environment which sets the 
+      Scotch (double) rules above and below the alignment, per APS style.
+    }
+    \begin{ruledtabular}
+      \begin{tabular}{lcdr}
+        \textrm{Left\footnote{Note a.}}&
+        \textrm{Centered\footnote{Note b.}}&
+        \multicolumn{1}{c}{\textrm{Decimal}}&
+        \textrm{Right}\\
+        \colrule
+        1 & 2 & 3.001 & 4\\
+        10 & 20 & 30 & 40\\
+        100 & 200 & 300.0 & 400\\
+      \end{tabular}
+    \end{ruledtabular}
+  \end{table}
+  and Fig.~\ref{fig:epsart}.%
+  \begin{figure}[b]
+    \includegraphics{fig_1}% Here is how to import EPS art
+    \caption{\label{fig:epsart} A figure caption. The figure captions are
+    automatically numbered.}
+  \end{figure}
 
-\section{Floats: Figures, Tables, Videos, etc.}
-Figures and tables are usually allowed to ``float'', which means that their
-placement is determined by \LaTeX, while the document is being typeset. 
+  \section{Floats: Figures, Tables, Videos, etc.}
+  Figures and tables are usually allowed to ``float'', which means that their
+  placement is determined by \LaTeX, while the document is being typeset. 
 
-Use the \texttt{figure} environment for a figure, the \texttt{table} environment for a table.
-In each case, use the \verb+\caption+ command within to give the text of the
-figure or table caption along with the \verb+\label+ command to provide
-a key for referring to this figure or table.
-The typical content of a figure is an image of some kind; 
-that of a table is an alignment.%
-\begin{figure*}
-\includegraphics{fig_2}% Here is how to import EPS art
-\caption{\label{fig:wide}Use the figure* environment to get a wide
-figure that spans the page in \texttt{twocolumn} formatting.}
-\end{figure*}
-\begin{table*}
-\caption{\label{tab:table3}This is a wide table that spans the full page
-width in a two-column layout. It is formatted using the
-\texttt{table*} environment. It also demonstates the use of
-\textbackslash\texttt{multicolumn} in rows with entries that span
-more than one column.}
-\begin{ruledtabular}
-\begin{tabular}{ccccc}
+  Use the \texttt{figure} environment for a figure, the \texttt{table} environment for a table.
+  In each case, use the \verb+\caption+ command within to give the text of the
+  figure or table caption along with the \verb+\label+ command to provide
+  a key for referring to this figure or table.
+  The typical content of a figure is an image of some kind; 
+  that of a table is an alignment.%
+  \begin{figure*}
+    \includegraphics{fig_2}% Here is how to import EPS art
+    \caption{\label{fig:wide}Use the figure* environment to get a wide
+    figure that spans the page in \texttt{twocolumn} formatting.}
+  \end{figure*}
+  \begin{table*}
+    \caption{\label{tab:table3}This is a wide table that spans the full page
+      width in a two-column layout. It is formatted using the
+      \texttt{table*} environment. It also demonstates the use of
+      \textbackslash\texttt{multicolumn} in rows with entries that span
+    more than one column.}
+    \begin{ruledtabular}
+      \begin{tabular}{ccccc}
  &\multicolumn{2}{c}{$D_{4h}^1$}&\multicolumn{2}{c}{$D_{4h}^5$}\\
- Ion&1st alternative&2nd alternative&lst alternative
-&2nd alternative\\ \hline
- K&$(2e)+(2f)$&$(4i)$ &$(2c)+(2d)$&$(4f)$ \\
- Mn&$(2g)$\footnote{The $z$ parameter of these positions is $z\sim\frac{1}{4}$.}
- &$(a)+(b)+(c)+(d)$&$(4e)$&$(2a)+(2b)$\\
- Cl&$(a)+(b)+(c)+(d)$&$(2g)$\footnotemark[1]
- &$(4e)^{\text{a}}$\\
- He&$(8r)^{\text{a}}$&$(4j)^{\text{a}}$&$(4g)^{\text{a}}$\\
- Ag& &$(4k)^{\text{a}}$& &$(4h)^{\text{a}}$\\
-\end{tabular}
-\end{ruledtabular}
-\end{table*}
+        Ion&1st alternative&2nd alternative&lst alternative
+           &2nd alternative\\ \hline
+        K&$(2e)+(2f)$&$(4i)$ &$(2c)+(2d)$&$(4f)$ \\
+        Mn&$(2g)$\footnote{The $z$ parameter of these positions is $z\sim\frac{1}{4}$.}
+          &$(a)+(b)+(c)+(d)$&$(4e)$&$(2a)+(2b)$\\
+        Cl&$(a)+(b)+(c)+(d)$&$(2g)$\footnotemark[1]
+          &$(4e)^{\text{a}}$\\
+        He&$(8r)^{\text{a}}$&$(4j)^{\text{a}}$&$(4g)^{\text{a}}$\\
+        Ag& &$(4k)^{\text{a}}$& &$(4h)^{\text{a}}$\\
+      \end{tabular}
+    \end{ruledtabular}
+  \end{table*}
 
-Insert an image using either the \texttt{graphics} or
-\texttt{graphix} packages, which define the \verb+\includegraphics{#1}+ command.
-(The two packages differ in respect of the optional arguments 
-used to specify the orientation, scaling, and translation of the image.) 
-To create an alignment, use the \texttt{tabular} environment. 
+  Insert an image using either the \texttt{graphics} or
+  \texttt{graphix} packages, which define the \verb+\includegraphics{#1}+ command.
+  (The two packages differ in respect of the optional arguments 
+  used to specify the orientation, scaling, and translation of the image.) 
+  To create an alignment, use the \texttt{tabular} environment. 
 
-The best place to locate the \texttt{figure} or \texttt{table} environment
-is immediately following its first reference in text; this sample document
-illustrates this practice for Fig.~\ref{fig:epsart}, which
-shows a figure that is small enough to fit in a single column. 
+  The best place to locate the \texttt{figure} or \texttt{table} environment
+  is immediately following its first reference in text; this sample document
+  illustrates this practice for Fig.~\ref{fig:epsart}, which
+  shows a figure that is small enough to fit in a single column. 
 
-In exceptional cases, you will need to move the float earlier in the document, as was done
-with Table~\ref{tab:table3}: \LaTeX's float placement algorithms need to know
-about a full-page-width float earlier. 
+  In exceptional cases, you will need to move the float earlier in the document, as was done
+  with Table~\ref{tab:table3}: \LaTeX's float placement algorithms need to know
+  about a full-page-width float earlier. 
 
-Fig.~\ref{fig:wide}
-has content that is too wide for a single column,
-so the \texttt{figure*} environment has been used.%
-\begin{table}[b]
-\caption{\label{tab:table4}%
-Numbers in columns Three--Five are aligned with the ``d'' column specifier 
-(requires the \texttt{dcolumn} package). 
-Non-numeric entries (those entries without a ``.'') in a ``d'' column are aligned on the decimal point. 
-Use the ``D'' specifier for more complex layouts. }
-\begin{ruledtabular}
-\begin{tabular}{ccddd}
-One&Two&
-\multicolumn{1}{c}{\textrm{Three}}&
-\multicolumn{1}{c}{\textrm{Four}}&
-\multicolumn{1}{c}{\textrm{Five}}\\
-%\mbox{Three}&\mbox{Four}&\mbox{Five}\\
-\hline
-one&two&\mbox{three}&\mbox{four}&\mbox{five}\\
-He&2& 2.77234 & 45672. & 0.69 \\
-C\footnote{Some tables require footnotes.}
-  &C\footnote{Some tables need more than one footnote.}
-  & 12537.64 & 37.66345 & 86.37 \\
-\end{tabular}
-\end{ruledtabular}
-\end{table}
+  Fig.~\ref{fig:wide}
+  has content that is too wide for a single column,
+  so the \texttt{figure*} environment has been used.%
+  \begin{table}[b]
+    \caption{\label{tab:table4}%
+      Numbers in columns Three--Five are aligned with the ``d'' column specifier 
+      (requires the \texttt{dcolumn} package). 
+      Non-numeric entries (those entries without a ``.'') in a ``d'' column are aligned on the decimal point. 
+    Use the ``D'' specifier for more complex layouts. }
+    \begin{ruledtabular}
+      \begin{tabular}{ccddd}
+        One&Two&
+        \multicolumn{1}{c}{\textrm{Three}}&
+        \multicolumn{1}{c}{\textrm{Four}}&
+        \multicolumn{1}{c}{\textrm{Five}}\\
+        %\mbox{Three}&\mbox{Four}&\mbox{Five}\\
+        \hline
+        one&two&\mbox{three}&\mbox{four}&\mbox{five}\\
+        He&2& 2.77234 & 45672. & 0.69 \\
+        C\footnote{Some tables require footnotes.}
+          &C\footnote{Some tables need more than one footnote.}
+          & 12537.64 & 37.66345 & 86.37 \\
+      \end{tabular}
+    \end{ruledtabular}
+  \end{table}
 
-The content of a table is typically a \texttt{tabular} environment, 
-giving rows of type in aligned columns. 
-Column entries separated by \verb+&+'s, and 
-each row ends with \textbackslash\textbackslash. 
-The required argument for the \texttt{tabular} environment
-specifies how data are aligned in the columns. 
-For instance, entries may be centered, left-justified, right-justified, aligned on a decimal
-point. 
-Extra column-spacing may be be specified as well, 
-although REV\TeX~4 sets this spacing so that the columns fill the width of the
-table. Horizontal rules are typeset using the \verb+\hline+
-command. The doubled (or Scotch) rules that appear at the top and
-bottom of a table can be achieved enclosing the \texttt{tabular}
-environment within a \texttt{ruledtabular} environment. Rows whose
-columns span multiple columns can be typeset using the
-\verb+\multicolumn{#1}{#2}{#3}+ command (for example, see the first
-row of Table~\ref{tab:table3}).%
+  The content of a table is typically a \texttt{tabular} environment, 
+  giving rows of type in aligned columns. 
+  Column entries separated by \verb+&+'s, and 
+  each row ends with \textbackslash\textbackslash. 
+  The required argument for the \texttt{tabular} environment
+  specifies how data are aligned in the columns. 
+  For instance, entries may be centered, left-justified, right-justified, aligned on a decimal
+  point. 
+  Extra column-spacing may be be specified as well, 
+  although REV\TeX~4 sets this spacing so that the columns fill the width of the
+  table. Horizontal rules are typeset using the \verb+\hline+
+  command. The doubled (or Scotch) rules that appear at the top and
+  bottom of a table can be achieved enclosing the \texttt{tabular}
+  environment within a \texttt{ruledtabular} environment. Rows whose
+  columns span multiple columns can be typeset using the
+  \verb+\multicolumn{#1}{#2}{#3}+ command (for example, see the first
+  row of Table~\ref{tab:table3}).%
 
-Tables~\ref{tab:table1}, \ref{tab:table3}, \ref{tab:table4}, and \ref{tab:table2}%
-\begin{table}[b]
-\caption{\label{tab:table2}
-A table with numerous columns that still fits into a single column. 
-Here, several entries share the same footnote. 
-Inspect the \LaTeX\ input for this table to see exactly how it is done.}
-\begin{ruledtabular}
-\begin{tabular}{cccccccc}
+  Tables~\ref{tab:table1}, \ref{tab:table3}, \ref{tab:table4}, and \ref{tab:table2}%
+  \begin{table}[b]
+    \caption{\label{tab:table2}
+      A table with numerous columns that still fits into a single column. 
+      Here, several entries share the same footnote. 
+    Inspect the \LaTeX\ input for this table to see exactly how it is done.}
+    \begin{ruledtabular}
+      \begin{tabular}{cccccccc}
  &$r_c$ (\AA)&$r_0$ (\AA)&$\kappa r_0$&
  &$r_c$ (\AA) &$r_0$ (\AA)&$\kappa r_0$\\
-\hline
-Cu& 0.800 & 14.10 & 2.550 &Sn\footnotemark[1]
-& 0.680 & 1.870 & 3.700 \\
-Ag& 0.990 & 15.90 & 2.710 &Pb\footnotemark[2]
-& 0.450 & 1.930 & 3.760 \\
-Au& 1.150 & 15.90 & 2.710 &Ca\footnotemark[3]
-& 0.750 & 2.170 & 3.560 \\
-Mg& 0.490 & 17.60 & 3.200 &Sr\footnotemark[4]
-& 0.900 & 2.370 & 3.720 \\
-Zn& 0.300 & 15.20 & 2.970 &Li\footnotemark[2]
-& 0.380 & 1.730 & 2.830 \\
-Cd& 0.530 & 17.10 & 3.160 &Na\footnotemark[5]
-& 0.760 & 2.110 & 3.120 \\
-Hg& 0.550 & 17.80 & 3.220 &K\footnotemark[5]
-&  1.120 & 2.620 & 3.480 \\
-Al& 0.230 & 15.80 & 3.240 &Rb\footnotemark[3]
-& 1.330 & 2.800 & 3.590 \\
-Ga& 0.310 & 16.70 & 3.330 &Cs\footnotemark[4]
-& 1.420 & 3.030 & 3.740 \\
-In& 0.460 & 18.40 & 3.500 &Ba\footnotemark[5]
-& 0.960 & 2.460 & 3.780 \\
-Tl& 0.480 & 18.90 & 3.550 & & & & \\
-\end{tabular}
-\end{ruledtabular}
-\footnotetext[1]{Here's the first, from Ref.~\onlinecite{feyn54}.}
-\footnotetext[2]{Here's the second.}
-\footnotetext[3]{Here's the third.}
-\footnotetext[4]{Here's the fourth.}
-\footnotetext[5]{And etc.}
-\end{table}
-show various effects.
-A table that fits in a single column employs the \texttt{table}
-environment. 
-Table~\ref{tab:table3} is a wide table, set with the \texttt{table*} environment. 
-Long tables may need to break across pages. 
-The most straightforward way to accomplish this is to specify
-the \verb+[H]+ float placement on the \texttt{table} or
-\texttt{table*} environment. 
-However, the \LaTeXe\ package \texttt{longtable} allows headers and footers to be specified for each page of the table. 
-A simple example of the use of \texttt{longtable} can be found
-in the file \texttt{summary.tex} that is included with the REV\TeX~4
-distribution.
+ \hline
+        Cu& 0.800 & 14.10 & 2.550 &Sn\footnotemark[1]
+          & 0.680 & 1.870 & 3.700 \\
+        Ag& 0.990 & 15.90 & 2.710 &Pb\footnotemark[2]
+          & 0.450 & 1.930 & 3.760 \\
+        Au& 1.150 & 15.90 & 2.710 &Ca\footnotemark[3]
+          & 0.750 & 2.170 & 3.560 \\
+        Mg& 0.490 & 17.60 & 3.200 &Sr\footnotemark[4]
+          & 0.900 & 2.370 & 3.720 \\
+        Zn& 0.300 & 15.20 & 2.970 &Li\footnotemark[2]
+          & 0.380 & 1.730 & 2.830 \\
+        Cd& 0.530 & 17.10 & 3.160 &Na\footnotemark[5]
+          & 0.760 & 2.110 & 3.120 \\
+        Hg& 0.550 & 17.80 & 3.220 &K\footnotemark[5]
+          &  1.120 & 2.620 & 3.480 \\
+        Al& 0.230 & 15.80 & 3.240 &Rb\footnotemark[3]
+          & 1.330 & 2.800 & 3.590 \\
+        Ga& 0.310 & 16.70 & 3.330 &Cs\footnotemark[4]
+          & 1.420 & 3.030 & 3.740 \\
+        In& 0.460 & 18.40 & 3.500 &Ba\footnotemark[5]
+          & 0.960 & 2.460 & 3.780 \\
+        Tl& 0.480 & 18.90 & 3.550 & & & & \\
+      \end{tabular}
+    \end{ruledtabular}
+    \footnotetext[1]{Here's the first, from Ref.~\onlinecite{feyn54}.}
+    \footnotetext[2]{Here's the second.}
+    \footnotetext[3]{Here's the third.}
+    \footnotetext[4]{Here's the fourth.}
+    \footnotetext[5]{And etc.}
+  \end{table}
+  show various effects.
+  A table that fits in a single column employs the \texttt{table}
+  environment. 
+  Table~\ref{tab:table3} is a wide table, set with the \texttt{table*} environment. 
+  Long tables may need to break across pages. 
+  The most straightforward way to accomplish this is to specify
+  the \verb+[H]+ float placement on the \texttt{table} or
+  \texttt{table*} environment. 
+  However, the \LaTeXe\ package \texttt{longtable} allows headers and footers to be specified for each page of the table. 
+  A simple example of the use of \texttt{longtable} can be found
+  in the file \texttt{summary.tex} that is included with the REV\TeX~4
+  distribution.
 
-There are two methods for setting footnotes within a table (these
-footnotes will be displayed directly below the table rather than at
-the bottom of the page or in the bibliography). The easiest
-and preferred method is just to use the \verb+\footnote{#1}+
-command. This will automatically enumerate the footnotes with
-lowercase roman letters. However, it is sometimes necessary to have
-multiple entries in the table share the same footnote. In this case,
-there is no choice but to manually create the footnotes using
-\verb+\footnotemark[#1]+ and \verb+\footnotetext[#1]{#2}+.
-\texttt{\#1} is a numeric value. Each time the same value for
-\texttt{\#1} is used, the same mark is produced in the table. The
-\verb+\footnotetext[#1]{#2}+ commands are placed after the \texttt{tabular}
-environment. Examine the \LaTeX\ source and output for
-Tables~\ref{tab:table1} and \ref{tab:table2}
-for examples.
+  There are two methods for setting footnotes within a table (these
+  footnotes will be displayed directly below the table rather than at
+  the bottom of the page or in the bibliography). The easiest
+  and preferred method is just to use the \verb+\footnote{#1}+
+  command. This will automatically enumerate the footnotes with
+  lowercase roman letters. However, it is sometimes necessary to have
+  multiple entries in the table share the same footnote. In this case,
+  there is no choice but to manually create the footnotes using
+  \verb+\footnotemark[#1]+ and \verb+\footnotetext[#1]{#2}+.
+  \texttt{\#1} is a numeric value. Each time the same value for
+  \texttt{\#1} is used, the same mark is produced in the table. The
+  \verb+\footnotetext[#1]{#2}+ commands are placed after the \texttt{tabular}
+  environment. Examine the \LaTeX\ source and output for
+  Tables~\ref{tab:table1} and \ref{tab:table2}
+  for examples.
 
-Video~\ref{vid:PRSTPER.4.010101} 
-illustrates several features new with REV\TeX4.2,
-starting with the \texttt{video} environment, which is in the same category with
-\texttt{figure} and \texttt{table}.%
-\begin{video}
-\href{http://prst-per.aps.org/multimedia/PRSTPER/v4/i1/e010101/e010101_vid1a.mpg}{\includegraphics{vid_1a}}%
- \quad
-\href{http://prst-per.aps.org/multimedia/PRSTPER/v4/i1/e010101/e010101_vid1b.mpg}{\includegraphics{vid_1b}}
- \setfloatlink{http://link.aps.org/multimedia/PRSTPER/v4/i1/e010101}%
- \caption{\label{vid:PRSTPER.4.010101}%
-  Students explain their initial idea about Newton's third law to a teaching assistant. 
-  Clip (a): same force.
-  Clip (b): move backwards.
- }%
+  Video~\ref{vid:PRSTPER.4.010101} 
+  illustrates several features new with REV\TeX4.2,
+  starting with the \texttt{video} environment, which is in the same category with
+  \texttt{figure} and \texttt{table}.%
+  \begin{video}
+    \href{http://prst-per.aps.org/multimedia/PRSTPER/v4/i1/e010101/e010101_vid1a.mpg}{\includegraphics{vid_1a}}%
+    \quad
+    \href{http://prst-per.aps.org/multimedia/PRSTPER/v4/i1/e010101/e010101_vid1b.mpg}{\includegraphics{vid_1b}}
+    \setfloatlink{http://link.aps.org/multimedia/PRSTPER/v4/i1/e010101}%
+    \caption{\label{vid:PRSTPER.4.010101}%
+      Students explain their initial idea about Newton's third law to a teaching assistant. 
+      Clip (a): same force.
+      Clip (b): move backwards.
+    }%
 \end{video}
 The \verb+\setfloatlink+ command causes the title of the video to be a hyperlink to the
 indicated URL; it may be used with any environment that takes the \verb+\caption+
@@ -679,9 +686,9 @@ figures or tables be in numerical order in text, so don't cite
 Fig.~\ref{fig:wide} until Fig.~\ref{fig:epsart} has been cited.
 
 \begin{acknowledgments}
-We wish to acknowledge the support of the author community in using
-REV\TeX{}, offering suggestions and encouragement, testing new versions,
-\dots.
+  We wish to acknowledge the support of the author community in using
+  REV\TeX{}, offering suggestions and encouragement, testing new versions,
+  \dots.
 \end{acknowledgments}
 
 \appendix
@@ -719,7 +726,7 @@ Observe that this appendix was started by using
 
 Note the equation number in an appendix:
 \begin{equation}
-E=mc^2.
+  E=mc^2.
 \end{equation}
 
 \subsection{\label{app:subsec}A subsection in an appendix}
@@ -730,13 +737,13 @@ numbering: we are now in Appendix~\ref{app:subsec}.
 Note the equation numbers in this appendix, produced with the
 subequations environment:
 \begin{subequations}
-\begin{eqnarray}
-E&=&mc, \label{appa}
-\\
-E&=&mc^2, \label{appb}
-\\
-E&\agt& mc^3. \label{appc}
-\end{eqnarray}
+  \begin{eqnarray}
+    E&=&mc, \label{appa}
+    \\
+    E&=&mc^2, \label{appb}
+    \\
+    E&\agt& mc^3. \label{appc}
+  \end{eqnarray}
 \end{subequations}
 They turn out to be Eqs.~(\ref{appa}), (\ref{appb}), and (\ref{appc}).
 
