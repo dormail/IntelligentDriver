@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION "3.7.1")
 
-#SET(CMAKE_CXX_FLAGS "-Wall -g -std=c++2a")
-SET(CMAKE_CXX_FLAGS "-std=c++2a")
+SET(CMAKE_CXX_FLAGS "-Wall -g -std=c++2a")
+#SET(CMAKE_CXX_FLAGS "-std=c++2a")
 
 project("macroscopicIDM")
 
