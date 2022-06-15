@@ -7,6 +7,23 @@ decision algorithm devoleoped by Kersting et al.
 
 \subsection{The Intelligent Driver Model (IDM)}
 \label{sec:idm}
+The IDM is a car following model, meaning that a the accelearation of a car is a function of the cars velocity,
+distance to the car in front and the velocity of the car in front:
+\begin{equation}
+  \dot v_\alpha = a \left[1 - \left(\frac{v_\alpha}{v_0^{(\alpha)}}\right)^\delta -
+    \left(\frac{s^*(v_\alpha, \Delta v)}{s_\alpha}\right)^2
+  \right]
+  \label{eqn:idm:sprime}
+\end{equation}
+It consists of a acceleration term $a [1 - (v_\alpha / v_0^{(\alpha)})^\delta]$ and a term modelling the breaking
+behaviour $-a (s^* / s_\alpha)^2$ which gets larger the closer a car drives to the car ahead. The breaking behaviour
+can be understood as the ratio between the ``desired minimum gap``
+\begin{multline}
+  s^*(v, \Delta v) = s_0^{(\alpha)} + s_1^{(\alpha)} \sqrt{\frac{v_\alpha}{v_0^{(\alpha)}}} + T^{(\alpha)}v_\alpha
+  \\
+  + \frac{v\Delta v}{2 \sqrt{a^{(\alpha)} b^{(\alpha)}}}
+\end{multline}
+and the actual gap.
 
 \subsection{Minimizing overall braking induced by lane changes (MOBIL)}
 \label{sec:mobil}

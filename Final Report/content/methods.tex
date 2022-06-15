@@ -1,3 +1,30 @@
 \section{Methods used for the project}
 \label{sec:methods}
 
+\subsection{Implementation in C++}
+\label{sec:implementation}
+The algorithms for driver acceleration and lane changing are implemented in a C++ programm using the language`s
+object-oriented features. For the car a struct can store microscopic variables like position, velocity, lane and
+features like car length. The parameters controlling the driver`s behaviour (desired velocity, safe time headaway, etc.)
+are also stored in this struct to make the underlying parameter distribution as flexible as possible. A class
+representing a road uses a vector from the standart template library to store $N$ cars \cite{cpp-vector}.
+
+Without optimizations, the computationally most expensive operation is the computation of a car in front or back of a
+driver. Since this information is needed for the IDM however in \ref{eqn:idm:sprime}, it is advantageous to speed up
+this computation or to make it unneccessary. The later has been achieved by adding a pointer to the car class which
+points to the vehicle in front. As it gets automatically adjusted to new front after a lane change, it removes the step
+of computing the vehicle in front for each intergration step.
+
+\subsection{Execution and data exchange in python runtime}
+While the aforementioned programm written in C++ can be manually run as explained in Appendix
+\ref{sec:manual_execution}. While this can be used to generate comma-separated value (CSV) spreadsheets of the overall time
+evolution, to make the data more reproducable a script can be used to generate those. With a Python runtime and the
+\texttt{os.system}
+command, the programm can be executed and the command line instructions generated automatically, removing user input as
+a dangerous source of error. To achieve high savings in runtime, the python module \texttt{multiprocessing} has been
+used to launch multiple instances of the C++ simulation on different threads. 
+
+To send the data from the C++ programm to the python instance, the afforementioned CSV files come into play. While ASCII
+formated files have performance and storage overhead, it is easy to write them in C++. In Python they have been read and
+processed into numpy arrays by \texttt{pandas}.
+
