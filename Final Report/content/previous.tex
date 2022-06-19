@@ -27,11 +27,13 @@ and the actual gap.
 
 \subsection{Minimizing overall braking induced by lane changes (MOBIL)}
 \label{sec:mobil}
-As explained in the midterm report, there are models for lane change strategies. For this project the model 
-\textit{Minimizing overall braking induced by lane changes} has been chosen \cite{MOBIL}. The model has been developed by
+As explained in the midterm report, there are already few  models for lane change strategies. 
+For this project the model 
+\textit{Minimizing overall braking induced by lane changes} has been chosen \cite{MOBIL}. 
+The model has been developed by
 a similar group as the IDM and they proved that they worked well together. 
 
-One key feature of MOBIL is that it contained two modes of driving, symmetric and assymetric laws with the left
+One key feature of MOBIL is that it contained two modes of driving, symmetric and asymmetric laws with the left
 lane as the default lane. This is perfect for our use case as these are the `US` law and Vienna Convention laws
 respectively. In the following I will give an overview about the equations for each case.
 
@@ -58,7 +60,7 @@ interpreted as altruistic driving behaviour. Secondly, the lane switching thresh
 minimal gains.
 
 \subsubsection{Asymmetric driving law}
-The assymetric driving law is more complicated and more complex decision trees. There are two basic rules that
+The asymmetric driving law is more complicated and more complex decision trees. There are two basic rules that
 apply here:
 \begin{enumerate}
   \item Passing rule: A car must not pass on the right-hand lane. This rule only applies when traffic is not
@@ -82,7 +84,7 @@ the car in front on the left lane.
 Using $a_c^\text{eur}$ for the dynamics on right-hand lane implements the logic for the critical behaviour around
 $v_\text{crit}$.
 
-To implement the lane usage rule, an assymetry gets added to the incentive criterion. When a change to a right hand
+To implement the lane usage rule, an asymmetry gets added to the incentive criterion. When a change to a right hand
 lane is proposed, the inequility reads
 \begin{equation}
   L \rightarrow R: \quad

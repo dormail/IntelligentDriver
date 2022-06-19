@@ -1,7 +1,59 @@
-\section{Manual execution in command line}
+\section{Compiling and running the program}
 \label{sec:manual_execution}
+This is only a minimal guidance, for more information a direct contact to the author is recomended,
+either via e-mail or by opening an issue on the
+\href{https://github.com/dormail/IntelligentDriver}{github repository of this project}. Overall,
+this project has only been run on 
+\href{https://www.debian.org/}{Debian 11} and \href{https://getfedora.org/}{Fedora 36}. As the
+author has no access to a Windows machine, no testing has been done or is currently planned. The best bet to
+still run this project is to utilize the Windows Subsystem for linux (WSL2).
+
+\subsection{Building the program}
+The project uses \texttt{cmake} as a build system. The following commands shall be run to compile
+and install it (it assumes an terminal with the project`s main directory as a working directory):
+\begin{enumerate}
+  \item \texttt{mkdir build} to create the \texttt{build} directory
+  \item \texttt{cmake -B build .} to create the build files in the directory
+  \item \texttt{cd build} to change the current working directory to the newly created build
+    directory
+  \item \texttt{make} for compiling
+  \item \texttt{sudo make install} this will ask for your user credentials since it installs the
+    program. If you do not trust this program you can also leave this step out. Then you will have
+    to change the execution command when running it in the terminal or in the python script
+    accordingly. 
+\end{enumerate}
+Now the program can be run by typing \texttt{microscopicIDM} into the command line, if you did not
+install it you need to run \texttt{./microscopicIDM}. You can also add the executable program to the
+path of the shell to run it, there are few guides on it in the internet.
+
+\subsection{Running the program and giving instructions}
+This program can be executed in the terminal and accepts unix-style command line arguments denoted
+with a dash (\texttt{-}).
+
+The simplest execution is simply running \texttt{microscopicIDM}, as it will only run with default
+values. \texttt{microscopicIDM -h} will show a help page with command line commands you can add to
+specify parameters, e.g. \texttt{microscopicIDM --road-length 5000} to change the road length to
+$\SI{5000}{m}$. The most important is the \texttt{--output-csv <filename>} command, as it specifies
+the file name and location for the CSV file containing the data.
 
 \section{Differentiation from the previous work}
 \label{sec:diff_previous}
+During my presentation a question has been raised how my project differs from the previous work. The
+biggest differences between MOBIL and this project is
+\begin{itemize}
+  \item The amount of lanes has been increased to 3
+  \item The road is circular
+\end{itemize}
+While the former is a trivial difference, the second is not. 
 
+Changing the road from an infinite road stretch to a circular one  not only significantly changes the
+way data structures and algorithms have to be designed and selected, it also creates a state of
+equilibrium. The researchers for the MOBIL publication used and infinite road and had measurements
+at fixed locations, after around 5 to 10 kilometers. There was no test if there is a state of
+equilibrium so early, but by having a simulated time intervall of over an hour, there results have
+been more stable. 
+
+At the same time, it can safe a lot of runtime as less cars are needed and a visual test showed that
+for road lengths over 1 km the marginal behaviour stemming from the border can not be observed. A
+script creating a clip animation is also given in the project.
 

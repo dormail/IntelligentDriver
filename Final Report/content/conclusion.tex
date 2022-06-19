@@ -1,2 +1,32 @@
 \section{Conclusion and Outlook}
 \label{sec:conclusion}
+In this project, 
+\begin{itemize}
+  \item The IDM and MOBIL algorithms have been implemented to create microscopic multi lane road
+    simulation,
+  \item Optimizations to the program have been used to reduce execution time by using pointers and
+    multithreaded exections,
+  \item A road`s performance has been evaluated regarding speed and throughput for symmetric and
+    asymmetric trafic laws,
+  \item and tested against a real world test.
+\end{itemize}
+The results in \autoref{sec:results} showed only a marginal difference between the two mentioned
+traffic laws for both speed and throughput. A per-lane analysis showed that when adding more cars
+the right has the strongest performance loss in the asymmetric traffic law, for the symmetric case
+all lanes have an equal loss.
+
+For future projects more work can be done by
+\begin{itemize}
+  \item Utilizing more refined data structures as the \texttt{std::vector} can be replaced by a
+    double linked list or similar structures as it makes finding neighbors easy,
+  \item Improving the data analysis; currently the average speed computation is lacking in
+    refinement, as it looks at the peek for the total time integration and does not take variances
+    into account,
+  \item Better integration techniques can be used as here only forward-euler has been used for
+    simplicity,
+  \item Using a larger parameter space as most parameters have been assumed equal for
+    all cars, which is a strong simplification,
+  \item More performance measures can be used as average speed and and throughput are to simple and
+    one-dimensional.
+\end{itemize}
+

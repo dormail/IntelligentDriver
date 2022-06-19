@@ -63,8 +63,9 @@
 
 \preprint{APS/123-QED}
 
-\title{Manuscript Title:\\with Forced Linebreak}% Force line breaks with \\
-\thanks{A footnote to the article title}%
+\title{Regulations about overtaking and their implications:\\
+Final Report}% Force line breaks with \\
+%\thanks{I%A footnote to the article title}%
 
 \author{Matthias Maile}
  \email{matthias.maile@kaist.ac.kr}
@@ -76,16 +77,14 @@
              %  but any date may be explicitly specified
 
 \begin{abstract}
-  This is the abstract
-  An article usually includes an abstract, a concise summary of the work
-  covered at length in the main body of the article. 
-  \begin{description}
-    \item[Usage]
-      Secondary publications and information retrieval purposes.
-    \item[Structure]
-      You may use the \texttt{description} environment to structure your abstract;
-      use the optional argument of the \verb+\item+ command to give the category of each item. 
-  \end{description}
+  In this final report the results of the project for the course
+ Computational Physics at KAIST get summarized, along a description of the used methods
+  and technologies used. In the project, a low level implementation in C++ has been done, achieving
+  fast runtime and high flexibillity. With the completed implementation the symmetric (`American`) 
+  traffic law gets compared to the widely used asymmetric driving law regarding passing on left
+  lanes. The simulation is based on state-of-the-art traffic models with the \textit{intelligent driver
+  model} (IDM) for in-lane dynamics and the \textit{minimizing overal braking induced by lane changes}
+  (MOBIL) model as a decision tree for lane changes.
 \end{abstract}
 
 %\keywords{Suggested keywords}%Use showkeys class option if keyword

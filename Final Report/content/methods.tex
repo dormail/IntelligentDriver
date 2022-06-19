@@ -10,19 +10,27 @@ are also stored in this struct to make the underlying parameter distribution as 
 representing a road uses a vector from the standart template library to store $N$ cars \cite{cpp-vector}.
 
 Without optimizations, the computationally most expensive operation is the computation of a car in front or back of a
-driver. Since this information is needed for the IDM however in \ref{eqn:idm:sprime}, it is advantageous to speed up
+driver. Since this information is needed for the IDM however in \autoref{eqn:idm:sprime}, it is advantageous to speed up
 this computation or to make it unneccessary. The later has been achieved by adding a pointer to the car class which
 points to the vehicle in front. As it gets automatically adjusted to new front after a lane change, it removes the step
 of computing the vehicle in front for each intergration step.
 
+As a final note regarding the low level implementation, the time integration method is the forward
+euler`s method. Although other methods are proven to be more precise, Eulers method is simpler to
+implement, especially for a complicated differential equations with neighbor interactions as they 
+are given in the IDM.
+
 \subsection{Execution and data exchange in python runtime}
-While the aforementioned programm written in C++ can be manually run as explained in Appendix
-\ref{sec:manual_execution}. While this can be used to generate comma-separated value (CSV) spreadsheets of the overall time
-evolution, to make the data more reproducable a script can be used to generate those. With a Python runtime and the
+The aforementioned program running the simulation can be compiled and run manually as explained in 
+\ref{sec:manual_execution}.
+While this can be used to generate comma-separated value (CSV) spreadsheets of the overall time
+evolution, to make the data more reproducable a script can be used to generate those. 
+With a Python runtime and the
 \texttt{os.system}
-command, the programm can be executed and the command line instructions generated automatically, removing user input as
-a dangerous source of error. To achieve high savings in runtime, the python module \texttt{multiprocessing} has been
-used to launch multiple instances of the C++ simulation on different threads. 
+command, the programm can be executed and the command line instructions get generated automatically, 
+removing user input as a dangerous source of error. To achieve high savings in runtime, the python module 
+\texttt{multiprocessing} has been used to launch multiple instances of the C++ simulation on different 
+threads. 
 
 To exchange the data between the simulating program and the data analysis, the afforementioned 
 CSV files come into play. While ASCII formated files have performance and storage 
