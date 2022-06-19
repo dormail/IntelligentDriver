@@ -27,3 +27,74 @@ and the actual gap.
 
 \subsection{Minimizing overall braking induced by lane changes (MOBIL)}
 \label{sec:mobil}
+As explained in the midterm report, there are models for lane change strategies. For this project the model 
+\textit{Minimizing overall braking induced by lane changes} has been chosen \cite{MOBIL}. The model has been developed by
+a similar group as the IDM and they proved that they worked well together. 
+
+One key feature of MOBIL is that it contained two modes of driving, symmetric and assymetric laws with the left
+lane as the default lane. This is perfect for our use case as these are the `US` law and Vienna Convention laws
+respectively. In the following I will give an overview about the equations for each case.
+
+\subsubsection{Symmetric driving law}
+The more simple symmetric driving law, is modeled by the \textit{incentive criterion}
+\begin{equation}
+  \underbrace{\tilde{a}_c - a_c}_\text{driver}
+  + p (
+  \underbrace{\tilde{a}_n - a_n}_\text{new follower}
+  +
+  \underbrace{\tilde{a}_0 - a_0}_\text{old follower}
+  )
+  > \Delta a_\text{th}.
+  \label{eqn:US_incentive}
+\end{equation}
+While the lower index specifies which car is meant by an expression, the tilde marks a variable as if it a proposed
+lane change is accepted, e.g. $\tilde{a}_n$ is the acceleration of the new follower after the car has changed the
+lane.
+
+This condition also introduces 2 model parameters, the \textit{politeness factor} $p$ and the switching threshold
+$\Delta a_\text{th}$. The former regulates how strong a driver should consider the advantage of a lane change for
+the next neighbors. On a qualitative note, $p=0$ indicates a driver ignoring his surrounding, while $p>0$ can be
+interpreted as altruistic driving behaviour. Secondly, the lane switching threshold forbids lane changes with
+minimal gains.
+
+\subsubsection{Asymmetric driving law}
+The assymetric driving law is more complicated and more complex decision trees. There are two basic rules that
+apply here:
+\begin{enumerate}
+  \item Passing rule: A car must not pass on the right-hand lane. This rule only applies when traffic is not
+    congested. Congested traffic is defined as cars moving below a \textit{ciritical velocity} 
+    $v_\text{crit} = 60 \,
+    \text{km/h}$.
+  \item Lane usage rule: A car should only move to the left for overtaking and treat the right lane as the default
+    lane.
+\end{enumerate}
+
+The passing rule is implemented by using a new variable on the right lane of a lane change:
+\begin{equation}
+  a_c^\text{eur} = 
+  \begin{cases}
+    \text{min}(a_c, \tilde{a}_c) & \text{if } v_c > \tilde v_\text{lead} > v_{crit}, \\
+    a_c                         & \text{otherwise}
+  \end{cases}
+\end{equation}
+with $\tilde a_c$ for the acceleration on the left lane and $\tilde v_\text{lead}$ corresponding to the velocity of
+the car in front on the left lane.
+Using $a_c^\text{eur}$ for the dynamics on right-hand lane implements the logic for the critical behaviour around
+$v_\text{crit}$.
+
+To implement the lane usage rule, an assymetry gets added to the incentive criterion. When a change to a right hand
+lane is proposed, the inequility reads
+\begin{equation}
+  L \rightarrow R: \quad
+  \tilde a_c^\text{eur} - a_c + p (\tilde a_o - a_o) > \Delta a_\text{th} - \Delta a_\text{bias},
+\end{equation}
+for changing to the left this inequality becomes
+\begin{equation}
+  R \rightarrow L: \quad
+  \tilde a_c - a_c^\text{eur} + p (\tilde a_n - a_n) > \Delta a_\text{th} + \Delta a_\text{bias}.
+\end{equation}
+A key difference to \autoref{eqn:US_incentive} is that not all neighbors get considered anymore, as the left lane
+(so the new follower for left-bound changes and old follower for changes to the right) gets a priority. Treating
+the right lane as the default lane is enforced by the bias $\Delta a_\text{bias}$. With 
+$\Delta a_\text{bias} > \Delta a_\text{th}$, a free moving car will change to the right.
+

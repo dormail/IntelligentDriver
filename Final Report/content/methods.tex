@@ -24,7 +24,84 @@ command, the programm can be executed and the command line instructions generate
 a dangerous source of error. To achieve high savings in runtime, the python module \texttt{multiprocessing} has been
 used to launch multiple instances of the C++ simulation on different threads. 
 
-To send the data from the C++ programm to the python instance, the afforementioned CSV files come into play. While ASCII
-formated files have performance and storage overhead, it is easy to write them in C++. In Python they have been read and
-processed into numpy arrays by \texttt{pandas}.
+To exchange the data between the simulating program and the data analysis, the afforementioned 
+CSV files come into play. While ASCII formated files have performance and storage 
+overhead, it is easy to write them in C++. In Python they have been read and
+processed into numpy arrays by \texttt{pandas}. By default the data files are stored in the
+\texttt{/tmp} directory as it is offered for temporary files on Linux systems
+\footnote{\texttt{/tmp} is usually emptied on linux machines after a reboot, so reproducabillity is
+limited.}.
 
+
+\subsection{Parameter space}
+\label{sec:parameters}
+As the IDM can contain up to 8 free parameters and MOBIL introduced 4 new parameters (politeness,
+critical velocities and the thresholds $\Delta a_\text{th}$ and $\Delta a_\text{bias}$), these have
+to be selected carefully. 
+
+For this project the original works have been reutilized regarding the constant parameters when
+possible, except for the number of lanes. Since the MOBIL paper used an infinite road but here a 
+circular road is used, the length is another parameter. 
+
+One feature of MOBIL was the introduction of trucks, meaing that a fraction of the vehicles gets
+longer with a lower desired speed. The global parameters are given in
+\autoref{tab:global_parameters} and the individual parameters differentiated for cars and trucks in
+\autoref{tab:individual_parameters}.
+%% Parameters used 
+%void set_MOBIL(Car &target) {
+%  target.safe_time_headaway = 2;
+%  target.max_acceleration = 1.5;
+%  target.comfortable_deceleration = 2.;
+%  target.min_distance = 2.;
+%  target.length = 4.;
+%}
+% unsigned int lane_num = 3;
+%   float politeness_factor = 1; /*!< politeness of a driver in the lane changing model */
+%   float switching_threshhold = .1; /*!< switching threshhold in the lane changing model */
+%   float safety_break = 4.; /*!< maximum the new follower should have to break after a lane change */
+%   float v_crit = 60 * .278; /*!< critical speed at which EU law evolves into US law */
+%   float a_bias = .3; /*!< bias acceleration to make right lane more attractive */
+\begin{table}[b]%The best place to locate the table environment is directly after its first reference in text
+  \caption{\label{tab:global_parameters}%
+    Global IDM and MOBIL Parameters used.
+  }
+  \begin{ruledtabular}
+    \begin{tabular}{c c}
+      Parameter 
+  & Value \\
+  \colrule
+      Safe time headaway          & \SI{2}{s}         \\
+      Maximum acceleration        & \SI{1.5}{m/s^2}       \\
+      Comfortable deceleration    & \SI{2}{m/s^2} \\
+      Minimum distance            & \SI{2}{m} \\
+      Road length                 & \SI{1500}{m} \\
+      Safety brake                & \SI{4}{m/s^2} \\
+      Critical velocity $v_\text{crit}$ & \SI{60}{km/h} \\
+      Politeness factor $p$       & 1 \\
+      Switching threshold $\Delta a_\text{th}$ & 0.1 \\
+      Switching bias  $\Delta a_\text{bias}$ & 0.3 \\
+      Truck share & $20\%$ \\
+      Lanes & 3 \\
+    \end{tabular}
+  \end{ruledtabular}
+\end{table}
+
+\begin{table}[b]%The best place to locate the table environment is directly after its first reference in text
+  \caption{\label{tab:individual_parameters}%
+    Individual vehicle parameters used. For the desired speed the mean value is given, as it is generated with
+    a $\pm 20\%$ uniform distribution to create turbolence.
+  }
+  \begin{ruledtabular}
+    \begin{tabular}{c c c}
+      Parameter 
+  & Car Value 
+  & Truck Value\\
+  \colrule
+      Average desired speed $v_0$ & \SI{120}{km/h} & \SI{80}{km/h} \\
+      Vehicle length & \SI{4}{m} & \SI{12}{m} \\
+    \end{tabular}
+  \end{ruledtabular}
+\end{table}
+
+With these parameters fixed, the only free parameter is the number of cars on the road. The
+intervall for the amount of cars goes from 20 to 200 cars.
